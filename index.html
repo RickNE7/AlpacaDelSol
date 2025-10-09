@@ -102,18 +102,33 @@
                 
                 <!-- Timeline -->
                 <div class="relative">
-                    <!-- Vertical line -->
-                    <div class="absolute left-1/2 -ml-1 h-full w-2 bg-gradient-to-b from-blue-300 to-red-300 rounded-full"></div>
+                    <div class="absolute left-1/2 -ml-1 h-full w-2 bg-gradient-to-b from-blue-300 via-green-300 via-red-300 to-indigo-300 rounded-full"></div>
 
-                    <!-- Step 1: Preparación -->
                     <div class="process-step mb-16 flex flex-col items-center">
                         <div class="z-10 bg-white border-4 border-blue-400 w-24 h-24 rounded-full flex flex-col items-center justify-center shadow-lg">
                            <span class="text-xs text-gray-500">Paso 1</span>
+                           <span class="font-bold text-lg">Negociación</span>
+                           <span class="text-xs text-gray-500">01/OCT</span>
+                        </div>
+                        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md w-full lg:w-4/5 mt-4">
+                            <p class="text-sm text-gray-600 text-center mb-4">Se emite una oferta comercial detallada para que el comprador pueda confirmar la orden e iniciar trámites previos.</p>
+                            <div class="flex justify-center">
+                                <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer w-full md:w-1/2" onclick="openModal('modal7')">
+                                    <h3 class="font-bold text-md">Factura Proforma</h3>
+                                    <p class="text-xs text-gray-500 mt-1">Ashly Rosas Flores</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="process-step mb-16 flex flex-col items-center">
+                        <div class="z-10 bg-white border-4 border-green-400 w-24 h-24 rounded-full flex flex-col items-center justify-center shadow-lg">
+                           <span class="text-xs text-gray-500">Paso 2</span>
                            <span class="font-bold text-lg">Preparación</span>
                            <span class="text-xs text-gray-500">06/OCT</span>
                         </div>
                         <div class="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md w-full lg:w-4/5 mt-4">
-                            <p class="text-sm text-gray-600 text-center mb-4">Se negocian los términos de la venta, se prepara la mercancía y se emiten los documentos comerciales que acreditan la transacción.</p>
+                            <p class="text-sm text-gray-600 text-center mb-4">Con la orden confirmada, se prepara la mercancía, se empaca y se emiten los documentos comerciales definitivos.</p>
                             <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
                                 <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('modal1')">
                                     <h3 class="font-bold text-md">Factura Comercial</h3>
@@ -126,16 +141,15 @@
                             </div>
                         </div>
                     </div>
-                    
-                    <!-- Step 2: Ingreso a Almacén -->
+
                     <div class="process-step mb-16 flex flex-col items-center">
                          <div class="z-10 bg-white border-4 border-red-400 w-24 h-24 rounded-full flex flex-col items-center justify-center shadow-lg">
-                           <span class="text-xs text-gray-500">Paso 2</span>
-                           <span class="font-bold text-lg">Almacén</span>
+                           <span class="text-xs text-gray-500">Paso 3</span>
+                           <span class="font-bold text-lg">Logística</span>
                            <span class="text-xs text-gray-500">07/OCT</span>
                         </div>
                         <div class="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md w-full lg:w-4/5 mt-4">
-                            <p class="text-sm text-gray-600 text-center mb-4">La carga es transportada al depósito temporal en el aeropuerto, donde se emite la constancia de recepción y se asume su custodia.</p>
+                            <p class="text-sm text-gray-600 text-center mb-4">Se realiza el transporte interno al aeropuerto y la carga es recibida por el depósito temporal, transfiriendo su custodia.</p>
                             <div class="grid grid-cols-1 gap-4 text-center">
                                  <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('modal6')">
                                     <h3 class="font-bold text-md">Warehouse Receipt</h3>
@@ -145,10 +159,9 @@
                         </div>
                     </div>
 
-                    <!-- Step 3: Despacho y Embarque -->
                     <div class="process-step mb-8 flex flex-col items-center">
                          <div class="z-10 bg-white border-4 border-indigo-400 w-24 h-24 rounded-full flex flex-col items-center justify-center shadow-lg">
-                           <span class="text-xs text-gray-500">Paso 3</span>
+                           <span class="text-xs text-gray-500">Paso 4</span>
                            <span class="font-bold text-lg">Embarque</span>
                            <span class="text-xs text-gray-500">08/OCT</span>
                         </div>
@@ -186,11 +199,19 @@
     </div>
     
     <!-- Modales -->
-    <div id="modal1" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('modal1')">
+    <div id="modal7" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('modal7')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('modal7')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">Factura Proforma</h3>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es un documento de negociación preliminar que funciona como una cotización formal. Se utiliza para que el comprador confirme los términos de la venta y pueda iniciar trámites en su país, como la obtención de licencias o la apertura de una carta de crédito.</p>
+            <button onclick="showPdfAndCloseModal('modal7', 'https://acrobat.adobe.com/id/urn:aaid:sc:US:049f7f53-6502-43bd-bbb7-a1146c576de5')" class="inline-block bg-gray-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-gray-700 transition-colors">Ver Documento (PDF)</button>
+        </div>
+    </div>
+     <div id="modal1" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('modal1')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('modal1')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
             <h3 class="text-2xl font-bold mb-4 text-slate-800">Factura Comercial</h3>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es el documento que <strong>acredita legalmente la venta</strong>. Funciona como el contrato que detalla qué se vende, a quién, a qué precio y bajo qué condiciones. Es la base para la declaración de aduanas tanto en origen como en destino.</p>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es el documento que <strong>acredita legalmente la venta</strong>. Funciona como el contrato que detalla qué se vende, a quién, a qué precio y bajo qué condiciones. Reemplaza a la proforma y es la base para la declaración de aduanas.</p>
             <button onclick="showPdfAndCloseModal('modal1', 'https://acrobat.adobe.com/id/urn:aaid:sc:US:bf2cfaef-bf09-4536-a5bc-b55ed7ded661')" class="inline-block bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-blue-700 transition-colors">Ver Documento (PDF)</button>
         </div>
     </div>
@@ -200,6 +221,14 @@
             <h3 class="text-2xl font-bold mb-4 text-slate-800">Packing List</h3>
             <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es el <strong>inventario físico del embarque</strong>. Detalla cómo está organizada la carga: el número de cajas, el contenido de cada una, y sus pesos y dimensiones. Es crucial para la inspección física de la aduana y la correcta manipulación logística.</p>
             <button onclick="showPdfAndCloseModal('modal2', 'https://acrobat.adobe.com/id/urn:aaid:sc:US:0b3821c9-1018-4354-b693-104e2b31ccf4')" class="inline-block bg-green-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-green-700 transition-colors">Ver Documento (PDF)</button>
+        </div>
+    </div>
+    <div id="modal8" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('modal8')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('modal8')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">Guía de Remisión</h3>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Sustenta el traslado legal de la mercancía **dentro del territorio nacional**, desde el local del exportador hasta el depósito temporal. Es un documento de control tributario exigido por la SUNAT en Perú.</p>
+            <button onclick="showPdfAndCloseModal('modal8', '#')" class="inline-block bg-orange-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-orange-700 transition-colors">Ver Documento (PDF)</button>
         </div>
     </div>
     <div id="modal6" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('modal6')">
@@ -281,6 +310,10 @@
         }
 
         function showPdfAndCloseModal(modalId, pdfUrl) {
+            if (pdfUrl === '#') {
+                alert('Documento no disponible para este ejemplo.');
+                return;
+            }
             closeModal(modalId);
             setTimeout(() => {
                 const pdfIframe = document.getElementById('pdf-iframe');
