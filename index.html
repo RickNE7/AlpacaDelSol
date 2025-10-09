@@ -66,6 +66,12 @@
     
     <!-- Vista de Infografía -->
     <div id="main-content-wrapper" class="view hidden opacity-0 absolute inset-0 overflow-y-auto">
+         <button onclick="switchView('cover-page')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la Portada">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+            </svg>
+        </button>
+
         <div class="container mx-auto p-4 md:p-8">
             <header class="text-center mb-12 fade-in">
                  <div class="inline-block bg-white/80 backdrop-blur-sm p-4 rounded-lg">
@@ -88,68 +94,160 @@
                     <h2 class="text-2xl font-bold text-slate-700 fade-in bg-white/80 backdrop-blur-sm p-4 rounded-lg inline-block" style="animation-delay: 0.4s;">Flujo Documentario de la Exportación</h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openPdf('https://acrobat.adobe.com/id/urn:aaid:sc:US:bf2cfaef-bf09-4536-a5bc-b55ed7ded661')">
+                    
+                    <!-- 1. Factura Comercial -->
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('modal1')">
                         <div class="bg-blue-100 text-blue-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5l-3 3-3-3" /></svg>
                         </div>
                         <h3 class="font-bold text-lg">1. Factura Comercial</h3>
                         <p class="text-sm text-gray-600">Emitida por el Exportador</p>
+                        <p class="text-xs text-gray-500 mt-1 font-bold">Fecha: 06 de Octubre, 2025</p>
                         <p class="text-xs text-gray-500 mt-2 font-semibold">Marilin Medina Apolinario</p>
                     </div>
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openPdf('https://acrobat.adobe.com/id/urn:aaid:sc:US:6254e2b3-e432-4597-96b4-33f5a7a585ed')">
+                    
+                    <!-- 2. Packing List -->
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('modal2')">
                         <div class="bg-green-100 text-green-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" /></svg>
                         </div>
                         <h3 class="font-bold text-lg">2. Packing List</h3>
                         <p class="text-sm text-gray-600">Emitido por el Exportador</p>
+                        <p class="text-xs text-gray-500 mt-1 font-bold">Fecha: 06 de Octubre, 2025</p>
                         <p class="text-xs text-gray-500 mt-2 font-semibold">Gino Vela Ruiz</p>
                     </div>
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openPdf('https://acrobat.adobe.com/id/urn:aaid:sc:US:8fe8c62e-1dee-4958-98c4-18fd7b3fa2b8')">
-                        <div class="bg-yellow-100 text-yellow-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
-                        </div>
-                        <h3 class="font-bold text-lg">3. Declaración Aduanera</h3>
-                        <p class="text-sm text-gray-600">Emitida por el Agente de Aduana</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Celeste Taya Martínez</p>
-                    </div>
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openPdf('https://acrobat.adobe.com/id/urn:aaid:sc:US:134d4e62-a59a-486c-8cbf-27477f0ac6b5')">
-                        <div class="bg-purple-100 text-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
-                        </div>
-                        <h3 class="font-bold text-lg">4. Guía Aérea Hija (HAWB)</h3>
-                        <p class="text-sm text-gray-600">Emitida por Agente de Carga</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Eric Mozombite Shishco</p>
-                    </div>
-                     <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openPdf('https://acrobat.adobe.com/id/urn:aaid:sc:US:705a4d7c-4aeb-4441-b507-80eadecddbc1')">
-                        <div class="bg-indigo-100 text-indigo-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
-                        </div>
-                        <h3 class="font-bold text-lg">5. Guía Aérea Master (MAWB)</h3>
-                        <p class="text-sm text-gray-600">Emitida por la Aerolínea</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Ashly Rosas Flores</p>
-                    </div>
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openPdf('https://acrobat.adobe.com/id/urn:aaid:sc:US:39892f0f-cfb4-4610-8c7a-4a01179a5191')">
+
+                    <!-- 3. Warehouse Receipt -->
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('modal6')">
                         <div class="bg-red-100 text-red-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4M4 7l8 5 8-5" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12l8-5" /></svg>
                         </div>
-                        <h3 class="font-bold text-lg">6. Warehouse Receipt</h3>
+                        <h3 class="font-bold text-lg">3. Warehouse Receipt</h3>
                         <p class="text-sm text-gray-600">Emitido por Almacén Aduanero</p>
+                        <p class="text-xs text-gray-500 mt-1 font-bold">Fecha: 07 de Octubre, 2025</p>
                         <p class="text-xs text-gray-500 mt-2 font-semibold">Milagros Tornero Tejada</p>
+                    </div>
+                    
+                    <!-- 4. Declaración Aduanera -->
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('modal3')">
+                        <div class="bg-yellow-100 text-yellow-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+                        </div>
+                        <h3 class="font-bold text-lg">4. Declaración Aduanera</h3>
+                        <p class="text-sm text-gray-600">Emitida por el Agente de Aduana</p>
+                        <p class="text-xs text-gray-500 mt-1 font-bold">Fecha: 08 de Octubre, 2025</p>
+                        <p class="text-xs text-gray-500 mt-2 font-semibold">Celeste Taya Martínez</p>
+                    </div>
+                    
+                    <!-- 5. Guía Aérea Hija -->
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('modal4')">
+                        <div class="bg-purple-100 text-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+                        </div>
+                        <h3 class="font-bold text-lg">5. Guía Aérea Hija (HAWB)</h3>
+                        <p class="text-sm text-gray-600">Emitida por Agente de Carga</p>
+                        <p class="text-xs text-gray-500 mt-1 font-bold">Fecha: 08 de Octubre, 2025</p>
+                        <p class="text-xs text-gray-500 mt-2 font-semibold">Eric Mozombite Shishco</p>
+                    </div>
+
+                     <!-- 6. Guía Aérea Master -->
+                     <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('modal5')">
+                        <div class="bg-indigo-100 text-indigo-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" /></svg>
+                        </div>
+                        <h3 class="font-bold text-lg">6. Guía Aérea Master (MAWB)</h3>
+                        <p class="text-sm text-gray-600">Emitida por la Aerolínea</p>
+                        <p class="text-xs text-gray-500 mt-1 font-bold">Fecha: 08 de Octubre, 2025</p>
+                        <p class="text-xs text-gray-500 mt-2 font-semibold">Ashly Rosas Flores</p>
                     </div>
                 </div>
             </main>
         </div>
     </div>
 
-    <!-- Vista del PDF -->
-    <div id="pdf-view" class="view hidden opacity-0 fixed inset-0 z-40 bg-gray-800">
-        <iframe id="pdf-iframe" class="w-full h-full border-0"></iframe>
-        <button onclick="switchView('main-content-wrapper')" class="fixed bottom-6 right-6 z-50 bg-blue-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors text-sm font-bold">
-            Volver
-        </button>
+    <!-- Modales -->
+    <div id="modal1" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('modal1')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('modal1')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">1. Factura Comercial (Invoice)</h3>
+            <p class="text-gray-700 mb-2 text-justify"><strong>Justificación:</strong> Es el documento que <strong>acredita legalmente la venta</strong>. Funciona como el contrato que detalla qué se vende, a quién, a qué precio y bajo qué condiciones. Es la base para la declaración de aduanas tanto en origen como en destino.</p>
+            <p class="text-gray-600 mb-6 text-justify text-sm"><strong>Razón de la Fecha (06 de Octubre):</strong> Se emite al inicio del proceso, una vez que la mercancía está lista para ser despachada. Esta fecha formaliza la transacción y permite preparar la carga para su traslado al almacén.</p>
+            <a href="https://acrobat.adobe.com/id/urn:aaid:sc:US:bf2cfaef-bf09-4536-a5bc-b55ed7ded661" target="_blank" class="inline-block bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-blue-700 transition-colors">Ver Documento (PDF)</a>
+        </div>
+    </div>
+    <div id="modal2" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('modal2')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('modal2')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">2. Packing List (Lista de Empaque)</h3>
+            <p class="text-gray-700 mb-2 text-justify"><strong>Justificación:</strong> Es el <strong>inventario físico del embarque</strong>. Detalla cómo está organizada la carga: el número de cajas, el contenido de cada una, y sus pesos y dimensiones. Es crucial para la inspección física de la aduana y la correcta manipulación logística.</p>
+            <p class="text-gray-600 mb-6 text-justify text-sm"><strong>Razón de la Fecha (06 de Octubre):</strong> Se emite junto con la Factura Comercial, ya que ambos documentos se preparan una vez que la mercancía ha sido embalada y está lista para ser despachada desde el local del exportador.</p>
+            <a href="https://acrobat.adobe.com/id/urn:aaid:sc:US:6254e2b3-e432-4597-96b4-33f5a7a585ed" target="_blank" class="inline-block bg-green-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-green-700 transition-colors">Ver Documento (PDF)</a>
+        </div>
+    </div>
+    <div id="modal6" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('modal6')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('modal6')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">3. Warehouse Receipt</h3>
+            <p class="text-gray-700 mb-2 text-justify"><strong>Justificación:</strong> Es la <strong>constancia de recepción de la carga</strong> emitida por el depósito temporal (TALMA). Certifica que el almacén ha recibido la mercancía y, a partir de ese momento, es responsable de su custodia hasta entregarla a la aerolínea.</p>
+            <p class="text-gray-600 mb-6 text-justify text-sm"><strong>Razón de la Fecha (07 de Octubre):</strong> Se emite el día que la carga ingresa físicamente al almacén, que lógicamente ocurre después de la preparación de la factura pero antes de la salida del vuelo.</p>
+            <a href="https://acrobat.adobe.com/id/urn:aaid:sc:US:39892f0f-cfb4-4610-8c7a-4a01179a5191" target="_blank" class="inline-block bg-red-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-red-700 transition-colors">Ver Documento (PDF)</a>
+        </div>
+    </div>
+    <div id="modal3" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('modal3')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('modal3')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">4. Declaración Aduanera de Mercancías (DAM)</h3>
+            <p class="text-gray-700 mb-2 text-justify"><strong>Justificación:</strong> Es la <strong>solicitud formal ante la SUNAT</strong> para acoger la mercancía al régimen de Exportación Definitiva. Este documento formaliza la salida legal de los productos del territorio peruano y es indispensable para el control del Estado.</p>
+            <p class="text-gray-600 mb-6 text-justify text-sm"><strong>Razón de la Fecha (08 de Octubre):</strong> Se numera el día del embarque. La aduana requiere que la carga ya esté en un depósito temporal (o por ingresar) para autorizar la exportación, por lo que su fecha coincide con la salida del vuelo.</p>
+            <a href="https://acrobat.adobe.com/id/urn:aaid:sc:US:8fe8c62e-1dee-4958-98c4-18fd7b3fa2b8" target="_blank" class="inline-block bg-yellow-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-yellow-600 transition-colors">Ver Documento (PDF)</a>
+        </div>
+    </div>
+    <div id="modal4" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('modal4')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('modal4')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">5. Guía Aérea Hija (HAWB)</h3>
+            <p class="text-gray-700 mb-2 text-justify"><strong>Justificación:</strong> Es el contrato de transporte entre el <strong>Agente de Carga y el Exportador</strong>. Detalla el envío específico y es la prueba que Alpaca del Sol S.A.C. tiene para demostrar que ha embarcado su carga.</p>
+            <p class="text-gray-600 mb-6 text-justify text-sm"><strong>Razón de la Fecha (08 de Octubre):</strong> Se emite el día del vuelo, al mismo tiempo que la Guía Master, ya que ambos formalizan el contrato de transporte que comienza en esa fecha.</p>
+            <a href="https://acrobat.adobe.com/id/urn:aaid:sc:US:134d4e62-a59a-486c-8cbf-27477f0ac6b5" target="_blank" class="inline-block bg-purple-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-purple-700 transition-colors">Ver Documento (PDF)</a>
+        </div>
+    </div>
+    <div id="modal5" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('modal5')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('modal5')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">6. Guía Aérea Master (MAWB)</h3>
+            <p class="text-gray-700 mb-2 text-justify"><strong>Justificación:</strong> Es el contrato de transporte entre la <strong>Aerolínea y el Agente de Carga</strong>. Ampara la totalidad de la carga consolidada. Para la aerolínea, todo el bloque es un solo envío a nombre del Agente de Carga.</p>
+            <p class="text-gray-600 mb-6 text-justify text-sm"><strong>Razón de la Fecha (08 de Octubre):</strong> Se emite el día de salida del vuelo, ya que es el contrato que ampara el transporte físico que se inicia en esa fecha.</p>
+            <a href="https://acrobat.adobe.com/id/urn:aaid:sc:US:705a4d7c-4aeb-4441-b507-80eadecddbc1" target="_blank" class="inline-block bg-indigo-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-700 transition-colors">Ver Documento (PDF)</a>
+        </div>
     </div>
 
     <script>
+        function openModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.remove('hidden');
+            setTimeout(() => {
+                modal.classList.remove('opacity-0');
+                modal.querySelector('.modal-content').classList.remove('scale-95');
+            }, 10);
+        }
+
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            modal.classList.add('opacity-0');
+            modal.querySelector('.modal-content').classList.add('scale-95');
+            setTimeout(() => {
+                modal.classList.add('hidden');
+            }, 300);
+        }
+
+        function startPresentation() {
+            switchView('main-content-wrapper');
+        }
+        
+        function returnToCover() {
+            switchView('cover-page');
+        }
+
         let currentView = 'cover-page';
 
         function switchView(targetViewId) {
@@ -166,7 +264,7 @@
                     currentView = targetViewId;
 
                     if(targetViewId === 'main-content-wrapper') {
-                         // Animar la entrada de los items de la infografía
+                        // Animar la entrada de los items de la infografía
                         const items = document.querySelectorAll('.step-item');
                         items.forEach((item, index) => {
                             item.style.animation = `fadeIn 0.5s ease-out ${index * 0.1 + 0.5}s forwards`;
@@ -174,22 +272,6 @@
                     }
                 }, 10);
             }, 500);
-        }
-
-        function openPdf(pdfUrl) {
-            const pdfIframe = document.getElementById('pdf-iframe');
-            pdfIframe.src = pdfUrl;
-            switchView('pdf-view');
-        }
-
-        function startPresentation() {
-            switchView('main-content-wrapper');
-        }
-        
-        function returnToCover() {
-            switchView('cover-page');
-            const pdfIframe = document.getElementById('pdf-iframe');
-            pdfIframe.src = 'about:blank'; // Detener carga del PDF
         }
     </script>
 
