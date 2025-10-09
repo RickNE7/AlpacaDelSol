@@ -40,6 +40,7 @@
 </head>
 <body class="bg-gray-100 text-gray-800">
 
+    <!-- Vista de Portada -->
     <div id="cover-page" class="view fixed inset-0 z-50 flex flex-col items-center justify-center p-8 text-white text-center">
         <div class="bg-black bg-opacity-60 p-8 rounded-lg shadow-2xl max-w-3xl">
             <h1 class="text-4xl md:text-5xl font-bold mb-4">Gestión Aduanera</h1>
@@ -63,6 +64,7 @@
         </div>
     </div>
     
+    <!-- Vista de Infografía -->
     <div id="main-content-wrapper" class="view hidden opacity-0 absolute inset-0 overflow-y-auto">
         <div class="container mx-auto p-4 md:p-8">
             <header class="text-center mb-12 fade-in">
@@ -126,7 +128,7 @@
                         <p class="text-sm text-gray-600">Emitida por la Aerolínea</p>
                         <p class="text-xs text-gray-500 mt-2 font-semibold">Ashly Rosas Flores</p>
                     </div>
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openPdf('https://acrobat.adobe.com/id/urn:aaid:sc:US:ca42ab35-91b8-45e8-acd9-43d210c34ed9')">
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openPdf('https://acrobat.adobe.com/id/urn:aaid:sc:US:39892f0f-cfb4-4610-8c7a-4a01179a5191')">
                         <div class="bg-red-100 text-red-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4">
                             <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4M4 7l8 5 8-5" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 12l8-5" /></svg>
                         </div>
@@ -139,6 +141,7 @@
         </div>
     </div>
 
+    <!-- Vista del PDF -->
     <div id="pdf-view" class="view hidden opacity-0 fixed inset-0 z-40 bg-gray-800">
         <iframe id="pdf-iframe" class="w-full h-full border-0"></iframe>
         <button onclick="switchView('main-content-wrapper')" class="fixed bottom-6 right-6 z-50 bg-blue-600 text-white w-16 h-16 rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors text-sm font-bold">
