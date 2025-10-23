@@ -96,7 +96,7 @@
                     Presentación del Caso
                 </h2>
                 <p class="text-gray-800 leading-relaxed text-justify">
-                    En esta operación, simulamos una <strong>Exportación Definitiva</strong> de la empresa peruana <strong>Alpaca del Sol S.A.C.</strong>, que ha contratado una venta de 500 bufandas de baby alpaca a una boutique en Canadá, <strong>Canadian Alpaca Boutique Inc.</strong> La logística es gestionada por un Agente de Carga Internacional, quien consolida el envío para optimizar costos. La vía de transporte es aérea, bajo el término <strong>CPT Toronto</strong>.
+                    En esta operación, simulamos una <strong>Exportación Definitiva</strong> de la empresa peruana <strong>Alpaca del Sol S.A.C.</strong>, que ha concretado una venta de 500 bufandas de baby alpaca a una boutique en Canadá, <strong>Canadian Alpaca Boutique Inc.</strong> La logística es gestionada por un Agente de Carga Internacional, quien consolida el envío para optimizar costos. La vía de transporte es aérea, bajo el término <strong>CPT Toronto</strong>.
                 </p>
             </section>
 
@@ -224,6 +224,23 @@
                 <div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
                     <p class="font-bold text-lg text-blue-800">Clasificación Final: <span class="font-mono">5807.10.00.00</span></p>
                     <p class="text-sm text-blue-700">Etiquetas, escudos y artículos similares de materia textil, en pieza, en tiras o cortados, sin bordar: - Tejidos.</p>
+                    
+                    <!-- NUEVA SECCIÓN DE CONSULTA SUNAT -->
+                    <div class="mt-4 pt-4 border-t border-blue-200">
+                        <p class="text-sm font-semibold text-gray-700">Consultar en Aduanet (SUNAT):</p>
+                        <div class="flex items-center space-x-2 mt-2">
+                            <a href="http://www.aduanet.gob.pe/itarancel/arancelS01Alias" target="_blank" class="inline-block bg-blue-600 text-white text-xs font-bold py-1 px-3 rounded-lg hover:bg-blue-700 transition-all">
+                                Ir a SUNAT
+                            </a>
+                            <span class="text-sm text-gray-600">Usar código:</span>
+                            <input type="text" readonly value="5807100000" id="partida-code" class="text-sm p-1 rounded-md bg-gray-100 border-gray-300 shadow-inner w-28 font-mono">
+                            <button onclick="copyToClipboard('5807100000')" class="bg-gray-200 p-1 rounded-md hover:bg-gray-300" title="Copiar código">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 4h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2v-8a2 2 0 012-2z" /></svg>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- FIN NUEVA SECCIÓN -->
+
                 </div>
             </section>
 
@@ -498,6 +515,37 @@
             const pdfIframe = document.getElementById('pdf-iframe');
             pdfIframe.src = 'about:blank'; // Detener carga del PDF
             switchView('cover-page');
+        }
+
+        // Función para copiar al portapapeles
+        function copyToClipboard(text) {
+            const el = document.createElement('textarea');
+            el.value = text;
+            el.setAttribute('readonly', '');
+            el.style.position = 'absolute';
+            el.style.left = '-9999px';
+            document.body.appendChild(el);
+            el.select();
+            
+            let copied = false;
+            try {
+                document.execCommand('copy');
+                copied = true;
+            } catch (err) {
+                console.error('Error al copiar al portapapeles:', err);
+            }
+            
+            document.body.removeChild(el);
+
+            // Feedback visual en el botón
+            const copyButton = document.querySelector('button[onclick="copyToClipboard(\'5807100000\')"]');
+            if (copyButton && copied) {
+                const originalContent = copyButton.innerHTML;
+                copyButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>';
+                setTimeout(() => {
+                    copyButton.innerHTML = originalContent;
+                }, 1500);
+            }
         }
     </script>
 
