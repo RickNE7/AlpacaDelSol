@@ -15,6 +15,10 @@
         }
         .view {
             transition: opacity 0.5s ease-in-out;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            inset: 0;
         }
         .modal {
             transition: opacity 0.3s ease;
@@ -29,7 +33,7 @@
         .fade-in {
             animation: fadeIn 0.5s ease-out forwards;
         }
-        .step-item, .process-step {
+        .step-item, .process-step, .selection-card {
             opacity: 0;
         }
         #cover-page {
@@ -37,7 +41,7 @@
             background-size: cover;
             background-position: center;
         }
-        #ea1-content-wrapper, #ea2-content-wrapper, #flow-wrapper {
+        #ea1-content-wrapper, #ea2-landing-wrapper, #ea2-bufanda-wrapper, #ea2-etiquetas-wrapper {
             background-image: url('https://raw.githubusercontent.com/RickNE7/AlpacaDelSol/e0df66e96f3026f4c6958032c9681f344adb7833/Fondo1.png');
             background-size: cover;
             background-attachment: fixed;
@@ -47,7 +51,7 @@
 <body class="bg-gray-100 text-gray-800">
 
     <!-- Vista de Portada -->
-    <div id="cover-page" class="view fixed inset-0 z-50 flex flex-col items-center justify-center p-8 text-white text-center">
+    <div id="cover-page" class="view z-50 flex flex-col items-center justify-center p-8 text-white text-center">
         <div class="bg-black bg-opacity-60 p-8 rounded-lg shadow-2xl max-w-3xl">
             <h1 class="text-4xl md:text-5xl font-bold mb-4">Gestión Aduanera</h1>
             <p class="text-lg md:text-xl mb-8">25-3-308D/309P-A</p>
@@ -68,7 +72,7 @@
                 <button onclick="switchView('ea1-content-wrapper')" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition-all text-lg">
                     Evidencia de Aprendizaje 1
                 </button>
-                <button onclick="switchView('ea2-content-wrapper')" class="bg-gray-700 text-white font-bold py-3 px-8 rounded-lg hover:bg-gray-800 transition-all text-lg">
+                <button onclick="switchView('ea2-landing-wrapper')" class="bg-gray-700 text-white font-bold py-3 px-8 rounded-lg hover:bg-gray-800 transition-all text-lg">
                     Evidencia de Aprendizaje 2
                 </button>
             </div>
@@ -76,7 +80,7 @@
     </div>
     
     <!-- Vista de Infografía EA1 -->
-    <div id="ea1-content-wrapper" class="view hidden opacity-0 absolute inset-0 overflow-y-auto">
+    <div id="ea1-content-wrapper" class="view hidden opacity-0 overflow-y-auto">
          <button onclick="switchView('cover-page')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la Portada">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -96,7 +100,7 @@
                     Presentación del Caso
                 </h2>
                 <p class="text-gray-800 leading-relaxed text-justify">
-                    En esta operación, simulamos una <strong>Exportación Definitiva</strong> de la empresa peruana <strong>Alpaca del Sol S.A.C.</strong>, que ha contratado una venta de 500 bufandas de baby alpaca a una boutique en Canadá, <strong>Canadian Alpaca Boutique Inc.</strong> La logística es gestionada por un Agente de Carga Internacional, quien consolida el envío para optimizar costos. La vía de transporte es aérea, bajo el término <strong>CPT Toronto</strong>.
+                    En esta operación, simulamos una <strong>Exportación Definitiva</strong> de la empresa peruana <strong>Alpaca del Sol S.A.C.</strong>, que ha concretado una venta de 500 bufandas de baby alpaca a una boutique en Canadá, <strong>Canadian Alpaca Boutique Inc.</strong> La logística es gestionada por un Agente de Carga Internacional, quien consolida el envío para optimizar costos. La vía de transporte es aérea, bajo el término <strong>CPT Toronto</strong>.
                 </p>
             </section>
 
@@ -198,51 +202,81 @@
         </div>
     </div>
 
-    <!-- Vista de Infografía EA2 -->
-    <div id="ea2-content-wrapper" class="view hidden opacity-0 absolute inset-0 overflow-y-auto">
+    <!-- Vista de Infografía EA2 - LANDING PAGE -->
+    <div id="ea2-landing-wrapper" class="view hidden opacity-0 absolute inset-0 overflow-y-auto">
          <button onclick="switchView('cover-page')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la Portada">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
             </svg>
         </button>
 
+        <div class="container mx-auto p-4 md:p-8 flex flex-col items-center justify-center min-h-screen">
+            <header class="text-center mb-12 fade-in">
+                 <div class="inline-block bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-xl">
+                     <h1 class="text-3xl md:text-4xl font-bold text-slate-800">Evidencia de Aprendizaje 2 (EA2)</h1>
+                     <p class="text-lg text-slate-600 mt-2">Selección del Producto para Clasificación Arancelaria (RGI)</p>
+                 </div>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+                
+                <!-- Opción 1: Bufanda (Producto EA1) -->
+                <div onclick="switchView('ea2-bufanda-wrapper')" class="selection-card bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-2xl hover:shadow-indigo-400/50 hover:scale-105 transition-all duration-300 cursor-pointer border-t-4 border-indigo-500">
+                    <div class="text-indigo-600 text-4xl mb-4 font-extrabold">I. Producto de Exportación</div>
+                    <h3 class="font-bold text-2xl text-slate-800 mb-2">Bufanda de Baby Alpaca</h3>
+                    <p class="text-gray-600">Aplicación de las 6 Reglas de Interpretación al producto final de la EA1.</p>
+                    <p class="mt-4 text-sm font-semibold text-indigo-700">CLIC PARA VER CLASIFICACIÓN RGI</p>
+                </div>
+
+                <!-- Opción 2: Etiquetas (Producto Importación) -->
+                <div onclick="switchView('ea2-etiquetas-wrapper')" class="selection-card bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-2xl hover:shadow-green-400/50 hover:scale-105 transition-all duration-300 cursor-pointer border-t-4 border-green-500">
+                    <div class="text-green-600 text-4xl mb-4 font-extrabold">II. Producto de Importación</div>
+                    <h3 class="font-bold text-2xl text-slate-800 mb-2">Etiquetas Tejidas (70% Poliéster)</h3>
+                    <p class="text-gray-600">Aplicación de las 6 Reglas de Interpretación al insumo importado.</p>
+                    <p class="mt-4 text-sm font-semibold text-green-700">CLIC PARA VER CLASIFICACIÓN RGI</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Vista de Infografía EA2 - BUFANDA (Producto de Exportación) -->
+    <div id="ea2-bufanda-wrapper" class="view hidden opacity-0 absolute inset-0 overflow-y-auto">
+         <button onclick="switchView('ea2-landing-wrapper')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la selección">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+        </button>
+
         <div class="container mx-auto p-4 md:p-8">
             <header class="text-center mb-12 fade-in">
                  <div class="inline-block bg-white/80 backdrop-blur-sm p-4 rounded-lg">
-                     <h1 class="text-3xl md:text-4xl font-bold text-slate-800">Evidencia de Aprendizaje 2 (EA2)</h1>
+                     <h1 class="text-3xl md:text-4xl font-bold text-slate-800">EA2: Clasificación de Producto Exportado</h1>
                  </div>
             </header>
 
             <section class="bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-md mb-12 fade-in" style="animation-delay: 0.2s;">
                 <h2 class="text-2xl font-bold text-slate-700 mb-4 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                    Caso de Importación: Etiquetas Tejidas
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                    Producto: Bufanda de Baby Alpaca (100% Pelo Fino)
                 </h2>
-                <p class="text-gray-800 leading-relaxed text-justify">
-                    Continuando con el caso de "Alpaca del Sol S.A.C.", se simula la importación (Régimen 10 - Importación para el Consumo) de un insumo crítico para fortalecer el proceso exportador: <strong>Etiquetas tejidas de alta definición (70% poliéster y 30% algodón)</strong>, con el logo "Alpaca del Sol" y "100% Baby Alpaca - Made in Peru", provenientes de China. El objetivo es clasificar correctamente este producto usando las 6 Reglas Generales de Interpretación (RGI).
-                </p>
-                <div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
-                    <p class="font-bold text-lg text-blue-800">Clasificación Final: <span class="font-mono">5807.10.00.00</span></p>
-                    <p class="text-sm text-blue-700">Etiquetas, escudos y artículos similares de materia textil, en pieza, en tiras o cortados, sin bordar: - Tejidos.</p>
-                    
-                    <!-- NUEVA SECCIÓN DE CONSULTA SUNAT -->
-                    <div class="mt-4 pt-4 border-t border-blue-200">
+                <div class="mt-4 p-4 bg-indigo-50 border-l-4 border-indigo-500 rounded-r-lg">
+                    <p class="font-bold text-lg text-indigo-800">Clasificación Final: <span class="font-mono">6214.90.10.00</span></p>
+                    <p class="text-sm text-indigo-700">Chales, pañuelos de cuello, bufandas... de las demás materias textiles: -- De pelo fino.</p>
+                     <div class="mt-4 pt-4 border-t border-indigo-200">
                         <p class="text-sm font-semibold text-gray-700">Consultar en Aduanet (SUNAT):</p>
-                        <div class="flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 mt-2">
-                            <a href="http://www.aduanet.gob.pe/itarancel/arancelS01Alias" target="_blank" class="inline-block bg-blue-600 text-white text-xs font-bold py-1 px-3 rounded-lg hover:bg-blue-700 transition-all text-center">
+                        <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 mt-2">
+                            <a href="http://www.aduanet.gob.pe/itarancel/arancelS01Alias" target="_blank" class="inline-block bg-indigo-600 text-white text-xs font-bold py-2 px-3 rounded-lg hover:bg-indigo-700 transition-all text-center">
                                 Ir a SUNAT
                             </a>
                             <div class="flex items-center space-x-2">
                                 <span class="text-sm text-gray-600">Usar código:</span>
-                                <input type="text" readonly value="5807100000" id="partida-code" class="text-sm p-1 rounded-md bg-gray-100 border-gray-300 shadow-inner w-32 font-mono text-center">
-                                <button onclick="copyToClipboard('5807100000')" class="bg-gray-200 p-1 rounded-full hover:bg-gray-300" title="Copiar código">
+                                <input type="text" readonly value="6214901000" id="partida-code-bufanda" class="text-sm p-1 rounded-md bg-gray-100 border-gray-300 shadow-inner w-32 font-mono text-center">
+                                <button onclick="copyToClipboard('6214901000')" class="bg-gray-200 p-1 rounded-full hover:bg-gray-300" title="Copiar código">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 4h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2v-8a2 2 0 012-2z" /></svg>
                                 </button>
                             </div>
                         </div>
                     </div>
-                    <!-- FIN NUEVA SECCIÓN -->
-
                 </div>
             </section>
 
@@ -252,42 +286,138 @@
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
                     
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-modal1')">
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-bufanda-modal1')">
+                        <div class="bg-blue-100 text-blue-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">1</div>
+                        <h3 class="font-bold text-lg">Regla 1</h3>
+                        <p class="text-sm text-gray-600">Textos de Partidas y Notas</p>
+                        <p class="text-xs text-gray-500 mt-2 font-semibold">Marilin Medina</p>
+                    </div>
+                    
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-bufanda-modal2')">
+                        <div class="bg-green-100 text-green-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">2</div>
+                        <h3 class="font-bold text-lg">Regla 2</h3>
+                        <p class="text-sm text-gray-600">Incompletos y Mezclados</p>
+                        <p class="text-xs text-gray-500 mt-2 font-semibold">Eric Mozombite</p>
+                    </div>
+
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-bufanda-modal3')">
+                        <div class="bg-yellow-100 text-yellow-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">3</div>
+                        <h3 class="font-bold text-lg">Regla 3</h3>
+                        <p class="text-sm text-gray-600">Especificidad</p>
+                        <p class="text-xs text-gray-500 mt-2 font-semibold">Celeste Taya</p>
+                    </div>
+                    
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-bufanda-modal4')">
+                        <div class="bg-purple-100 text-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">4</div>
+                        <h3 class="font-bold text-lg">Regla 4</h3>
+                        <p class="text-sm text-gray-600">Clasificación por Analogía</p>
+                        <p class="text-xs text-gray-500 mt-2 font-semibold">Milagros Tornero</p>
+                    </div>
+                    
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-bufanda-modal5')">
+                        <div class="bg-indigo-100 text-indigo-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">5</div>
+                        <h3 class="font-bold text-lg">Regla 5</h3>
+                        <p class="text-sm text-gray-600">Estuches y Envases</p>
+                        <p class="text-xs text-gray-500 mt-2 font-semibold">Ashly Rosas</p>
+                    </div>
+
+                     <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-bufanda-modal6')">
+                        <div class="bg-red-100 text-red-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">6</div>
+                        <h3 class="font-bold text-lg">Regla 6</h3>
+                        <p class="text-sm text-gray-600">Clasificación en Subpartidas</p>
+                        <p class="text-xs text-gray-500 mt-2 font-semibold">Gino Vela</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    
+    <!-- Vista de Infografía EA2 - ETIQUETAS (Producto de Importación) -->
+    <div id="ea2-etiquetas-wrapper" class="view hidden opacity-0 absolute inset-0 overflow-y-auto">
+         <button onclick="switchView('ea2-landing-wrapper')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la selección">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+        </button>
+
+        <div class="container mx-auto p-4 md:p-8">
+            <header class="text-center mb-12 fade-in">
+                 <div class="inline-block bg-white/80 backdrop-blur-sm p-4 rounded-lg">
+                     <h1 class="text-3xl md:text-4xl font-bold text-slate-800">EA2: Clasificación de Insumo Importado</h1>
+                 </div>
+            </header>
+
+            <section class="bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-md mb-12 fade-in" style="animation-delay: 0.2s;">
+                <h2 class="text-2xl font-bold text-slate-700 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                    Producto: Etiquetas Tejidas (70% Poliéster / 30% Algodón)
+                </h2>
+                <p class="text-gray-800 leading-relaxed text-justify">
+                    Se simula la importación (Régimen 10) de un insumo crítico para "Alpaca del Sol": <strong>Etiquetas tejidas de alta definición (70% poliéster y 30% algodón)</strong>, con el logo de la marca, provenientes de China. El objetivo es clasificar correctamente este producto usando las 6 Reglas Generales de Interpretación (RGI).
+                </p>
+                <div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
+                    <p class="font-bold text-lg text-blue-800">Clasificación Final: <span class="font-mono">5807.10.00.00</span></p>
+                    <p class="text-sm text-blue-700">Etiquetas, escudos y artículos similares de materia textil, en pieza, en tiras o cortados, sin bordar: - Tejidos.</p>
+                     <div class="mt-4 pt-4 border-t border-blue-200">
+                        <p class="text-sm font-semibold text-gray-700">Consultar en Aduanet (SUNAT):</p>
+                        <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 mt-2">
+                            <a href="http://www.aduanet.gob.pe/itarancel/arancelS01Alias" target="_blank" class="inline-block bg-blue-600 text-white text-xs font-bold py-2 px-3 rounded-lg hover:bg-blue-700 transition-all text-center">
+                                Ir a SUNAT
+                            </a>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm text-gray-600">Usar código:</span>
+                                <input type="text" readonly value="5807100000" id="partida-code-etiquetas" class="text-sm p-1 rounded-md bg-gray-100 border-gray-300 shadow-inner w-32 font-mono text-center">
+                                <button onclick="copyToClipboard('5807100000')" class="bg-gray-200 p-1 rounded-full hover:bg-gray-300" title="Copiar código">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 4h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2v-8a2 2 0 012-2z" /></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <main>
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-slate-700 fade-in bg-white/80 backdrop-blur-sm p-4 rounded-lg inline-block" style="animation-delay: 0.4s;">Aplicación de las 6 Reglas Generales (RGI)</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
+                    
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-etiquetas-modal1')">
                         <div class="bg-blue-100 text-blue-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">1</div>
                         <h3 class="font-bold text-lg">Regla 1</h3>
                         <p class="text-sm text-gray-600">Textos de Partidas y Notas</p>
                         <p class="text-xs text-gray-500 mt-2 font-semibold">Marilin Medina Apolinario</p>
                     </div>
                     
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-modal2')">
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-etiquetas-modal2')">
                         <div class="bg-green-100 text-green-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">2</div>
                         <h3 class="font-bold text-lg">Regla 2</h3>
                         <p class="text-sm text-gray-600">Incompletos y Mezclados</p>
                         <p class="text-xs text-gray-500 mt-2 font-semibold">Eric Mozombite Shishco</p>
                     </div>
 
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-modal3')">
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-etiquetas-modal3')">
                         <div class="bg-yellow-100 text-yellow-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">3</div>
                         <h3 class="font-bold text-lg">Regla 3</h3>
                         <p class="text-sm text-gray-600">Especificidad y Carácter Esencial</p>
                         <p class="text-xs text-gray-500 mt-2 font-semibold">Celeste Taya Martínez</p>
                     </div>
                     
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-modal4')">
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-etiquetas-modal4')">
                         <div class="bg-purple-100 text-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">4</div>
                         <h3 class="font-bold text-lg">Regla 4</h3>
                         <p class="text-sm text-gray-600">Clasificación por Analogía</p>
                         <p class="text-xs text-gray-500 mt-2 font-semibold">Milagros Tornero Tejada</p>
                     </div>
                     
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-modal5')">
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-etiquetas-modal5')">
                         <div class="bg-indigo-100 text-indigo-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">5</div>
                         <h3 class="font-bold text-lg">Regla 5</h3>
                         <p class="text-sm text-gray-600">Estuches y Envases</p>
                         <p class="text-xs text-gray-500 mt-2 font-semibold">Ashly Rosas Flores</p>
                     </div>
 
-                     <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-modal6')">
+                     <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-etiquetas-modal6')">
                         <div class="bg-red-100 text-red-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">6</div>
                         <h3 class="font-bold text-lg">Regla 6</h3>
                         <p class="text-sm text-gray-600">Clasificación en Subpartidas</p>
@@ -307,7 +437,7 @@
             </svg>
         </button>
     </div>
-
+    
     <!-- Modales EA1 -->
     <div id="modalFlow" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('modalFlow')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
@@ -374,10 +504,10 @@
         </div>
     </div>
 
-    <!-- Modales EA2 (ACTUALIZADOS) -->
-    <div id="ea2-modal1" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-modal1')">
+    <!-- Modales EA2 - ETIQUETAS -->
+    <div id="ea2-etiquetas-modal1" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-etiquetas-modal1')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-modal1')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <button onclick="closeModal('ea2-etiquetas-modal1')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
             <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 1: Textos de Partidas y Notas Legales</h3>
             <p class="text-gray-500 text-sm mb-4">Responsable: Marilin Medina Apolinario</p>
             <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
@@ -386,22 +516,22 @@
             <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> La clasificación de nuestras etiquetas no se basa en el título genérico del Capítulo 58 ("Tejidos especiales..."), sino en el texto legal específico de la <strong>Partida 58.07</strong>, que describe explícitamente: <strong>"Etiquetas, escudos y artículos similares de materia textil..."</strong>. El producto importado ("etiquetas tejidas") coincide directamente con este texto.</p>
         </div>
     </div>
-    <div id="ea2-modal2" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-modal2')">
+    <div id="ea2-etiquetas-modal2" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-etiquetas-modal2')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-modal2')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <button onclick="closeModal('ea2-etiquetas-modal2')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
             <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 2: Incompletos y Mezclados</h3>
             <p class="text-gray-500 text-sm mb-4">Responsable: Eric Mozombite Shishco</p>
             <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
-                "a) Cualquier referencia a un artículo... alcanza al artículo incluso incompleto o sin terminar, siempre que éste presente las características esenciales del artículo completo..."<br>
-                "b) Cualquier referencia a una materia... alcanza a dicha materia incluso mezclada o asociada con otras materias..."
+                "a) ...alcanza al artículo incluso incompleto o sin terminar, siempre que éste presente las características esenciales del artículo completo..."<br>
+                "b) ...alcanza a dicha materia incluso mezclada o asociada con otras materias..."
             </blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (2a):</strong> Esta regla aplica, ya que el propio texto de la Partida 58.07 la invoca al especificar "...en pieza, en tiras o cortados...". Si importáramos las etiquetas en un gran rollo (en pieza) que aún requiere ser cortado, se clasificarían igualmente en la 58.07.</p>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (2a):</strong> Esta regla aplica, ya que el propio texto de la Partida 58.07 la invoca al especificar "...en pieza, en tiras o cortados...". Si importáramos las etiquetas en un gran rollo (en pieza), se clasificarían igualmente en la 58.07.</p>
             <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (2b):</strong> Esta regla se activa. Dado que el producto es una <strong>mezcla (70% poliéster y 30% algodón)</strong>, esta regla indica que la partida <strong>58.07</strong> sigue siendo relevante, y nos remite a la Regla 3 para la clasificación por carácter esencial.</p>
         </div>
     </div>
-    <div id="ea2-modal3" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-modal3')">
+    <div id="ea2-etiquetas-modal3" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-etiquetas-modal3')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-modal3')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <button onclick="closeModal('ea2-etiquetas-modal3')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
             <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 3: Especificidad y Carácter Esencial</h3>
             <p class="text-gray-500 text-sm mb-4">Responsable: Celeste Taya Martínez</p>
             <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
@@ -412,9 +542,9 @@
             <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (3b - Carácter Esencial):</strong> Se aplica el criterio de predominancia por peso (Nota 2a de la Sección XI). Dado que el <strong>Poliéster (70%)</strong> predomina en peso sobre el Algodón (30%), el carácter esencial del producto textil es el de "fibra sintética".</p>
         </div>
     </div>
-    <div id="ea2-modal4" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-modal4')">
+    <div id="ea2-etiquetas-modal4" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-etiquetas-modal4')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-modal4')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <button onclick="closeModal('ea2-etiquetas-modal4')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
             <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 4: Clasificación por Analogía</h3>
             <p class="text-gray-500 text-sm mb-4">Responsable: Milagros Tornero Tejada</p>
             <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
@@ -423,9 +553,9 @@
             <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> Esta regla no es necesaria para clasificar las etiquetas. El producto no es una novedad tecnológica ni un artículo que carece de descripción; su clasificación fue resuelta clara y directamente por las Reglas 1 y 3a. Por lo tanto, la Regla 4 se considera en el proceso, pero se descarta.</p>
         </div>
     </div>
-    <div id="ea2-modal5" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-modal5')">
+    <div id="ea2-etiquetas-modal5" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-etiquetas-modal5')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-modal5')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <button onclick="closeModal('ea2-etiquetas-modal5')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
             <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 5: Estuches y Envases</h3>
             <p class="text-gray-500 text-sm mb-4">Responsable: Ashly Rosas Flores</p>
             <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
@@ -434,9 +564,9 @@
             <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (5b):</strong> Nuestras 50,000 etiquetas se importarán dentro de cajas de cartón corrugado. Estas cajas son el embalaje normal y habitual, no están diseñadas para uso repetido. Por lo tanto, las cajas de cartón no se clasifican por separado (en la partida del cartón), sino que se clasifican <strong>junto</strong> con las etiquetas en la partida <strong>5807.10.00.00</strong>.</p>
         </div>
     </div>
-    <div id="ea2-modal6" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-modal6')">
+    <div id="ea2-etiquetas-modal6" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-etiquetas-modal6')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-modal6')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <button onclick="closeModal('ea2-etiquetas-modal6')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
             <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 6: Clasificación en Subpartidas</h3>
             <p class="text-gray-500 text-sm mb-4">Responsable: Gino Vela Ruiz</p>
             <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
@@ -448,24 +578,86 @@
                 3. Por lo tanto, la clasificación se completa con ceros, resultando en la subpartida nacional <strong>5807.10.00.00</strong>.</p>
         </div>
     </div>
+    
+    <!-- Modales EA2 - BUFANDA -->
+    <div id="ea2-bufanda-modal1" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-bufanda-modal1')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('ea2-bufanda-modal1')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 1: Textos de Partidas y Notas Legales</h3>
+            <p class="text-gray-500 text-sm mb-4">Responsable: Marilin Medina</p>
+            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">"...la clasificación está determinada legalmente por los textos de las partidas y de las Notas de Sección o de Capítulo..."</blockquote>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> La clasificación se basa en el texto de la **Partida 62.14**, que describe explícitamente: "Chales, pañuelos de cuello, **bufandas**, mantillas, velos y artículos similares". Nuestro producto, "Bufanda de Baby Alpaca", coincide directamente con este texto legal.</p>
+        </div>
+    </div>
+    <div id="ea2-bufanda-modal2" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-bufanda-modal2')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('ea2-bufanda-modal2')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 2: Artículos Incompletos y Mezclados</h3>
+            <p class="text-gray-500 text-sm mb-4">Responsable: Eric Mozombite</p>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (2a y 2b):</strong> Estas reglas no son de aplicación determinante en este caso. La bufanda se presenta como un artículo **completo y terminado** (no aplica 2a) y está hecha de una **sola materia textil** (100% Pelo Fino de Alpaca), por lo que no es una mezcla (no aplica 2b).</p>
+        </div>
+    </div>
+    <div id="ea2-bufanda-modal3" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-bufanda-modal3')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('ea2-bufanda-modal3')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</Mbutton>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 3: Especificidad</h3>
+            <p class="text-gray-500 text-sm mb-4">Responsable: Celeste Taya</p>
+            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">"a) La partida con descripción más específica tendrá prioridad sobre las partidas de alcance más genérico..."</blockquote>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (3a):</strong> Esta regla se aplica para confirmar la Partida 62.14. Aunque una bufanda es un "complemento de vestir" (Partida 62.17, más genérica), la **Partida 62.14** es **más específica** porque nombra textualmente "bufandas". Las Reglas 3b y 3c no son necesarias.</p>
+        </div>
+    </div>
+    <div id="ea2-bufanda-modal4" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-bufanda-modal4')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('ea2-bufanda-modal4')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 4: Clasificación por Analogía</h3>
+            <p class="text-gray-500 text-sm mb-4">Responsable: Milagros Tornero</p>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> Esta regla se considera pero se descarta. No es necesaria ya que la Regla 1 (y la 3a) resolvieron la clasificación de manera clara y directa. No hay ambigüedad que requiera buscar productos "análogos" o similares.</p>
+        </div>
+    </div>
+    <div id="ea2-bufanda-modal5" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-bufanda-modal5')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('ea2-bufanda-modal5')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 5: Estuches y Envases</h3>
+            <p class="text-gray-500 text-sm mb-4">Responsable: Ashly Rosas</p>
+            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">"b) ...los envases que contengan mercancías se clasificarán con ellas cuando sean de los tipos normalmente empleados..."</blockquote>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (5b):</strong> Las bufandas se exportan en cajas de cartón. Siendo este el embalaje normal y no apto para uso repetido (no es un estuche de lujo), la Regla 5b indica que las cajas de cartón se clasifican **junto** con las bufandas en la Partida 62.14.</p>
+        </div>
+    </div>
+    <div id="ea2-bufanda-modal6" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-bufanda-modal6')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('ea2-bufanda-modal6')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 6: Clasificación en Subpartidas</h3>
+            <p class="text-gray-500 text-sm mb-4">Responsable: Gino Vela</p>
+            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">"...la clasificación... en las subpartidas... está determinada legalmente por los textos de estas subpartidas..."</blockquote>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> Una vez fijada la Partida <strong>62.14</strong> (por Regla 1), la Regla 6 nos obliga a descender jerárquicamente:<br>
+                1. Comparamos `6214.10` (De seda), `6214.20` (De lana...), `6214.30` (De fibras sintéticas), etc., hasta `6214.90` (De las demás materias textiles).<br>
+                2. Elegimos <strong>6214.90</strong>, ya que la alpaca (pelo fino) no está en las anteriores.<br>
+                3. Dentro de esta, comparamos `6214.90.10` (-- De pelo fino) vs. `6214.90.90` (-- Las demás).<br>
+                4. Elegimos <strong>6214.90.10</strong>. La subpartida nacional final es <strong>6214.90.10.00</strong>.</p>
+        </div>
+    </div>
 
     <script>
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
-            modal.classList.remove('hidden');
-            setTimeout(() => {
-                modal.classList.remove('opacity-0');
-                modal.querySelector('.modal-content').classList.remove('scale-95');
-            }, 10);
+            if (modal) {
+                modal.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.remove('opacity-0');
+                    modal.querySelector('.modal-content').classList.remove('scale-95');
+                }, 10);
+            }
         }
 
         function closeModal(modalId) {
             const modal = document.getElementById(modalId);
-            modal.classList.add('opacity-0');
-            modal.querySelector('.modal-content').classList.add('scale-95');
-            setTimeout(() => {
-                modal.classList.add('hidden');
-            }, 300);
+            if (modal) {
+                modal.classList.add('opacity-0');
+                modal.querySelector('.modal-content').classList.add('scale-95');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                }, 300);
+            }
         }
 
         let currentView = 'cover-page';
@@ -474,6 +666,11 @@
         function switchView(targetViewId) {
             const current = document.getElementById(currentView);
             const target = document.getElementById(targetViewId);
+
+            if (!current || !target) {
+                console.error("Vista no encontrada:", currentView, targetViewId);
+                return;
+            }
 
             current.classList.add('opacity-0');
             setTimeout(() => {
@@ -484,13 +681,13 @@
                     target.classList.remove('opacity-0');
                     
                     // Si la nueva vista es una infografía, actualiza previousView
-                    if (targetViewId.includes('content-wrapper')) {
+                    if (targetViewId.includes('wrapper')) {
                         previousView = targetViewId;
                     }
                     currentView = targetViewId;
 
                     // Animar la entrada de los items
-                    const items = document.querySelectorAll(`#${targetViewId} .step-item, #${targetViewId} .process-step`);
+                    const items = document.querySelectorAll(`#${targetViewId} .step-item, #${targetViewId} .process-step, #${targetViewId} .selection-card`);
                     items.forEach((item, index) => {
                         item.style.animation = `fadeIn 0.5s ease-out ${index * 0.05 + 0.5}s forwards`;
                     });
@@ -502,35 +699,40 @@
             closeModal(modalId);
             setTimeout(() => {
                 const pdfIframe = document.getElementById('pdf-iframe');
-                pdfIframe.src = pdfUrl;
-                switchView('pdf-view');
+                if (pdfIframe) {
+                     pdfIframe.src = pdfUrl;
+                    switchView('pdf-view');
+                }
             }, 350); // Espera a que el modal se cierre
         }
         
         function returnToInfografia() {
             const pdfIframe = document.getElementById('pdf-iframe');
-            pdfIframe.src = 'about:blank'; // Detener carga del PDF
-            switchView(previousView); // Regresa a la última infografía activa (EA1 o EA2)
+            if (pdfIframe) pdfIframe.src = 'about:blank'; // Detener carga del PDF
+            switchView(previousView); // Regresa a la última infografía activa (EA1, EA2-Landing, etc.)
         }
         
         function returnToCover() {
             const pdfIframe = document.getElementById('pdf-iframe');
-            pdfIframe.src = 'about:blank'; // Detener carga del PDF
+            if (pdfIframe) pdfIframe.src = 'about:blank'; // Detener carga del PDF
             switchView('cover-page');
         }
 
         // Función para copiar al portapapeles
         function copyToClipboard(text) {
+            // Crea un textarea temporal para copiar el texto
             const el = document.createElement('textarea');
             el.value = text;
             el.setAttribute('readonly', '');
             el.style.position = 'absolute';
-            el.style.left = '-9999px';
+            el.style.left = '-9999px'; // Moverlo fuera de la pantalla
             document.body.appendChild(el);
+            
             el.select();
             
-            let copied = false;
+            l copied = false;
             try {
+                // Intenta usar la API moderna de portapapeles
                 document.execCommand('copy');
                 copied = true;
             } catch (err) {
@@ -540,13 +742,14 @@
             document.body.removeChild(el);
 
             // Feedback visual en el botón
-            const copyButton = document.querySelector('button[onclick="copyToClipboard(\'5807100000\')"]');
+            const copyButton = event.target.closest('button');
             if (copyButton && copied) {
                 const originalContent = copyButton.innerHTML;
+                // Ícono de check
                 copyButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>';
                 setTimeout(() => {
                     copyButton.innerHTML = originalContent;
-                }, 1500);
+                }, 1500); // Vuelve al ícono original después de 1.5s
             }
         }
     </script>
