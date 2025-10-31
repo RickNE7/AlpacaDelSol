@@ -51,7 +51,6 @@
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-    <!-- Vista de Portada -->
     <div id="cover-page" class="view z-50 flex flex-col items-center justify-center p-8 text-white text-center">
         <div class="bg-black bg-opacity-60 p-8 rounded-lg shadow-2xl max-w-3xl">
             <h1 class="text-4xl md:text-5xl font-bold mb-4">Gestión Aduanera</h1>
@@ -80,7 +79,6 @@
         </div>
     </div>
     
-    <!-- Vista de Infografía EA1 -->
     <div id="ea1-content-wrapper" class="view hidden opacity-0 overflow-y-auto">
          <button onclick="switchView('cover-page')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la Portada">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -101,21 +99,35 @@
                     Presentación del Caso
                 </h2>
                 <p class="text-gray-800 leading-relaxed text-justify">
-                    En esta operación, simulamos una <strong>Exportación Definitiva</strong> de la empresa peruana <strong>Alpaca del Sol S.A.C.</strong>, que ha concretado una venta de 500 bufandas de baby alpaca a una boutique en Canadá, <strong>Canadian Alpaca Boutique Inc.</strong> La logística es gestionada por un Agente de Carga Internacional, quien consolida el envío para optimizar costos. La vía de transporte es aérea, bajo el término <strong>CPT Toronto</strong>.
+                    En esta operación, simulamos una <strong>Exportación Definitiva</strong> de la empresa peruana <strong>Alpaca del Sol S.A.C.</strong>, que ha concretado una venta de 500 bufandas de baby alpaca (previamente fabricadas y en stock) a una boutique en Canadá, <strong>Canadian Alpaca Boutique Inc.</strong> La logística es gestionada por un Agente de Carga Internacional. La vía de transporte es aérea, bajo el término <strong>CPT Toronto</strong>.
                 </p>
             </section>
-
+            
+            <section class="bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-md mb-12 fade-in" style="animation-delay: 0.5s;">
+                <h2 class="text-2xl font-bold text-slate-700 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+                    </svg>
+                    Modelo de Negocio: Abastecimiento "Contra Stock"
+                </h2>
+                <p class="text-gray-800 leading-relaxed text-justify mb-4">
+                    El flujograma de despacho (inicia 01/OCT) es posible porque la empresa opera bajo un modelo "Contra Stock". Esto significa que la materia prima (fibra de alpaca) se adquirió a los criadores locales <strong>meses antes</strong> del pedido, permitiendo fabricar las bufandas y tenerlas listas en inventario.
+                </p>
+                <div class="grid grid-cols-1 gap-4 text-center">
+                     <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal-liq')">
+                        <h3 class="font-bold text-md">Documento Clave de Abastecimiento: Liquidación de Compra</h3>
+                        <p class="text-xs text-gray-500 mt-1">Gino Vela</p>
+                    </div>
+                </div>
+            </section>
             <main>
                 <div class="text-center mb-16">
-                    <h2 onclick="openModal('modalFlow')" class="cursor-pointer text-2xl font-bold text-slate-700 fade-in bg-white/80 backdrop-blur-sm p-4 rounded-lg inline-block hover:shadow-lg hover:ring-2 hover:ring-indigo-400 transition-all duration-300" style="animation-delay: 0.4s;">Proceso y Flujo Documentario de la Exportación</h2>
+                    <h2 onclick="openModal('modalFlow')" class="cursor-pointer text-2xl font-bold text-slate-700 fade-in bg-white/80 backdrop-blur-sm p-4 rounded-lg inline-block hover:shadow-lg hover:ring-2 hover:ring-indigo-400 transition-all duration-300" style="animation-delay: 0.7s;">Proceso y Flujo Documentario del Despacho</h2>
                 </div>
 
-                <!-- Timeline Unificada -->
                 <div class="relative">
-                    <!-- Línea vertical de la timeline -->
                     <div class="absolute left-1/2 -ml-0.5 h-full w-1 bg-gradient-to-b from-gray-300 via-blue-300 to-indigo-300 rounded-full"></div>
 
-                    <!-- Etapa 1 -->
                     <div class="process-step mb-16 flex flex-col items-center">
                         <div class="z-10 bg-white border-4 border-gray-400 w-24 h-24 rounded-full flex flex-col items-center justify-center shadow-lg">
                            <span class="text-xs text-gray-500">Paso 1</span>
@@ -123,7 +135,7 @@
                            <span class="text-xs text-gray-500">01/OCT</span>
                         </div>
                         <div class="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md w-full lg:w-4/5 mt-4">
-                            <p class="text-sm text-gray-600 text-center mb-4">Se envían los términos preliminares de la venta al cliente para su aprobación antes de la producción y el despacho final.</p>
+                            <p class="text-sm text-gray-600 text-center mb-4">Se envían los términos preliminares de la venta al cliente para su aprobación antes del despacho final.</p>
                             <div class="grid grid-cols-1 gap-4 text-center">
                                 <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal0')">
                                     <h3 class="font-bold text-md">1. Factura Proforma</h3>
@@ -133,7 +145,6 @@
                         </div>
                     </div>
 
-                    <!-- Etapa 2 -->
                     <div class="process-step mb-16 flex flex-col items-center">
                         <div class="z-10 bg-white border-4 border-blue-400 w-24 h-24 rounded-full flex flex-col items-center justify-center shadow-lg">
                            <span class="text-xs text-gray-500">Paso 2</span>
@@ -141,26 +152,20 @@
                            <span class="text-xs text-gray-500">06/OCT</span>
                         </div>
                         <div class="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md w-full lg:w-4/5 mt-4">
-                            <p class="text-sm text-gray-600 text-center mb-4">Se adquiere la materia prima y se preparan la mercancía y los documentos comerciales definitivos.</p>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                                <!-- NUEVO DOCUMENTO AÑADIDO -->
-                                <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal-liq')">
-                                    <h3 class="font-bold text-md">2. Liquidación de Compra</h3>
-                                    <p class="text-xs text-gray-500 mt-1">Gino Vela</p>
-                                </div>
+                            <p class="text-sm text-gray-600 text-center mb-4">Se preparan la mercancía (ya en stock) y se emiten los documentos comerciales definitivos.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
                                 <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal1')">
-                                    <h3 class="font-bold text-md">3. Factura Comercial</h3>
+                                    <h3 class="font-bold text-md">2. Factura Comercial</h3>
                                     <p class="text-xs text-gray-500 mt-1">Marilin Medina</p>
                                 </div>
                                 <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal2')">
-                                    <h3 class="font-bold text-md">4. Packing List</h3>
+                                    <h3 class="font-bold text-md">3. Packing List</h3>
                                     <p class="text-xs text-gray-500 mt-1">Gino Vela</p>
                                 </div>
                             </div>
                         </div>
                     </div>
                     
-                    <!-- Etapa 3 -->
                     <div class="process-step mb-16 flex flex-col items-center">
                          <div class="z-10 bg-white border-4 border-red-400 w-24 h-24 rounded-full flex flex-col items-center justify-center shadow-lg">
                            <span class="text-xs text-gray-500">Paso 3</span>
@@ -171,14 +176,13 @@
                             <p class="text-sm text-gray-600 text-center mb-4">La carga es transportada al depósito temporal, donde se emite la constancia de recepción y se asume su custodia.</p>
                             <div class="grid grid-cols-1 gap-4 text-center">
                                  <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal3')">
-                                    <h3 class="font-bold text-md">5. Warehouse Receipt</h3>
+                                    <h3 class="font-bold text-md">4. Warehouse Receipt</h3>
                                     <p class="text-xs text-gray-500 mt-1">Milagros Tornero</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Etapa 4 -->
                     <div class="process-step mb-8 flex flex-col items-center">
                          <div class="z-10 bg-white border-4 border-indigo-400 w-24 h-24 rounded-full flex flex-col items-center justify-center shadow-lg">
                            <span class="text-xs text-gray-500">Paso 4</span>
@@ -189,15 +193,15 @@
                             <p class="text-sm text-gray-600 text-center mb-4">El día del vuelo, se realiza el despacho ante SUNAT y se emiten los contratos de transporte aéreo para el embarque final.</p>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                                 <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal4')">
-                                    <h3 class="font-bold text-md">6. Declaración Aduanera</h3>
+                                    <h3 class="font-bold text-md">5. Declaración Aduanera</h3>
                                     <p class="text-xs text-gray-500 mt-1">Celeste Taya</p>
                                 </div>
                                 <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal5')">
-                                    <h3 class="font-bold text-md">7. Guía Aérea Hija (HAWB)</h3>
+                                    <h3 class="font-bold text-md">6. Guía Aérea Hija (HAWB)</h3>
                                     <p class="text-xs text-gray-500 mt-1">Eric Mozombite</p>
                                 </div>
                                 <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal6')">
-                                    <h3 class="font-bold text-md">8. Guía Aérea Master (MAWB)</h3>
+                                    <h3 class="font-bold text-md">7. Guía Aérea Master (MAWB)</h3>
                                     <p class="text-xs text-gray-500 mt-1">Ashly Rosas</p>
                                 </div>
                             </div>
@@ -208,7 +212,6 @@
         </div>
     </div>
 
-    <!-- Vista de Infografía EA2 - LANDING PAGE -->
     <div id="ea2-landing-wrapper" class="view hidden opacity-0 overflow-y-auto">
          <button onclick="switchView('cover-page')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la Portada">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -226,7 +229,6 @@
 
             <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-7xl">
                 
-                <!-- Opción 1: Bufanda (Producto EA1) -->
                 <div onclick="switchView('ea2-bufanda-wrapper')" class="selection-card bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-2xl hover:shadow-indigo-400/50 hover:scale-105 transition-all duration-300 cursor-pointer border-t-4 border-indigo-500">
                     <div class="text-indigo-600 text-4xl mb-4 font-extrabold">I. Producto de Exportación</div>
                     <h3 class="font-bold text-2xl text-slate-800 mb-2">Bufanda de Baby Alpaca</h3>
@@ -234,7 +236,6 @@
                     <p class="mt-4 text-sm font-semibold text-indigo-700">CLIC PARA VER CLASIFICACIÓN RGI</p>
                 </div>
 
-                <!-- Opción 2: Etiquetas (Producto Importación) -->
                 <div onclick="switchView('ea2-etiquetas-wrapper')" class="selection-card bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-2xl hover:shadow-green-400/50 hover:scale-105 transition-all duration-300 cursor-pointer border-t-4 border-green-500">
                     <div class="text-green-600 text-4xl mb-4 font-extrabold">II. Insumo de Importación</div>
                     <h3 class="font-bold text-2xl text-slate-800 mb-2">Etiquetas Tejidas (70% Poliéster)</h3>
@@ -242,7 +243,6 @@
                     <p class="mt-4 text-sm font-semibold text-green-700">CLIC PARA VER CLASIFICACIÓN RGI</p>
                 </div>
                 
-                <!-- Opción 3: Máquina (NUEVO) -->
                 <div onclick="switchView('ea2-maquina-wrapper')" class="selection-card bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-2xl hover:shadow-red-400/50 hover:scale-105 transition-all duration-300 cursor-pointer border-t-4 border-red-500">
                     <div class="text-red-600 text-4xl mb-4 font-extrabold">III. Activo Fijo de Importación</div>
                     <h3 class="font-bold text-2xl text-slate-800 mb-2">Máquina Tejedora Rectilínea</h3>
@@ -253,7 +253,6 @@
         </div>
     </div>
 
-    <!-- Vista de Infografía EA2 - BUFANDA (Producto de Exportación) -->
     <div id="ea2-bufanda-wrapper" class="view hidden opacity-0 absolute inset-0 overflow-y-auto">
          <button onclick="switchView('ea2-landing-wrapper')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la selección">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -346,7 +345,6 @@
         </div>
     </div>
     
-    <!-- Vista de Infografía EA2 - ETIQUETAS (Producto de Importación) -->
     <div id="ea2-etiquetas-wrapper" class="view hidden opacity-0 absolute inset-0 overflow-y-auto">
          <button onclick="switchView('ea2-landing-wrapper')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la selección">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -442,7 +440,6 @@
         </div>
     </div>
 
-    <!-- **** INICIO NUEVA VISTA EA2 - MAQUINARIA **** -->
     <div id="ea2-maquina-wrapper" class="view hidden opacity-0 absolute inset-0 overflow-y-auto">
          <button onclick="switchView('ea2-landing-wrapper')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la selección">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -537,10 +534,6 @@
             </main>
         </div>
     </div>
-    <!-- **** FIN NUEVA VISTA EA2 - MAQUINARIA **** -->
-
-
-    <!-- Vista del PDF (un solo visor para todos los PDFs) -->
     <div id="pdf-view" class="view hidden opacity-0 fixed inset-0 z-50 bg-gray-800">
         <iframe id="pdf-iframe" class="w-full h-full border-0"></iframe>
         <button onclick="returnToInfografia()" class="fixed bottom-6 right-6 z-50 bg-blue-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors" title="Volver a la Infografía">
@@ -550,39 +543,34 @@
         </button>
     </div>
     
-    <!-- Modales EA1 -->
     <div id="modalFlow" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('modalFlow')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('modalFlow')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
             <h3 class="text-2xl font-bold mb-4 text-slate-800">Estructura Lógica del Flujograma Documentario</h3>
             <p class="text-gray-700 mb-6 text-justify">Estructura lógica del flujograma documentario para el caso de exportación de bufandas de alpaca a Canadá.</p>
-            <!-- MODIFICADO: Este botón ahora usa el visor interno -->
-            <button onclick="showPdfAndCloseModal('modalFlow', 'https://tinyurl.com/EA1flujo')" class="inline-block bg-indigo-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-700 transition-colors">Ver Flujograma</button>
+            <button onclick="showPdfAndCloseModal('modalFlow', 'https://tinyurl.com/EA1flujo4')" class="inline-block bg-indigo-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-700 transition-colors">Ver Flujograma</button>
         </div>
     </div>
     <div id="ea1-modal0" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal0')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea1-modal0')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
             <h3 class="text-2xl font-bold mb-4 text-slate-800">1. Factura Proforma</h3>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es un documento preliminar que detalla la oferta comercial. Se emite durante la fase de negociación para que el comprador confirme los términos (producto, precio, Incoterm) antes de que se emita la Factura Comercial definitiva y se inicie la producción o despacho.</p>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es un documento preliminar que detalla la oferta comercial. Se emite durante la fase de negociación para que el comprador confirme los términos (producto, precio, Incoterm) antes de que se emita la Factura Comercial definitiva y se inicie el despacho.</p>
             <button onclick="showPdfAndCloseModal('ea1-modal0', 'https://rickne7.github.io/AlpacaDelSol/00%20Proforma%20Invoice.pdf')" class="inline-block bg-gray-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-gray-700 transition-colors">Ver Documento (PDF)</button>
         </div>
     </div>
     
-    <!-- **** INICIO NUEVO MODAL EA1 - LIQUIDACIÓN **** -->
     <div id="ea1-modal-liq" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal-liq')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea1-modal-liq')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">2. Liquidación de Compra</h3>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es un comprobante de pago especial. Permite a "Alpaca del Sol S.A.C." (como empresa con RUC) <strong>sustentar legalmente la compra de materia prima (fibra de alpaca) a productores locales</strong> que no tienen RUC, como criadores de ganado. Esto es vital para formalizar el costo de la mercancía a exportar.</p>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">Documento de Abastecimiento: Liquidación de Compra</h3>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Este es un comprobante de pago especial, emitido <strong>meses antes</strong> del flujo de exportación. Permite a "Alpaca del Sol S.A.C." (como empresa con RUC) <strong>sustentar legalmente la compra de materia prima (fibra de alpaca) a productores locales</strong> y criadores que no tienen RUC. Es la base del modelo "Contra Stock" para formalizar el costo de la mercancía.</p>
         </div>
     </div>
-    <!-- **** FIN NUEVO MODAL EA1 - LIQUIDACIÓN **** -->
-
     <div id="ea1-modal1" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal1')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea1-modal1')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">3. Factura Comercial</h3>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">2. Factura Comercial</h3>
             <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es el documento que <strong>acredita legalmente la venta</strong>. Funciona como el contrato que detalla qué se vende, a quién, a qué precio y bajo qué condiciones. Es la base para la declaración de aduanas tanto en origen como en destino.</p>
             <button onclick="showPdfAndCloseModal('ea1-modal1', 'https://rickne7.github.io/AlpacaDelSol/01%20Factura%20Comercial%20(Marilin).pdf')" class="inline-block bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-blue-700 transition-colors">Ver Documento (PDF)</button>
         </div>
@@ -590,7 +578,7 @@
     <div id="ea1-modal2" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal2')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea1-modal2')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">4. Packing List</h3>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">3. Packing List</h3>
             <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es el <strong>inventario físico del embarque</strong>. Detalla cómo está organizada la carga: el número de cajas, el contenido de cada una, y sus pesos y dimensiones. Es crucial para la inspección física de la aduana y la correcta manipulación logística.</p>
             <button onclick="showPdfAndCloseModal('ea1-modal2', 'https://rickne7.github.io/AlpacaDelSol/02%20Packing%20List%20(Gino).pdf')" class="inline-block bg-green-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-green-700 transition-colors">Ver Documento (PDF)</button>
         </div>
@@ -598,7 +586,7 @@
     <div id="ea1-modal3" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal3')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea1-modal3')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">5. Warehouse Receipt</h3>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">4. Warehouse Receipt</h3>
             <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es la <strong>constancia de recepción de la carga</strong> emitida por el depósito temporal (TALMA). Certifica que el almacén ha recibido la mercancía y, a partir de ese momento, es responsable de su custodia hasta entregarla a la aerolínea.</p>
             <button onclick="showPdfAndCloseModal('ea1-modal3', 'https://rickne7.github.io/AlpacaDelSol/03%20Warehouse%20(Milagros).pdf')" class="inline-block bg-red-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-red-700 transition-colors">Ver Documento (PDF)</button>
         </div>
@@ -606,7 +594,7 @@
     <div id="ea1-modal4" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal4')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea1-modal4')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">6. Declaración Aduanera</h3>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">5. Declaración Aduanera</h3>
             <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es la <strong>solicitud formal ante la SUNAT</strong> para acoger la mercancía al régimen de Exportación Definitiva. Este documento formaliza la salida legal de los productos del territorio peruano y es indispensable para el control del Estado.</p>
             <button onclick="showPdfAndCloseModal('ea1-modal4', 'https://rickne7.github.io/AlpacaDelSol/04%20DAM%20A%20(Celeste).pdf')" class="inline-block bg-yellow-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-yellow-600 transition-colors">Ver Documento (PDF)</button>
         </div>
@@ -614,7 +602,7 @@
     <div id="ea1-modal5" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal5')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea1-modal5')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">7. Guía Aérea Hija (HAWB)</h3>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">6. Guía Aérea Hija (HAWB)</h3>
             <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es el contrato de transporte entre el <strong>Agente de Carga y el Exportador</strong>. Detalla el envío específico y es la prueba que Alpaca del Sol S.A.C. tiene para demostrar que ha embarcado su carga.</p>
             <button onclick="showPdfAndCloseModal('ea1-modal5', 'https://rickne7.github.io/AlpacaDelSol/05%20Gu%C3%ADa%20Hija%20HAWB%20(Eric).pdf')" class="inline-block bg-purple-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-purple-700 transition-colors">Ver Documento (PDF)</button>
         </div>
@@ -622,13 +610,12 @@
     <div id="ea1-modal6" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal6')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea1-modal6')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">8. Guía Aérea Master (MAWB)</h3>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">7. Guía Aérea Master (MAWB)</h3>
             <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es el contrato de transporte entre la <strong>Aerolínea y el Agente de Carga</strong>. Ampara la totalidad de la carga consolidada. Para la aerolínea, todo el bloque es un solo envío a nombre del Agente de Carga.</p>
             <button onclick="showPdfAndCloseModal('ea1-modal6', 'https://rickne7.github.io/AlpacaDelSol/06%20Gu%C3%ADa%20Madre%20MAWB%20(Ashly).pdf')" class="inline-block bg-indigo-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-700 transition-colors">Ver Documento (PDF)</button>
         </div>
     </div>
 
-    <!-- Modales EA2 - BUFANDA -->
     <div id="ea2-bufanda-modal1" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-bufanda-modal1')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea2-bufanda-modal1')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
@@ -686,7 +673,6 @@
     </div>
 
 
-    <!-- Modales EA2 - ETIQUETAS (Mezcla) -->
     <div id="ea2-etiquetas-modal1" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-etiquetas-modal1')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea2-etiquetas-modal1')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
@@ -761,7 +747,6 @@
         </div>
     </div>
     
-    <!-- **** INICIO NUEVOS MODALES EA2 - MAQUINARIA **** -->
     <div id="ea2-maquina-modal1" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-maquina-modal1')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea2-maquina-modal1')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
@@ -831,18 +816,12 @@
                 3. Nivel 3 (Nacional 10 dígitos): Se completa con ceros, resultando en <strong>8447.20.10.00</strong>.</p>
         </div>
     </div>
-    <!-- **** FIN NUEVOS MODALES EA2 - MAQUINARIA **** -->
-
-
     <script>
-        // --- FUNCIONES GLOBALES DE NAVEGACIÓN ---
+        
+        window.currentView = 'cover-page';
+        window.lastMainPage = 'cover-page'; 
 
-        let currentView = 'cover-page';
-        // 'lastMainPage' almacenará la última vista de infografía visitada
-        // para saber a dónde volver desde el visor de PDF.
-        let lastMainPage = 'cover-page'; 
-
-        function openModal(modalId) {
+        window.openModal = function(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.remove('hidden');
@@ -856,7 +835,7 @@
             }
         }
 
-        function closeModal(modalId) {
+        window.closeModal = function(modalId) {
             const modal = document.getElementById(modalId);
             if (modal) {
                 modal.classList.add('opacity-0');
@@ -870,8 +849,8 @@
             }
         }
 
-        function switchView(targetViewId) {
-            const current = document.getElementById(currentView);
+        window.switchView = function(targetViewId) {
+            const current = document.getElementById(window.currentView);
             const target = document.getElementById(targetViewId);
 
             if (current) {
@@ -883,57 +862,45 @@
             
             if (target) {
                 target.classList.remove('hidden');
-                target.scrollTop = 0; // Asegura que la vista inicie desde arriba
+                target.scrollTop = 0; 
                 setTimeout(() => {
                     target.classList.remove('opacity-0');
                     
-                    // Lógica de navegación mejorada:
-                    // Actualiza la vista actual
-                    currentView = targetViewId;
-                    // Si la nueva vista NO es el visor de PDF, la guardamos
-                    // como la última "página principal" visitada.
+                    window.currentView = targetViewId;
                     if (targetViewId !== 'pdf-view') {
-                        lastMainPage = targetViewId;
+                        window.lastMainPage = targetViewId;
                     }
 
-                    // Animar la entrada de los items de la nueva vista
-                    const items = document.querySelectorAll(`#${targetViewId} .step-item, #${targetViewId} .process-step, #${targetViewId} .selection-card`);
+                    const items = document.querySelectorAll(`#${targetViewId} .step-item, #${targetViewId} .process-step, #${targetViewId} .selection-card, #${targetViewId} .fade-in`);
                     items.forEach((item, index) => {
-                        // Resetea la animación aplicándola de nuevo
                         item.style.animation = 'none';
-                        item.offsetHeight; /* truco para forzar el reflow */
+                        item.offsetHeight; 
                         item.style.animation = `fadeIn 0.5s ease-out ${index * 0.05 + 0.5}s forwards`;
                     });
                 }, 10);
             }
         }
 
-        function showPdfAndCloseModal(modalId, pdfUrl) {
+        window.showPdfAndCloseModal = function(modalId, pdfUrl) {
             closeModal(modalId);
             setTimeout(() => {
                 const pdfIframe = document.getElementById('pdf-iframe');
-                
-                // MODIFICADO: Todos los PDFs, incluido el flujograma, usan el visor interno
                 if (pdfIframe) {
                     pdfIframe.src = pdfUrl;
                     switchView('pdf-view');
                 }
-            }, 350); // Espera a que el modal se cierre
+            }, 350); 
         }
         
-        function returnToInfografia() {
+        window.returnToInfografia = function() {
             const pdfIframe = document.getElementById('pdf-iframe');
-            if (pdfIframe) pdfIframe.src = 'about:blank'; // Detener carga del PDF
-            // Regresa a la última infografía activa (EA1, EA2-Bufanda, etc.)
-            switchView(lastMainPage); 
+            if (pdfIframe) pdfIframe.src = 'about:blank'; 
+            switchView(window.lastMainPage); 
         }
         
-        // --- INICIO DE LA CORRECCIÓN PARA EL PORTAPAPELES ---
         
-        // Función para copiar al portapapeles (Robusta y compatible con iframe)
-        function copyToClipboard(text, copyButton) {
-            // Ir directamente al método 'execCommand' que es compatible con el iframe.
-            // El API 'navigator.clipboard' falla debido a la política de permisos del sandbox.
+        window.copyToClipboard = function(text, copyButton) {
+            
             copyFallback(text, copyButton);
         }
         
@@ -945,7 +912,6 @@
             el.style.left = '-9999px';
             document.body.appendChild(el);
             
-            // Guardar la selección actual para restaurarla después
             const selected =
                 document.getSelection().rangeCount > 0
                     ? document.getSelection().getRangeAt(0)
@@ -955,23 +921,19 @@
             
             let copied = false;
             try {
-                // Usar document.execCommand para máxima compatibilidad
                 document.execCommand('copy');
                 copied = true;
             } catch (err) {
-                // No es necesario un console.error aquí ya que el API de clipboard siempre falla
-                // console.error('Error al copiar con execCommand:', err);
+                console.error('Error al copiar con execCommand:', err);
             }
             
             document.body.removeChild(el);
 
-            // Restaurar la selección original para no interrumpir al usuario
             if (selected) {
                 document.getSelection().removeAllRanges();
                 document.getSelection().addRange(selected);
             }
 
-            // Feedback visual
             if (copied) {
                 showCopyFeedback(copyButton);
             }
@@ -986,7 +948,7 @@
                 }, 1500);
             }
         }
-        // --- FIN DE LA CORRECCIÓN PARA EL PORTAPAPELES ---
+        
     </script>
 
 </body>
