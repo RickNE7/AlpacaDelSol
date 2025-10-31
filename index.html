@@ -11,7 +11,9 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            overflow: hidden;
+            /* Se eliminó 'overflow: hidden' para permitir el desplazamiento natural en
+               vistas de infografía que puedan exceder el alto del viewport en móviles.
+               Las vistas individuales gestionarán su propio desbordamiento. */
         }
         .view {
             transition: opacity 0.5s ease-in-out;
@@ -36,15 +38,19 @@
         .step-item, .process-step, .selection-card {
             opacity: 0;
         }
+        /* Añadido color de fondo como fallback si la imagen no carga */
         #cover-page {
             background-image: url('https://raw.githubusercontent.com/RickNE7/AlpacaDelSol/282a4e2faa30ca797b148b47d330720c2669deca/Portada.png');
             background-size: cover;
             background-position: center;
+            background-color: #1a202c; /* Fallback */
         }
+        /* Añadido color de fondo como fallback si la imagen no carga */
         #ea1-content-wrapper, #ea2-landing-wrapper, #ea2-bufanda-wrapper, #ea2-etiquetas-wrapper {
             background-image: url('https://raw.githubusercontent.com/RickNE7/AlpacaDelSol/e0df66e96f3026f4c6958032c9681f344adb7833/Fondo1.png');
             background-size: cover;
             background-attachment: fixed;
+            background-color: #f3f4f6; /* Fallback */
         }
     </style>
 </head>
@@ -202,7 +208,7 @@
         </div>
     </div>
 
-    <!-- Vista de Infografía EA2 - LANDING PAGE (NUEVA) -->
+    <!-- Vista de Infografía EA2 - LANDING PAGE -->
     <div id="ea2-landing-wrapper" class="view hidden opacity-0 overflow-y-auto">
          <button onclick="switchView('cover-page')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la Portada">
             <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
@@ -213,8 +219,8 @@
         <div class="container mx-auto p-4 md:p-8 flex flex-col items-center justify-center min-h-screen">
             <header class="text-center mb-12 fade-in">
                  <div class="inline-block bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-xl">
-                     <h1 class="text-3xl md:text-4xl font-bold text-slate-800">Evidencia de Aprendizaje 2 (EA2)</h1>
-                     <p class="text-lg text-slate-600 mt-2">Selección del Producto para Clasificación Arancelaria (RGI)</p>
+                      <h1 class="text-3xl md:text-4xl font-bold text-slate-800">Evidencia de Aprendizaje 2 (EA2)</h1>
+                      <p class="text-lg text-slate-600 mt-2">Selección del Producto para Clasificación Arancelaria (RGI)</p>
                  </div>
             </header>
 
@@ -250,7 +256,7 @@
         <div class="container mx-auto p-4 md:p-8">
             <header class="text-center mb-12 fade-in">
                  <div class="inline-block bg-white/80 backdrop-blur-sm p-4 rounded-lg">
-                     <h1 class="text-3xl md:text-4xl font-bold text-slate-800">EA2: Clasificación de Producto Exportado</h1>
+                      <h1 class="text-3xl md:text-4xl font-bold text-slate-800">EA2: Clasificación de Producto Exportado</h1>
                  </div>
             </header>
 
@@ -271,6 +277,7 @@
                             <div class="flex items-center space-x-2">
                                 <span class="text-sm text-gray-600">Usar código:</span>
                                 <input type="text" readonly value="6214901000" id="partida-code-bufanda" class="text-sm p-1 rounded-md bg-gray-100 border-gray-300 shadow-inner w-32 font-mono text-center">
+                                <!-- Botón 'this' para pasar el elemento al hacer clic -->
                                 <button onclick="copyToClipboard('6214901000', this)" class="bg-gray-200 p-1 rounded-full hover:bg-gray-300" title="Copiar código">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 4h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2v-8a2 2 0 012-2z" /></svg>
                                 </button>
@@ -343,7 +350,7 @@
         <div class="container mx-auto p-4 md:p-8">
             <header class="text-center mb-12 fade-in">
                  <div class="inline-block bg-white/80 backdrop-blur-sm p-4 rounded-lg">
-                     <h1 class="text-3xl md:text-4xl font-bold text-slate-800">EA2: Clasificación de Insumo Importado</h1>
+                      <h1 class="text-3xl md:text-4xl font-bold text-slate-800">EA2: Clasificación de Insumo Importado</h1>
                  </div>
             </header>
 
@@ -367,6 +374,7 @@
                             <div class="flex items-center space-x-2">
                                 <span class="text-sm text-gray-600">Usar código:</span>
                                 <input type="text" readonly value="5807100000" id="partida-code-etiquetas" class="text-sm p-1 rounded-md bg-gray-100 border-gray-300 shadow-inner w-32 font-mono text-center">
+                                <!-- Botón 'this' para pasar el elemento al hacer clic -->
                                 <button onclick="copyToClipboard('5807100000', this)" class="bg-gray-200 p-1 rounded-full hover:bg-gray-300" title="Copiar código">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 4h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2v-8a2 2 0 012-2z" /></svg>
                                 </button>
@@ -417,7 +425,8 @@
                         <p class="text-xs text-gray-500 mt-2 font-semibold">Ashly Rosas Flores</p>
                     </div>
 
-                     <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-etiquetas-modal6')">
+                     <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-3Recursos: Lineamientos de EA3.
+0 cursor-pointer" onclick="openModal('ea2-etiquetas-modal6')">
                         <div class="bg-red-100 text-red-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">6</div>
                         <h3 class="font-bold text-lg">Regla 6</h3>
                         <p class="text-sm text-gray-600">Clasificación en Subpartidas</p>
@@ -619,7 +628,7 @@
             <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
                 "b) ...los envases que contengan mercancías se clasificarán con ellas cuando sean de los tipos normally empleados para esa clase de mercancías."
             </blockquote>
-            <p classDe="text-gray-700 mb-6 text-justify"><strong>Aplicación (5b):</strong> Nuestras 50,000 etiquetas se importarán dentro de cajas de cartón corrugado. Estas cajas son el embalaje normal y habitual, no están diseñadas para uso repetido. Por lo tanto, las cajas de cartón no se clasifican por separado (en la partida del cartón), sino que se clasifican <strong>junto</strong> con las etiquetas en la partida <strong>5807.10.00.00</strong>.</p>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (5b):</strong> Nuestras 50,000 etiquetas se importarán dentro de cajas de cartón corrugado. Estas cajas son el embalaje normal y habitual, no están diseñadas para uso repetido. Por lo tanto, las cajas de cartón no se clasifican por separado (en la partida del cartón), sino que se clasifican <strong>junto</strong> con las etiquetas en la partida <strong>5807.10.00.00</strong>.</p>
         </div>
     </div>
     <div id="ea2-etiquetas-modal6" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-etiquetas-modal6')">
@@ -639,10 +648,11 @@
 
     <script>
         // --- FUNCIONES GLOBALES DE NAVEGACIÓN ---
-        // (Definidas globalmente para ser accesibles por 'onclick')
 
         let currentView = 'cover-page';
-        let previousView = 'cover-page'; // Variable para saber a dónde volver
+        // 'lastMainPage' almacenará la última vista de infografía visitada
+        // para saber a dónde volver desde el visor de PDF.
+        let lastMainPage = 'cover-page'; 
 
         function openModal(modalId) {
             const modal = document.getElementById(modalId);
@@ -685,17 +695,25 @@
             
             if (target) {
                 target.classList.remove('hidden');
+                target.scrollTop = 0; // Asegura que la vista inicie desde arriba
                 setTimeout(() => {
                     target.classList.remove('opacity-0');
                     
-                    if (targetViewId.includes('wrapper')) {
-                        previousView = currentView; // Guarda la vista anterior
-                    }
+                    // Lógica de navegación mejorada:
+                    // Actualiza la vista actual
                     currentView = targetViewId;
+                    // Si la nueva vista NO es el visor de PDF, la guardamos
+                    // como la última "página principal" visitada.
+                    if (targetViewId !== 'pdf-view') {
+                        lastMainPage = targetViewId;
+                    }
 
-                    // Animar la entrada de los items
+                    // Animar la entrada de los items de la nueva vista
                     const items = document.querySelectorAll(`#${targetViewId} .step-item, #${targetViewId} .process-step, #${targetViewId} .selection-card`);
                     items.forEach((item, index) => {
+                        // Resetea la animación aplicándola de nuevo
+                        item.style.animation = 'none';
+                        item.offsetHeight; /* truco para forzar el reflow */
                         item.style.animation = `fadeIn 0.5s ease-out ${index * 0.05 + 0.5}s forwards`;
                     });
                 }, 10);
@@ -708,10 +726,10 @@
                 const pdfIframe = document.getElementById('pdf-iframe');
                 
                 if (modalId === 'modalFlow') {
-                    // Si es el flujograma, abrir en nueva pestaña
+                    // El flujograma se abre en una nueva pestaña
                     window.open(pdfUrl, '_blank');
                 } else if (pdfIframe) {
-                    // Para los demás PDFs, usar el visor interno
+                    // Los demás PDFs usan el visor interno
                     pdfIframe.src = pdfUrl;
                     switchView('pdf-view');
                 }
@@ -721,17 +739,12 @@
         function returnToInfografia() {
             const pdfIframe = document.getElementById('pdf-iframe');
             if (pdfIframe) pdfIframe.src = 'about:blank'; // Detener carga del PDF
-            switchView(previousView); // Regresa a la última infografía activa (EA1, EA2-Landing, etc.)
+            // Regresa a la última infografía activa (EA1, EA2-Bufanda, etc.)
+            switchView(lastMainPage); 
         }
         
-        function returnToCover() {
-            const pdfIframe = document.getElementById('pdf-iframe');
-            if (pdfIframe) pdfIframe.src = 'about:blank'; // Detener carga del PDF
-            switchView('cover-page');
-        }
-
-        // Función para copiar al portapapeles (Corregida)
-        function copyToClipboard(text) {
+        // Función para copiar al portapapeles (Simplificada y robusta)
+        function copyToClipboard(text, copyButton) {
             const el = document.createElement('textarea');
             el.value = text;
             el.setAttribute('readonly', '');
@@ -743,6 +756,7 @@
             
             let copied = false;
             try {
+                // Usar document.execCommand para máxima compatibilidad en iframes
                 document.execCommand('copy');
                 copied = true;
             } catch (err) {
@@ -751,14 +765,7 @@
             
             document.body.removeChild(el);
 
-            // Feedback visual: Encontrar el botón correcto basado en el texto
-            let copyButton;
-            if (text === '5807100000') {
-                copyButton = document.querySelector('button[onclick="copyToClipboard(\'5807100000\')"]');
-            } else if (text === '6214901000') {
-                copyButton = document.querySelector('button[onclick="copyToClipboard(\'6214901000\')"]');
-            }
-
+            // Feedback visual en el botón que fue presionado
             if (copyButton && copied) {
                 const originalContent = copyButton.innerHTML;
                 copyButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>';
