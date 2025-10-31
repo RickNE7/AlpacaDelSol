@@ -11,9 +11,6 @@
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            /* Se eliminó 'overflow: hidden' para permitir el desplazamiento natural en
-               vistas de infografía que puedan exceder el alto del viewport en móviles.
-               Las vistas individuales gestionarán su propio desbordamiento. */
         }
         .view {
             transition: opacity 0.5s ease-in-out;
@@ -38,15 +35,13 @@
         .step-item, .process-step, .selection-card {
             opacity: 0;
         }
-        /* Añadido color de fondo como fallback si la imagen no carga */
         #cover-page {
             background-image: url('https://raw.githubusercontent.com/RickNE7/AlpacaDelSol/282a4e2faa30ca797b148b47d330720c2669deca/Portada.png');
             background-size: cover;
             background-position: center;
             background-color: #1a202c; /* Fallback */
         }
-        /* Añadido color de fondo como fallback si la imagen no carga */
-        #ea1-content-wrapper, #ea2-landing-wrapper, #ea2-bufanda-wrapper, #ea2-etiquetas-wrapper {
+        #ea1-content-wrapper, #ea2-landing-wrapper, #ea2-bufanda-wrapper, #ea2-etiquetas-wrapper, #ea2-maquina-wrapper {
             background-image: url('https://raw.githubusercontent.com/RickNE7/AlpacaDelSol/e0df66e96f3026f4c6958032c9681f344adb7833/Fondo1.png');
             background-size: cover;
             background-attachment: fixed;
@@ -146,14 +141,19 @@
                            <span class="text-xs text-gray-500">06/OCT</span>
                         </div>
                         <div class="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md w-full lg:w-4/5 mt-4">
-                            <p class="text-sm text-gray-600 text-center mb-4">Se prepara la mercancía y se emiten los documentos comerciales definitivos que acreditan la transacción.</p>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
+                            <p class="text-sm text-gray-600 text-center mb-4">Se adquiere la materia prima y se preparan la mercancía y los documentos comerciales definitivos.</p>
+                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
+                                <!-- NUEVO DOCUMENTO AÑADIDO -->
+                                <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal-liq')">
+                                    <h3 class="font-bold text-md">2. Liquidación de Compra</h3>
+                                    <p class="text-xs text-gray-500 mt-1">Gino Vela</p>
+                                </div>
                                 <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal1')">
-                                    <h3 class="font-bold text-md">2. Factura Comercial</h3>
+                                    <h3 class="font-bold text-md">3. Factura Comercial</h3>
                                     <p class="text-xs text-gray-500 mt-1">Marilin Medina</p>
                                 </div>
                                 <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal2')">
-                                    <h3 class="font-bold text-md">3. Packing List</h3>
+                                    <h3 class="font-bold text-md">4. Packing List</h3>
                                     <p class="text-xs text-gray-500 mt-1">Gino Vela</p>
                                 </div>
                             </div>
@@ -171,7 +171,7 @@
                             <p class="text-sm text-gray-600 text-center mb-4">La carga es transportada al depósito temporal, donde se emite la constancia de recepción y se asume su custodia.</p>
                             <div class="grid grid-cols-1 gap-4 text-center">
                                  <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal3')">
-                                    <h3 class="font-bold text-md">4. Warehouse Receipt</h3>
+                                    <h3 class="font-bold text-md">5. Warehouse Receipt</h3>
                                     <p class="text-xs text-gray-500 mt-1">Milagros Tornero</p>
                                 </div>
                             </div>
@@ -189,15 +189,15 @@
                             <p class="text-sm text-gray-600 text-center mb-4">El día del vuelo, se realiza el despacho ante SUNAT y se emiten los contratos de transporte aéreo para el embarque final.</p>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
                                 <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal4')">
-                                    <h3 class="font-bold text-md">5. Declaración Aduanera</h3>
+                                    <h3 class="font-bold text-md">6. Declaración Aduanera</h3>
                                     <p class="text-xs text-gray-500 mt-1">Celeste Taya</p>
                                 </div>
                                 <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal5')">
-                                    <h3 class="font-bold text-md">6. Guía Aérea Hija (HAWB)</h3>
+                                    <h3 class="font-bold text-md">7. Guía Aérea Hija (HAWB)</h3>
                                     <p class="text-xs text-gray-500 mt-1">Eric Mozombite</p>
                                 </div>
                                 <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal6')">
-                                    <h3 class="font-bold text-md">7. Guía Aérea Master (MAWB)</h3>
+                                    <h3 class="font-bold text-md">8. Guía Aérea Master (MAWB)</h3>
                                     <p class="text-xs text-gray-500 mt-1">Ashly Rosas</p>
                                 </div>
                             </div>
@@ -224,7 +224,7 @@
                  </div>
             </header>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-4xl">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-7xl">
                 
                 <!-- Opción 1: Bufanda (Producto EA1) -->
                 <div onclick="switchView('ea2-bufanda-wrapper')" class="selection-card bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-2xl hover:shadow-indigo-400/50 hover:scale-105 transition-all duration-300 cursor-pointer border-t-4 border-indigo-500">
@@ -236,10 +236,18 @@
 
                 <!-- Opción 2: Etiquetas (Producto Importación) -->
                 <div onclick="switchView('ea2-etiquetas-wrapper')" class="selection-card bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-2xl hover:shadow-green-400/50 hover:scale-105 transition-all duration-300 cursor-pointer border-t-4 border-green-500">
-                    <div class="text-green-600 text-4xl mb-4 font-extrabold">II. Producto de Importación</div>
+                    <div class="text-green-600 text-4xl mb-4 font-extrabold">II. Insumo de Importación</div>
                     <h3 class="font-bold text-2xl text-slate-800 mb-2">Etiquetas Tejidas (70% Poliéster)</h3>
                     <p class="text-gray-600">Aplicación de las 6 Reglas de Interpretación al insumo importado.</p>
                     <p class="mt-4 text-sm font-semibold text-green-700">CLIC PARA VER CLASIFICACIÓN RGI</p>
+                </div>
+                
+                <!-- Opción 3: Máquina (NUEVO) -->
+                <div onclick="switchView('ea2-maquina-wrapper')" class="selection-card bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-2xl hover:shadow-red-400/50 hover:scale-105 transition-all duration-300 cursor-pointer border-t-4 border-red-500">
+                    <div class="text-red-600 text-4xl mb-4 font-extrabold">III. Activo Fijo de Importación</div>
+                    <h3 class="font-bold text-2xl text-slate-800 mb-2">Máquina Tejedora Rectilínea</h3>
+                    <p class="text-gray-600">Aplicación de las 6 Reglas de Interpretación a la maquinaria industrial.</p>
+                    <p class="mt-4 text-sm font-semibold text-red-700">CLIC PARA VER CLASIFICACIÓN RGI</p>
                 </div>
             </div>
         </div>
@@ -277,7 +285,6 @@
                             <div class="flex items-center space-x-2">
                                 <span class="text-sm text-gray-600">Usar código:</span>
                                 <input type="text" readonly value="6214901000" id="partida-code-bufanda" class="text-sm p-1 rounded-md bg-gray-100 border-gray-300 shadow-inner w-32 font-mono text-center">
-                                <!-- Botón 'this' para pasar el elemento al hacer clic -->
                                 <button onclick="copyToClipboard('6214901000', this)" class="bg-gray-200 p-1 rounded-full hover:bg-gray-300" title="Copiar código">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 4h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2v-8a2 2 0 012-2z" /></svg>
                                 </button>
@@ -374,7 +381,6 @@
                             <div class="flex items-center space-x-2">
                                 <span class="text-sm text-gray-600">Usar código:</span>
                                 <input type="text" readonly value="5807100000" id="partida-code-etiquetas" class="text-sm p-1 rounded-md bg-gray-100 border-gray-300 shadow-inner w-32 font-mono text-center">
-                                <!-- Botón 'this' para pasar el elemento al hacer clic -->
                                 <button onclick="copyToClipboard('5807100000', this)" class="bg-gray-200 p-1 rounded-full hover:bg-gray-300" title="Copiar código">
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 4h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2v-8a2 2 0 012-2z" /></svg>
                                 </button>
@@ -425,8 +431,7 @@
                         <p class="text-xs text-gray-500 mt-2 font-semibold">Ashly Rosas Flores</p>
                     </div>
 
-                     <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-3Recursos: Lineamientos de EA3.
-0 cursor-pointer" onclick="openModal('ea2-etiquetas-modal6')">
+                     <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-etiquetas-modal6')">
                         <div class="bg-red-100 text-red-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">6</div>
                         <h3 class="font-bold text-lg">Regla 6</h3>
                         <p class="text-sm text-gray-600">Clasificación en Subpartidas</p>
@@ -436,6 +441,104 @@
             </main>
         </div>
     </div>
+
+    <!-- **** INICIO NUEVA VISTA EA2 - MAQUINARIA **** -->
+    <div id="ea2-maquina-wrapper" class="view hidden opacity-0 absolute inset-0 overflow-y-auto">
+         <button onclick="switchView('ea2-landing-wrapper')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la selección">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+        </button>
+
+        <div class="container mx-auto p-4 md:p-8">
+            <header class="text-center mb-12 fade-in">
+                 <div class="inline-block bg-white/80 backdrop-blur-sm p-4 rounded-lg">
+                      <h1 class="text-3xl md:text-4xl font-bold text-slate-800">EA2: Clasificación de Activo Fijo Importado</h1>
+                 </div>
+            </header>
+
+            <section class="bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-md mb-12 fade-in" style="animation-delay: 0.2s;">
+                <h2 class="text-2xl font-bold text-slate-700 mb-4 flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                    Producto: Máquina Tejedora Rectilínea (Industrial)
+                </h2>
+                <p class="text-gray-800 leading-relaxed text-justify">
+                    Se simula la importación (Régimen 10) de un activo fijo para "Alpaca del Sol": <strong>Una Máquina Tejedora Rectilínea</strong> industrial para la confección de las bufandas. El objetivo es clasificar correctamente esta maquinaria usando las 6 Reglas Generales de Interpretación (RGI).
+                </p>
+                <div class="mt-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
+                    <p class="font-bold text-lg text-red-800">Clasificación Final: <span class="font-mono">8447.20.10.00</span></p>
+                    <p class="text-sm text-red-700">Máquinas de tricotar, de costura por cadeneta...: - Máquinas rectilíneas de tricotar; máquinas de costura por cadeneta: -- Para la industria textil.</p>
+                     <div class="mt-4 pt-4 border-t border-red-200">
+                        <p class="text-sm font-semibold text-gray-700">Consultar en Aduanet (SUNAT):</p>
+                        <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 mt-2">
+                            <a href="http://www.aduanet.gob.pe/itarancel/arancelS01Alias" target="_blank" class="inline-block bg-red-600 text-white text-xs font-bold py-2 px-3 rounded-lg hover:bg-red-700 transition-all text-center">
+                                Ir a SUNAT
+                            </a>
+                            <div class="flex items-center space-x-2">
+                                <span class="text-sm text-gray-600">Usar código:</span>
+                                <input type="text" readonly value="8447201000" id="partida-code-maquina" class="text-sm p-1 rounded-md bg-gray-100 border-gray-300 shadow-inner w-32 font-mono text-center">
+                                <button onclick="copyToClipboard('8447201000', this)" class="bg-gray-200 p-1 rounded-full hover:bg-gray-300" title="Copiar código">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 4h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2v-8a2 2 0 012-2z" /></svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <main>
+                <div class="text-center mb-8">
+                    <h2 class="text-2xl font-bold text-slate-700 fade-in bg-white/80 backdrop-blur-sm p-4 rounded-lg inline-block" style="animation-delay: 0.4s;">Aplicación de las 6 Reglas Generales (RGI)</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
+                    
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-maquina-modal1')">
+                        <div class="bg-blue-100 text-blue-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">1</div>
+                        <h3 class="font-bold text-lg">Regla 1</h3>
+                        <p class="text-sm text-gray-600">Textos de Partidas y Notas</p>
+                        <p class="text-xs text-gray-500 mt-2 font-semibold">Marilin Medina Apolinario</p>
+                    </div>
+                    
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-maquina-modal2')">
+                        <div class="bg-green-100 text-green-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">2</div>
+                        <h3 class="font-bold text-lg">Regla 2</h3>
+                        <p class="text-sm text-gray-600">Artículos Desmontados</p>
+                        <p class="text-xs text-gray-500 mt-2 font-semibold">Eric Mozombite Shishco</p>
+                    </div>
+
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-maquina-modal3')">
+                        <div class="bg-yellow-100 text-yellow-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">3</div>
+                        <h3 class="font-bold text-lg">Regla 3</h3>
+                        <p class="text-sm text-gray-600">Especificidad</p>
+                        <p class="text-xs text-gray-500 mt-2 font-semibold">Celeste Taya Martínez</p>
+                    </div>
+                    
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-maquina-modal4')">
+                        <div class="bg-purple-100 text-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">4</div>
+                        <h3 class="font-bold text-lg">Regla 4</h3>
+                        <p class="text-sm text-gray-600">Clasificación por Analogía</p>
+                        <p class="text-xs text-gray-500 mt-2 font-semibold">Milagros Tornero Tejada</p>
+                    </div>
+                    
+                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-maquina-modal5')">
+                        <div class="bg-indigo-100 text-indigo-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">5</div>
+                        <h3 class="font-bold text-lg">Regla 5</h3>
+                        <p class="text-sm text-gray-600">Envases y Embalajes</p>
+                        <p class="text-xs text-gray-500 mt-2 font-semibold">Ashly Rosas Flores</p>
+                    </div>
+
+                     <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-maquina-modal6')">
+                        <div class="bg-red-100 text-red-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">6</div>
+                        <h3 class="font-bold text-lg">Regla 6</h3>
+                        <p class="text-sm text-gray-600">Clasificación en Subpartidas</p>
+                        <p class="text-xs text-gray-500 mt-2 font-semibold">Gino Vela Ruiz</p>
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+    <!-- **** FIN NUEVA VISTA EA2 - MAQUINARIA **** -->
+
 
     <!-- Vista del PDF (un solo visor para todos los PDFs) -->
     <div id="pdf-view" class="view hidden opacity-0 fixed inset-0 z-50 bg-gray-800">
@@ -453,6 +556,7 @@
             <button onclick="closeModal('modalFlow')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
             <h3 class="text-2xl font-bold mb-4 text-slate-800">Estructura Lógica del Flujograma Documentario</h3>
             <p class="text-gray-700 mb-6 text-justify">Estructura lógica del flujograma documentario para el caso de exportación de bufandas de alpaca a Canadá.</p>
+            <!-- MODIFICADO: Este botón ahora usa el visor interno -->
             <button onclick="showPdfAndCloseModal('modalFlow', 'https://tinyurl.com/EA1flujo')" class="inline-block bg-indigo-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-700 transition-colors">Ver Flujograma</button>
         </div>
     </div>
@@ -464,10 +568,21 @@
             <button onclick="showPdfAndCloseModal('ea1-modal0', 'https://rickne7.github.io/AlpacaDelSol/00%20Proforma%20Invoice.pdf')" class="inline-block bg-gray-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-gray-700 transition-colors">Ver Documento (PDF)</button>
         </div>
     </div>
+    
+    <!-- **** INICIO NUEVO MODAL EA1 - LIQUIDACIÓN **** -->
+    <div id="ea1-modal-liq" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal-liq')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('ea1-modal-liq')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">2. Liquidación de Compra</h3>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es un comprobante de pago especial. Permite a "Alpaca del Sol S.A.C." (como empresa con RUC) <strong>sustentar legalmente la compra de materia prima (fibra de alpaca) a productores locales</strong> que no tienen RUC, como criadores de ganado. Esto es vital para formalizar el costo de la mercancía a exportar.</p>
+        </div>
+    </div>
+    <!-- **** FIN NUEVO MODAL EA1 - LIQUIDACIÓN **** -->
+
     <div id="ea1-modal1" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal1')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea1-modal1')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">2. Factura Comercial</h3>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">3. Factura Comercial</h3>
             <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es el documento que <strong>acredita legalmente la venta</strong>. Funciona como el contrato que detalla qué se vende, a quién, a qué precio y bajo qué condiciones. Es la base para la declaración de aduanas tanto en origen como en destino.</p>
             <button onclick="showPdfAndCloseModal('ea1-modal1', 'https://rickne7.github.io/AlpacaDelSol/01%20Factura%20Comercial%20(Marilin).pdf')" class="inline-block bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-blue-700 transition-colors">Ver Documento (PDF)</button>
         </div>
@@ -475,7 +590,7 @@
     <div id="ea1-modal2" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal2')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea1-modal2')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">3. Packing List</h3>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">4. Packing List</h3>
             <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es el <strong>inventario físico del embarque</strong>. Detalla cómo está organizada la carga: el número de cajas, el contenido de cada una, y sus pesos y dimensiones. Es crucial para la inspección física de la aduana y la correcta manipulación logística.</p>
             <button onclick="showPdfAndCloseModal('ea1-modal2', 'https://rickne7.github.io/AlpacaDelSol/02%20Packing%20List%20(Gino).pdf')" class="inline-block bg-green-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-green-700 transition-colors">Ver Documento (PDF)</button>
         </div>
@@ -483,7 +598,7 @@
     <div id="ea1-modal3" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal3')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea1-modal3')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">4. Warehouse Receipt</h3>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">5. Warehouse Receipt</h3>
             <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es la <strong>constancia de recepción de la carga</strong> emitida por el depósito temporal (TALMA). Certifica que el almacén ha recibido la mercancía y, a partir de ese momento, es responsable de su custodia hasta entregarla a la aerolínea.</p>
             <button onclick="showPdfAndCloseModal('ea1-modal3', 'https://rickne7.github.io/AlpacaDelSol/03%20Warehouse%20(Milagros).pdf')" class="inline-block bg-red-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-red-700 transition-colors">Ver Documento (PDF)</button>
         </div>
@@ -491,7 +606,7 @@
     <div id="ea1-modal4" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal4')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea1-modal4')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">5. Declaración Aduanera</h3>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">6. Declaración Aduanera</h3>
             <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es la <strong>solicitud formal ante la SUNAT</strong> para acoger la mercancía al régimen de Exportación Definitiva. Este documento formaliza la salida legal de los productos del territorio peruano y es indispensable para el control del Estado.</p>
             <button onclick="showPdfAndCloseModal('ea1-modal4', 'https://rickne7.github.io/AlpacaDelSol/04%20DAM%20A%20(Celeste).pdf')" class="inline-block bg-yellow-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-yellow-600 transition-colors">Ver Documento (PDF)</button>
         </div>
@@ -499,7 +614,7 @@
     <div id="ea1-modal5" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal5')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea1-modal5')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">6. Guía Aérea Hija (HAWB)</h3>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">7. Guía Aérea Hija (HAWB)</h3>
             <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es el contrato de transporte entre el <strong>Agente de Carga y el Exportador</strong>. Detalla el envío específico y es la prueba que Alpaca del Sol S.A.C. tiene para demostrar que ha embarcado su carga.</p>
             <button onclick="showPdfAndCloseModal('ea1-modal5', 'https://rickne7.github.io/AlpacaDelSol/05%20Gu%C3%ADa%20Hija%20HAWB%20(Eric).pdf')" class="inline-block bg-purple-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-purple-700 transition-colors">Ver Documento (PDF)</button>
         </div>
@@ -507,7 +622,7 @@
     <div id="ea1-modal6" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal6')">
         <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
             <button onclick="closeModal('ea1-modal6')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">7. Guía Aérea Master (MAWB)</h3>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">8. Guía Aérea Master (MAWB)</h3>
             <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es el contrato de transporte entre la <strong>Aerolínea y el Agente de Carga</strong>. Ampara la totalidad de la carga consolidada. Para la aerolínea, todo el bloque es un solo envío a nombre del Agente de Carga.</p>
             <button onclick="showPdfAndCloseModal('ea1-modal6', 'https://rickne7.github.io/AlpacaDelSol/06%20Gu%C3%ADa%20Madre%20MAWB%20(Ashly).pdf')" class="inline-block bg-indigo-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-700 transition-colors">Ver Documento (PDF)</button>
         </div>
@@ -645,6 +760,79 @@
                 3. Por lo tanto, la clasificación se completa con ceros, resultando en la subpartida nacional <strong>5807.10.00.00</strong>.</p>
         </div>
     </div>
+    
+    <!-- **** INICIO NUEVOS MODALES EA2 - MAQUINARIA **** -->
+    <div id="ea2-maquina-modal1" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-maquina-modal1')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('ea2-maquina-modal1')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 1: Textos de Partidas y Notas Legales</h3>
+            <p class="text-gray-500 text-sm mb-4">Responsable: Marilin Medina Apolinario</p>
+            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
+                "Los títulos... solo tienen un valor indicativo, ya que la clasificación está determinada legalmente por los textos de las partidas y de las Notas de Sección o de Capítulo..."
+            </blockquote>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> La clasificación se basa en el texto de la <strong>Partida 84.47</strong>, que describe explícitamente: "<strong>Máquinas de tricotar</strong>, de costura por cadeneta...". Nuestra "Máquina Tejedora Rectilínea" se ajusta perfectamente a este texto legal. Las Notas de la Sección XVI y del Capítulo 84 no la excluyen.</p>
+        </div>
+    </div>
+    <div id="ea2-maquina-modal2" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-maquina-modal2')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('ea2-maquina-modal2')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 2: Artículos Desmontados</h3>
+            <p class="text-gray-500 text-sm mb-4">Responsable: Eric Mozombite Shishco</p>
+            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
+                "a) Cualquier referencia a un artículo... alcanza al artículo... cuando se presente desmontado o sin montar."
+            </blockquote>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (2a):</strong> Esta regla es de aplicación común para maquinaria. Si nuestra máquina tejedora se importa <strong>desarmada o desmontada</strong> en varias partes para facilitar su transporte (una práctica logística estándar), la Regla 2a instruye que debe clasificarse como el artículo completo, es decir, en la Partida 84.47.<br><br><strong>Aplicación (2b):</strong> La Regla 2b (mezclas) no aplica a este producto.</p>
+        </div>
+    </div>
+    <div id="ea2-maquina-modal3" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-maquina-modal3')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('ea2-maquina-modal3')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 3: Especificidad</h3>
+            <p class="text-gray-500 text-sm mb-4">Responsable: Celeste Taya Martínez</p>
+            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
+                "a) La partida con descripción más específica tendrá prioridad sobre las partidas de alcance más genérico..."
+            </blockquote>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (3a):</strong> Esta regla confirma la Partida 84.47. Aunque la máquina podría ser considerada de forma genérica en la Partida 84.79 ("Máquinas... con una función propia, no expresadas..."), la <strong>Partida 84.47 es mucho más específica</strong> al nombrar textualmente "Máquinas de tricotar". Por lo tanto, la Regla 3a da prioridad a la 84.47.</p>
+        </div>
+    </div>
+    <div id="ea2-maquina-modal4" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-maquina-modal4')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('ea2-maquina-modal4')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 4: Clasificación por Analogía</h3>
+            <p class="text-gray-500 text-sm mb-4">Responsable: Milagros Tornero Tejada</p>
+            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
+                "Las mercancías que no puedan clasificarse aplicando las Reglas anteriores se clasificarán en la partida que comprenda aquellas con las que tengan mayor analogía."
+            </blockquote>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> Esta regla se considera pero No es necesaria. La máquina está claramente identificada por el texto de la Partida 84.47 gracias a la Regla 1, por lo que no es necesario buscar productos análogos.</p>
+        </div>
+    </div>
+    <div id="ea2-maquina-modal5" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-maquina-modal5')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('ea2-maquina-modal5')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 5: Envases y Embalajes</h3>
+            <p class="text-gray-500 text-sm mb-4">Responsable: Ashly Rosas Flores</p>
+            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
+                "b) ...los envases que contengan mercancías se clasificarán con ellas cuando sean de los tipos normalmente empleados..."
+            </blockquote>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (5b):</strong> La máquina tejedora se importa con sus embalajes de transporte habituales (cajas de madera tratada, bases de pallet, protectores de plástico, etc.) que no están diseñados para uso repetido. La Regla 5b indica que todos estos embalajes normales se clasifican <strong>junto</strong> con la máquina en la Partida 84.47.</p>
+        </div>
+    </div>
+    <div id="ea2-maquina-modal6" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-maquina-modal6')">
+        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
+            <button onclick="closeModal('ea2-maquina-modal6')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
+            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 6: Clasificación en Subpartidas</h3>
+            <p class="text-gray-500 text-sm mb-4">Responsable: Gino Vela Ruiz</p>
+            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
+                "...la clasificación... en las subpartidas... está determinada legalmente por los textos de estas subpartidas..."
+            </blockquote>
+            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> Una vez fijada la Partida <strong>84.47</strong> (por Regla 1), la Regla 6 nos obliga a descender jerárquicamente:<br>
+                1. Nivel 1 (SA 6 dígitos): Comparamos las subpartidas y elegimos <strong>8447.20</strong> ("- Máquinas rectilíneas de tricotar...").<br>
+                2. Nivel 2 (NANDINA 8 dígitos): Dentro de la 8447.20, elegimos <strong>8447.20.10</strong> ("-- Para la industria textil").<br>
+                3. Nivel 3 (Nacional 10 dígitos): Se completa con ceros, resultando en <strong>8447.20.10.00</strong>.</p>
+        </div>
+    </div>
+    <!-- **** FIN NUEVOS MODALES EA2 - MAQUINARIA **** -->
+
 
     <script>
         // --- FUNCIONES GLOBALES DE NAVEGACIÓN ---
@@ -725,11 +913,8 @@
             setTimeout(() => {
                 const pdfIframe = document.getElementById('pdf-iframe');
                 
-                if (modalId === 'modalFlow') {
-                    // El flujograma se abre en una nueva pestaña
-                    window.open(pdfUrl, '_blank');
-                } else if (pdfIframe) {
-                    // Los demás PDFs usan el visor interno
+                // MODIFICADO: Todos los PDFs, incluido el flujograma, usan el visor interno
+                if (pdfIframe) {
                     pdfIframe.src = pdfUrl;
                     switchView('pdf-view');
                 }
@@ -743,30 +928,57 @@
             switchView(lastMainPage); 
         }
         
-        // Función para copiar al portapapeles (Simplificada y robusta)
+        // --- INICIO DE LA CORRECCIÓN PARA EL PORTAPAPELES ---
+        
+        // Función para copiar al portapapeles (Robusta y compatible con iframe)
         function copyToClipboard(text, copyButton) {
-            const el = document.createElement('textarea');
+            // Ir directamente al método 'execCommand' que es compatible con el iframe.
+            // El API 'navigator.clipboard' falla debido a la política de permisos del sandbox.
+            copyFallback(text, copyButton);
+        }
+        
+        function copyFallback(text, copyButton) {
+             const el = document.createElement('textarea');
             el.value = text;
             el.setAttribute('readonly', '');
             el.style.position = 'absolute';
             el.style.left = '-9999px';
             document.body.appendChild(el);
             
+            // Guardar la selección actual para restaurarla después
+            const selected =
+                document.getSelection().rangeCount > 0
+                    ? document.getSelection().getRangeAt(0)
+                    : false;
+
             el.select();
             
             let copied = false;
             try {
-                // Usar document.execCommand para máxima compatibilidad en iframes
+                // Usar document.execCommand para máxima compatibilidad
                 document.execCommand('copy');
                 copied = true;
             } catch (err) {
-                console.error('Error al copiar al portapapeles:', err);
+                // No es necesario un console.error aquí ya que el API de clipboard siempre falla
+                // console.error('Error al copiar con execCommand:', err);
             }
             
             document.body.removeChild(el);
 
-            // Feedback visual en el botón que fue presionado
-            if (copyButton && copied) {
+            // Restaurar la selección original para no interrumpir al usuario
+            if (selected) {
+                document.getSelection().removeAllRanges();
+                document.getSelection().addRange(selected);
+            }
+
+            // Feedback visual
+            if (copied) {
+                showCopyFeedback(copyButton);
+            }
+        }
+        
+        function showCopyFeedback(copyButton) {
+            if (copyButton) {
                 const originalContent = copyButton.innerHTML;
                 copyButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>';
                 setTimeout(() => {
@@ -774,6 +986,7 @@
                 }, 1500);
             }
         }
+        // --- FIN DE LA CORRECCIÓN PARA EL PORTAPAPELES ---
     </script>
 
 </body>
