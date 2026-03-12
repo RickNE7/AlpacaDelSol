@@ -1,955 +1,1170 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es-PE">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EA1 y EA2: Gestión Aduanera - Grupo 2</title>
+    <title>IntiSoya - Dashboard Comercial</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        soya: {
+                            dark: '#1F1209', // Color salsa de soya oscura
+                            light: '#3E2723',
+                            gold: '#D4AF37', // Dorado de la etiqueta
+                            sand: '#EEDC9A', // Fondo de la etiqueta
+                            red: '#8B1E1B'   // Rojo del sello/bandera
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Open Sans', 'sans-serif'],
+                        heading: ['Montserrat', 'sans-serif'],
+                    }
+                }
+            }
         }
-        .view {
-            transition: opacity 0.5s ease-in-out;
+    </script>
+    <style>
+        body { background-color: #F8F9FA; color: #333; }
+        .nav-active { background-color: #D4AF37; color: #1F1209 !important; font-weight: 600; }
+        .nav-item { transition: all 0.3s ease; }
+        .nav-item:hover:not(.nav-active) { background-color: #3E2723; color: #EEDC9A; }
+        
+        /* Ocultar secciones dinámicamente */
+        .dashboard-section { display: none; animation: fadeIn 0.5s ease-in-out; }
+        .dashboard-section.active { display: block; }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Estilos FODA Cruzado */
+        .foda-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+        @media (min-width: 768px) { .foda-grid { grid-template-columns: 1fr 1fr; } }
+        
+        .foda-card { 
+            background: white; border-left: 5px solid; border-radius: 0.5rem; 
+            padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            cursor: pointer;
+        }
+        .foda-card:hover { transform: translateY(-5px); box-shadow: 0 10px 15px rgba(0,0,0,0.1); }
+        .foda-f { border-color: #10B981; } /* Verde */
+        .foda-o { border-color: #3B82F6; } /* Azul */
+        .foda-d { border-color: #F59E0B; } /* Naranja */
+        .foda-a { border-color: #EF4444; } /* Rojo */
+
+        .cruzado-btn {
+            background: #1F1209; color: #D4AF37; padding: 0.5rem 1rem; border-radius: 0.25rem;
+            text-align: center; cursor: pointer; font-weight: bold; transition: all 0.2s;
+        }
+        .cruzado-btn:hover { background: #8B1E1B; color: white; }
+
+        /* Modal FODA */
+        #foda-modal { display: none; }
+        #foda-modal.flex { display: flex; animation: fadeIn 0.2s ease-in-out; }
+        
+        /* Efecto Flip para Tarjetas de Gráficos (Parte 1) */
+        .flip-card {
+            perspective: 1000px;
+            height: 400px; 
+        }
+        .flip-card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        .flip-card.flipped .flip-card-inner {
+            transform: rotateY(180deg);
+        }
+        .flip-card-front, .flip-card-back {
             position: absolute;
             width: 100%;
             height: 100%;
-            inset: 0;
+            backface-visibility: hidden;
+            border-radius: 0.75rem; 
+            background-color: white;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
         }
-        .modal {
-            transition: opacity 0.3s ease;
+        .flip-card-back {
+            transform: rotateY(180deg);
         }
-        .modal-content {
-            transition: transform 0.3s ease;
-        }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .fade-in {
-            animation: fadeIn 0.5s ease-out forwards;
-        }
-        .step-item, .process-step, .selection-card {
-            opacity: 0;
-        }
-        #cover-page {
-            background-image: url('https://raw.githubusercontent.com/RickNE7/AlpacaDelSol/282a4e2faa30ca797b148b47d330720c2669deca/Portada.png');
-            background-size: cover;
-            background-position: center;
-            background-color: #1a202c; /* Fallback */
-        }
-        #ea1-content-wrapper, #ea2-landing-wrapper, #ea2-bufanda-wrapper, #ea2-etiquetas-wrapper, #ea2-maquina-wrapper {
-            background-image: url('https://raw.githubusercontent.com/RickNE7/AlpacaDelSol/e0df66e96f3026f4c6958032c9681f344adb7833/Fondo1.png');
-            background-size: cover;
-            background-attachment: fixed;
-            background-color: #f3f4f6; /* Fallback */
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #D4AF37; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #1F1209; }
+
+        /* Para el gráfico de banderas */
+        .chart-container { position: relative; height: 100%; width: 100%; }
+        
+        /* Ajuste de Cover Image para asegurar llenado vertical */
+        .cover-image-wrapper { height: 100%; min-height: 400px; }
+        @media (min-width: 1280px) {
+            .cover-image-wrapper { position: absolute; inset: 0; width: 100%; height: 100%; }
         }
     </style>
 </head>
-<body class="bg-gray-100 text-gray-800">
+<body class="flex h-[100dvh] overflow-hidden">
 
-    <div id="cover-page" class="view z-50 flex flex-col items-center justify-center p-8 text-white text-center">
-        <div class="bg-black bg-opacity-60 p-8 rounded-lg shadow-2xl max-w-3xl">
-            <h1 class="text-4xl md:text-5xl font-bold mb-4">Gestión Aduanera</h1>
-            <p class="text-lg md:text-xl mb-8">25-3-308D/309P-A</p>
-            <h2 class="text-2xl md:text-3xl font-semibold mb-6">Exportación Definitiva:<br>"Bufandas de Alpaca a Canadá"</h2>
-            <p class="text-lg mb-2"><strong>Docente:</strong> Edwin Andersson Zelada Florez</p>
-            <div class="mt-8">
-                <h3 class="text-xl font-bold mb-4">Grupo 2</h3>
-                <ul class="space-y-1 text-gray-300">
-                    <li>Medina Apolinario, Marilin</li>
-                    <li>Mozombite Shishco, Eric</li>
-                    <li>Taya Martínez, Celeste</li>
-                    <li>Tornero Tejada, Milagros</li>
-                    <li>Rosas Flores, Ashly</li>
-                    <li>Vela Ruiz, Gino</li>
-                </ul>
-            </div>
-            <div class="mt-12 flex flex-col md:flex-row gap-4 justify-center">
-                <button onclick="switchView('ea1-content-wrapper')" class="bg-blue-600 text-white font-bold py-3 px-8 rounded-lg hover:bg-blue-700 transition-all text-lg">
-                    Evidencia de Aprendizaje 1
-                </button>
-                <button onclick="switchView('ea2-landing-wrapper')" class="bg-gray-700 text-white font-bold py-3 px-8 rounded-lg hover:bg-gray-800 transition-all text-lg">
-                    Evidencia de Aprendizaje 2
-                </button>
-            </div>
+    <!-- Overlay para móviles -->
+    <div id="sidebar-overlay" class="fixed inset-0 bg-black/60 z-30 hidden transition-opacity lg:hidden" onclick="toggleSidebar()"></div>
+
+    <!-- Overlay para Flujo Interactivo (Parte 5) -->
+    <div id="flujo-overlay" class="fixed inset-0 bg-gray-900 z-[100] hidden flex-col animation-fadeIn">
+        <div class="h-16 bg-black flex items-center px-4 shadow-md justify-between">
+            <button onclick="closeFlujo()" class="bg-soya-gold text-soya-dark px-4 py-2 rounded-lg font-bold hover:bg-white transition flex items-center">
+                <i class="fa-solid fa-arrow-left mr-2"></i> Regresar a la Presentación
+            </button>
+            <span class="text-white font-heading font-bold hidden md:block">Flujo de Distribución IntiSoya</span>
+        </div>
+        <div class="flex-1 w-full bg-white relative">
+            <iframe src="https://tinyurl.com/FlujoSoyaChile" class="w-full h-full border-0 absolute inset-0"></iframe>
         </div>
     </div>
-    
-    <div id="ea1-content-wrapper" class="view hidden opacity-0 overflow-y-auto">
-         <button onclick="switchView('cover-page')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la Portada">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
-        </button>
 
-        <div class="container mx-auto p-4 md:p-8">
-            <header class="text-center mb-12 fade-in">
-                 <div class="inline-block bg-white/80 backdrop-blur-sm p-4 rounded-lg">
-                    <h1 class="text-3xl md:text-4xl font-bold text-slate-800">Evidencia de Aprendizaje 1 (EA1)</h1>
-                </div>
-            </header>
-
-            <section class="bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-md mb-12 fade-in" style="animation-delay: 0.2s;">
-                <h2 class="text-2xl font-bold text-slate-700 mb-4 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                    Presentación del Caso
-                </h2>
-                <p class="text-gray-800 leading-relaxed text-justify">
-                    En esta operación, simulamos una <strong>Exportación Definitiva</strong> de la empresa peruana <strong>Alpaca del Sol S.A.C.</strong>, que ha concretado una venta de 500 bufandas de baby alpaca (previamente fabricadas y en stock) a una boutique en Canadá, <strong>Canadian Alpaca Boutique Inc.</strong> La logística es gestionada por un Agente de Carga Internacional. La vía de transporte es aérea, bajo el término <strong>CPT Toronto</strong>.
-                </p>
-            </section>
+    <!-- Sidebar Navegación -->
+    <aside id="sidebar" class="w-64 flex-shrink-0 bg-soya-dark text-gray-300 flex flex-col shadow-2xl z-40 fixed inset-y-0 left-0 transform -translate-x-full lg:relative lg:translate-x-0 transition-all duration-300 ease-in-out h-full">
+        <div class="h-20 flex items-center justify-between px-4 border-b border-soya-light bg-black">
+            <h1 class="text-3xl font-heading font-bold text-white tracking-widest mx-auto lg:mx-0">
+                Inti<span class="text-soya-gold">Soya</span>
+            </h1>
+            <!-- Botón cerrar solo para móvil -->
+            <button onclick="toggleSidebar()" class="lg:hidden text-gray-400 hover:text-white focus:outline-none">
+                <i class="fa-solid fa-xmark text-2xl"></i>
+            </button>
+        </div>
+        
+        <nav class="flex-1 overflow-y-auto py-4 space-y-2 px-3 pb-20">
+            <button onclick="switchTab('portada')" id="nav-portada" class="nav-item nav-active w-full flex items-center p-3 rounded-lg">
+                <i class="fa-solid fa-house w-6 text-center mr-3"></i>
+                <span class="font-heading">Inicio / Portada</span>
+            </button>
             
-            <section class="bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-md mb-12 fade-in" style="animation-delay: 0.5s;">
-                <h2 class="text-2xl font-bold text-slate-700 mb-4 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-                    </svg>
-                    Modelo de Negocio: Abastecimiento "Contra Stock"
-                </h2>
-                <p class="text-gray-800 leading-relaxed text-justify mb-4">
-                    El flujograma de despacho (inicia 01/OCT) es posible porque la empresa opera bajo un modelo "Contra Stock". Esto significa que la materia prima (fibra de alpaca) se adquirió a los criadores locales <strong>meses antes</strong> del pedido, permitiendo fabricar las bufandas y tenerlas listas en inventario.
-                </p>
-                <div class="grid grid-cols-1 gap-4 text-center">
-                     <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal-liq')">
-                        <h3 class="font-bold text-md">Documento Clave de Abastecimiento: Liquidación de Compra</h3>
-                        <p class="text-xs text-gray-500 mt-1">Gino Vela</p>
-                    </div>
-                </div>
-            </section>
-            <main>
-                <div class="text-center mb-16">
-                    <h2 onclick="openModal('modalFlow')" class="cursor-pointer text-2xl font-bold text-slate-700 fade-in bg-white/80 backdrop-blur-sm p-4 rounded-lg inline-block hover:shadow-lg hover:ring-2 hover:ring-indigo-400 transition-all duration-300" style="animation-delay: 0.7s;">Proceso y Flujo Documentario del Despacho</h2>
-                </div>
-
-                <div class="relative">
-                    <div class="absolute left-1/2 -ml-0.5 h-full w-1 bg-gradient-to-b from-gray-300 via-blue-300 to-indigo-300 rounded-full"></div>
-
-                    <div class="process-step mb-16 flex flex-col items-center">
-                        <div class="z-10 bg-white border-4 border-gray-400 w-24 h-24 rounded-full flex flex-col items-center justify-center shadow-lg">
-                           <span class="text-xs text-gray-500">Paso 1</span>
-                           <span class="font-bold text-lg">Negociación</span>
-                           <span class="text-xs text-gray-500">01/OCT</span>
-                        </div>
-                        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md w-full lg:w-4/5 mt-4">
-                            <p class="text-sm text-gray-600 text-center mb-4">Se envían los términos preliminares de la venta al cliente para su aprobación antes del despacho final.</p>
-                            <div class="grid grid-cols-1 gap-4 text-center">
-                                <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal0')">
-                                    <h3 class="font-bold text-md">1. Factura Proforma</h3>
-                                    <p class="text-xs text-gray-500 mt-1">Ashly Rosas</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="process-step mb-16 flex flex-col items-center">
-                        <div class="z-10 bg-white border-4 border-blue-400 w-24 h-24 rounded-full flex flex-col items-center justify-center shadow-lg">
-                           <span class="text-xs text-gray-500">Paso 2</span>
-                           <span class="font-bold text-lg">Preparación</span>
-                           <span class="text-xs text-gray-500">06/OCT</span>
-                        </div>
-                        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md w-full lg:w-4/5 mt-4">
-                            <p class="text-sm text-gray-600 text-center mb-4">Se preparan la mercancía (ya en stock) y se emiten los documentos comerciales definitivos.</p>
-                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-center">
-                                <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal1')">
-                                    <h3 class="font-bold text-md">2. Factura Comercial</h3>
-                                    <p class="text-xs text-gray-500 mt-1">Marilin Medina</p>
-                                </div>
-                                <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal2')">
-                                    <h3 class="font-bold text-md">3. Packing List</h3>
-                                    <p class="text-xs text-gray-500 mt-1">Gino Vela</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="process-step mb-16 flex flex-col items-center">
-                         <div class="z-10 bg-white border-4 border-red-400 w-24 h-24 rounded-full flex flex-col items-center justify-center shadow-lg">
-                           <span class="text-xs text-gray-500">Paso 3</span>
-                           <span class="font-bold text-lg">Almacén</span>
-                           <span class="text-xs text-gray-500">07/OCT</span>
-                        </div>
-                        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md w-full lg:w-4/5 mt-4">
-                            <p class="text-sm text-gray-600 text-center mb-4">La carga es transportada al depósito temporal, donde se emite la constancia de recepción y se asume su custodia.</p>
-                            <div class="grid grid-cols-1 gap-4 text-center">
-                                 <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal3')">
-                                    <h3 class="font-bold text-md">4. Warehouse Receipt</h3>
-                                    <p class="text-xs text-gray-500 mt-1">Milagros Tornero</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="process-step mb-8 flex flex-col items-center">
-                         <div class="z-10 bg-white border-4 border-indigo-400 w-24 h-24 rounded-full flex flex-col items-center justify-center shadow-lg">
-                           <span class="text-xs text-gray-500">Paso 4</span>
-                           <span class="font-bold text-lg">Embarque</span>
-                           <span class="text-xs text-gray-500">08/OCT</span>
-                        </div>
-                        <div class="bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-md w-full lg:w-4/5 mt-4">
-                            <p class="text-sm text-gray-600 text-center mb-4">El día del vuelo, se realiza el despacho ante SUNAT y se emiten los contratos de transporte aéreo para el embarque final.</p>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-center">
-                                <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal4')">
-                                    <h3 class="font-bold text-md">5. Declaración Aduanera</h3>
-                                    <p class="text-xs text-gray-500 mt-1">Celeste Taya</p>
-                                </div>
-                                <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal5')">
-                                    <h3 class="font-bold text-md">6. Guía Aérea Hija (HAWB)</h3>
-                                    <p class="text-xs text-gray-500 mt-1">Eric Mozombite</p>
-                                </div>
-                                <div class="step-item bg-gray-50 p-4 rounded-lg shadow-inner hover:shadow-md transition-shadow cursor-pointer" onclick="openModal('ea1-modal6')">
-                                    <h3 class="font-bold text-md">7. Guía Aérea Master (MAWB)</h3>
-                                    <p class="text-xs text-gray-500 mt-1">Ashly Rosas</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </main>
-        </div>
-    </div>
-
-    <div id="ea2-landing-wrapper" class="view hidden opacity-0 overflow-y-auto">
-         <button onclick="switchView('cover-page')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la Portada">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-            </svg>
-        </button>
-
-        <div class="container mx-auto p-4 md:p-8 flex flex-col items-center justify-center min-h-screen">
-            <header class="text-center mb-12 fade-in">
-                 <div class="inline-block bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-xl">
-                      <h1 class="text-3xl md:text-4xl font-bold text-slate-800">Evidencia de Aprendizaje 2 (EA2)</h1>
-                      <p class="text-lg text-slate-600 mt-2">Selección del Producto para Clasificación Arancelaria (RGI)</p>
-                 </div>
-            </header>
-
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-7xl">
-                
-                <div onclick="switchView('ea2-bufanda-wrapper')" class="selection-card bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-2xl hover:shadow-indigo-400/50 hover:scale-105 transition-all duration-300 cursor-pointer border-t-4 border-indigo-500">
-                    <div class="text-indigo-600 text-4xl mb-4 font-extrabold">I. Producto de Exportación</div>
-                    <h3 class="font-bold text-2xl text-slate-800 mb-2">Bufanda de Baby Alpaca</h3>
-                    <p class="text-gray-600">Aplicación de las 6 Reglas de Interpretación al producto final de la EA1.</p>
-                    <p class="mt-4 text-sm font-semibold text-indigo-700">CLIC PARA VER CLASIFICACIÓN RGI</p>
-                </div>
-
-                <div onclick="switchView('ea2-etiquetas-wrapper')" class="selection-card bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-2xl hover:shadow-green-400/50 hover:scale-105 transition-all duration-300 cursor-pointer border-t-4 border-green-500">
-                    <div class="text-green-600 text-4xl mb-4 font-extrabold">II. Insumo de Importación</div>
-                    <h3 class="font-bold text-2xl text-slate-800 mb-2">Etiquetas Tejidas (70% Poliéster)</h3>
-                    <p class="text-gray-600">Aplicación de las 6 Reglas de Interpretación al insumo importado.</p>
-                    <p class="mt-4 text-sm font-semibold text-green-700">CLIC PARA VER CLASIFICACIÓN RGI</p>
-                </div>
-                
-                <div onclick="switchView('ea2-maquina-wrapper')" class="selection-card bg-white/90 backdrop-blur-sm p-8 rounded-lg shadow-2xl hover:shadow-red-400/50 hover:scale-105 transition-all duration-300 cursor-pointer border-t-4 border-red-500">
-                    <div class="text-red-600 text-4xl mb-4 font-extrabold">III. Activo Fijo de Importación</div>
-                    <h3 class="font-bold text-2xl text-slate-800 mb-2">Máquina Tejedora Rectilínea</h3>
-                    <p class="text-gray-600">Aplicación de las 6 Reglas de Interpretación a la maquinaria industrial.</p>
-                    <p class="mt-4 text-sm font-semibold text-red-700">CLIC PARA VER CLASIFICACIÓN RGI</p>
-                </div>
+            <div class="pt-4 pb-2">
+                <p class="text-xs text-soya-gold font-bold uppercase tracking-wider px-3">Presentación por Integrante</p>
             </div>
+
+            <button onclick="switchTab('marilin')" id="nav-marilin" class="nav-item w-full flex items-center p-3 rounded-lg">
+                <i class="fa-solid fa-chart-line w-6 text-center mr-3"></i>
+                <div class="text-left">
+                    <span class="font-heading block text-sm">Parte 1: Marilin M.</span>
+                    <span class="text-xs opacity-75">Contexto y Exportación</span>
+                </div>
+            </button>
+
+            <button onclick="switchTab('franchesca')" id="nav-franchesca" class="nav-item w-full flex items-center p-3 rounded-lg">
+                <i class="fa-solid fa-chess-knight w-6 text-center mr-3"></i>
+                <div class="text-left">
+                    <span class="font-heading block text-sm">Parte 2: Franchesca P.</span>
+                    <span class="text-xs opacity-75">Estrategia y Producto</span>
+                </div>
+            </button>
+
+            <button onclick="switchTab('isabella')" id="nav-isabella" class="nav-item w-full flex items-center p-3 rounded-lg">
+                <i class="fa-solid fa-industry w-6 text-center mr-3"></i>
+                <div class="text-left">
+                    <span class="font-heading block text-sm">Parte 3: Isabella M.</span>
+                    <span class="text-xs opacity-75">Oferta y Proveedores</span>
+                </div>
+            </button>
+
+            <button onclick="switchTab('victor')" id="nav-victor" class="nav-item w-full flex items-center p-3 rounded-lg">
+                <i class="fa-solid fa-globe w-6 text-center mr-3"></i>
+                <div class="text-left">
+                    <span class="font-heading block text-sm">Parte 4: Víctor C.</span>
+                    <span class="text-xs opacity-75">Mercados Globales</span>
+                </div>
+            </button>
+
+            <button onclick="switchTab('eric')" id="nav-eric" class="nav-item w-full flex items-center p-3 rounded-lg">
+                <i class="fa-solid fa-bullseye w-6 text-center mr-3"></i>
+                <div class="text-left">
+                    <span class="font-heading block text-sm">Parte 5: Eric M.</span>
+                    <span class="text-xs opacity-75">Marketing y 9 P's</span>
+                </div>
+            </button>
+        </nav>
+        
+        <div class="p-4 bg-soya-light border-t border-soya-dark text-xs text-center text-soya-sand mt-auto hidden lg:block">
+            ADEX Escuela - Ciclo 2026-I
         </div>
-    </div>
+    </aside>
 
-    <div id="ea2-bufanda-wrapper" class="view hidden opacity-0 absolute inset-0 overflow-y-auto">
-         <button onclick="switchView('ea2-landing-wrapper')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la selección">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-        </button>
+    <!-- Área de Contenido Principal -->
+    <main class="flex-1 h-[100dvh] overflow-y-auto bg-gray-50 flex flex-col relative w-full pb-10">
+        
+        <!-- Header superior decorativo -->
+        <header class="h-20 bg-white shadow-sm flex items-center justify-between px-4 md:px-8 sticky top-0 z-20 flex-shrink-0">
+            <div class="flex items-center">
+                <!-- Botón de hamburguesa visible siempre para toggle -->
+                <button onclick="toggleSidebar()" class="mr-4 text-soya-dark hover:text-soya-gold transition focus:outline-none">
+                    <i class="fa-solid fa-bars text-2xl"></i>
+                </button>
+                <h2 id="header-title" class="text-lg md:text-2xl font-heading font-bold text-soya-dark truncate">Resumen Ejecutivo</h2>
+            </div>
+            <div class="hidden sm:flex items-center space-x-2 md:space-x-4">
+                <span class="bg-soya-sand text-soya-dark px-3 py-1 rounded-full text-xs md:text-sm font-bold shadow-sm">Destino: CHILE</span>
+                <span class="bg-soya-red text-white px-3 py-1 rounded-full text-xs md:text-sm font-bold shadow-sm">P.A: 2103.10.00.00</span>
+            </div>
+        </header>
 
-        <div class="container mx-auto p-4 md:p-8">
-            <header class="text-center mb-12 fade-in">
-                 <div class="inline-block bg-white/80 backdrop-blur-sm p-4 rounded-lg">
-                      <h1 class="text-3xl md:text-4xl font-bold text-slate-800">EA2: Clasificación de Producto Exportado</h1>
-                 </div>
-            </header>
+        <!-- Contenedor general que permite scroll hasta el final -->
+        <div class="p-4 md:p-8 flex-1 pb-20">
+            
+            <!-- PORTADA -->
+            <section id="portada" class="dashboard-section active h-full">
+                <div class="bg-white rounded-2xl shadow-xl overflow-hidden flex flex-col xl:flex-row border border-gray-100 min-h-[calc(100vh-12rem)] relative">
+                    
+                    <div class="w-full xl:w-1/2 p-6 md:p-10 flex flex-col justify-center bg-gradient-to-br from-white to-soya-sand/30 z-10 relative">
+                        <div class="mb-2 text-soya-red font-bold tracking-widest text-sm md:text-base">PROYECTO INTEGRADOR 2026</div>
+                        <h2 class="text-4xl md:text-5xl lg:text-6xl font-heading font-extrabold text-soya-dark mb-6 leading-tight">Plan de Exportación de <br><span class="text-soya-gold">Salsa de Soya</span> a Chile</h2>
+                        <p class="text-gray-600 mb-8 text-base md:text-lg lg:pr-10">Investigación exhaustiva de mercado, oferta exportable, análisis logístico y mezcla de marketing para la internacionalización del producto IntiSoya.</p>
+                        
+                        <div class="bg-soya-dark rounded-xl p-6 shadow-lg relative overflow-hidden">
+                            <div class="absolute top-0 right-0 w-24 h-24 bg-soya-gold rounded-full -mr-10 -mt-10 opacity-20"></div>
+                            <h3 class="text-soya-gold font-heading font-bold text-lg md:text-xl mb-4 border-b border-gray-700 pb-2">Equipo Consultor (Participación)</h3>
+                            <ul class="space-y-3 text-white text-sm md:text-base relative z-10">
+                                <li class="flex justify-between items-center"><span class="font-semibold"><i class="fa-solid fa-user-tie text-soya-gold mr-2"></i> Víctor Condori</span> <span class="bg-green-500/20 text-green-400 px-2 py-1 rounded text-xs font-bold">100%</span></li>
+                                <li class="flex justify-between items-center"><span class="font-semibold"><i class="fa-solid fa-user-tie text-soya-gold mr-2"></i> Isabella Mattos</span> <span class="bg-green-500/20 text-green-400 px-2 py-1 rounded text-xs font-bold">100%</span></li>
+                                <li class="flex justify-between items-center"><span class="font-semibold"><i class="fa-solid fa-user-tie text-soya-gold mr-2"></i> Marilin Medina</span> <span class="bg-green-500/20 text-green-400 px-2 py-1 rounded text-xs font-bold">100%</span></li>
+                                <li class="flex justify-between items-center"><span class="font-semibold"><i class="fa-solid fa-user-tie text-soya-gold mr-2"></i> Eric Mozombite</span> <span class="bg-green-500/20 text-green-400 px-2 py-1 rounded text-xs font-bold">100%</span></li>
+                                <li class="flex justify-between items-center"><span class="font-semibold"><i class="fa-solid fa-user-tie text-soya-gold mr-2"></i> Franchesca Pozzo</span> <span class="bg-green-500/20 text-green-400 px-2 py-1 rounded text-xs font-bold">100%</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <!-- Imagen de producto ocupando toda el área vertical -->
+                    <div class="w-full xl:w-1/2 bg-gray-100 relative overflow-hidden min-h-[400px] xl:min-h-full flex items-center justify-center p-0">
+                        <img src="https://raw.githubusercontent.com/RickNE7/SalsaSoyaChile20261/main/IntiSoya_gris(PET-fondo).png" alt="Botella IntiSoya con Fondo" class="w-full h-full object-cover absolute inset-0 z-10">
+                        
+                        <!-- QR Flotante -->
+                        <div class="absolute top-6 right-6 z-20 bg-white/95 p-3 rounded-xl shadow-2xl backdrop-blur-sm border border-gray-200 transform hover:scale-105 transition flex flex-col items-center">
+                            <img src="https://raw.githubusercontent.com/RickNE7/SalsaSoyaChile20261/main/IntiSoyaQR.png" alt="QR Code IntiSoya" class="w-20 h-20 md:w-24 md:h-24 rounded border border-gray-100 mb-1">
+                            <span class="text-[10px] md:text-xs font-bold text-soya-dark uppercase tracking-wider">Escanéame</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
 
-            <section class="bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-md mb-12 fade-in" style="animation-delay: 0.2s;">
-                <h2 class="text-2xl font-bold text-slate-700 mb-4 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-indigo-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                    Producto: Bufanda de Baby Alpaca (100% Pelo Fino)
-                </h2>
-                <div class="mt-4 p-4 bg-indigo-50 border-l-4 border-indigo-500 rounded-r-lg">
-                    <p class="font-bold text-lg text-indigo-800">Clasificación Final: <span class="font-mono">6214.90.10.00</span></p>
-                    <p class="text-sm text-indigo-700">Chales, pañuelos de cuello, bufandas... de las demás materias textiles: -- De pelo fino.</p>
-                     <div class="mt-4 pt-4 border-t border-indigo-200">
-                        <p class="text-sm font-semibold text-gray-700">Consultar en Aduanet (SUNAT):</p>
-                        <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 mt-2">
-                            <a href="http://www.aduanet.gob.pe/itarancel/arancelS01Alias" target="_blank" class="inline-block bg-indigo-600 text-white text-xs font-bold py-2 px-3 rounded-lg hover:bg-indigo-700 transition-all text-center">
-                                Ir a SUNAT
-                            </a>
-                            <div class="flex items-center space-x-2">
-                                <span class="text-sm text-gray-600">Usar código:</span>
-                                <input type="text" readonly value="6214901000" id="partida-code-bufanda" class="text-sm p-1 rounded-md bg-gray-100 border-gray-300 shadow-inner w-32 font-mono text-center">
-                                <button onclick="copyToClipboard('6214901000', this)" class="bg-gray-200 p-1 rounded-full hover:bg-gray-300" title="Copiar código">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 4h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2v-8a2 2 0 012-2z" /></svg>
-                                </button>
+            <!-- PARTE 1: MARILIN -->
+            <section id="marilin" class="dashboard-section">
+                <!-- Fichas Interactivas de Objetivos -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                    <!-- Objetivo Principal -->
+                    <div class="bg-soya-dark text-white rounded-xl shadow p-6 border-l-4 border-soya-gold cursor-pointer hover:bg-soya-light transition duration-300 relative overflow-hidden" onclick="toggleObj('obj-prin')">
+                        <div class="absolute -right-4 -top-4 opacity-10"><i class="fa-solid fa-bullseye text-8xl"></i></div>
+                        <div class="flex justify-between items-center relative z-10">
+                            <h3 class="text-xl md:text-2xl font-heading font-bold text-soya-gold"><i class="fa-solid fa-flag-checkered mr-2"></i>Objetivo Principal</h3>
+                            <i class="fa-solid fa-chevron-down text-xl text-soya-gold" id="icon-obj-prin"></i>
+                        </div>
+                        <div id="obj-prin" class="mt-4 text-gray-200 text-sm md:text-base leading-relaxed hidden relative z-10 animation-fadeIn">
+                            <p>Determinar la viabilidad comercial para la exportación de salsa de Soya (P.A: 2103.10.00.00) hacia el mercado de Chile, en el periodo de tiempo de Enero a Marzo de 2026.</p>
+                        </div>
+                    </div>
+
+                    <!-- Objetivos Específicos -->
+                    <div class="bg-white rounded-xl shadow p-6 border-l-4 border-soya-red cursor-pointer hover:bg-gray-50 transition duration-300 relative overflow-hidden" onclick="toggleObj('obj-esp')">
+                        <div class="absolute -right-4 -top-4 opacity-[0.03]"><i class="fa-solid fa-list-check text-8xl text-soya-dark"></i></div>
+                        <div class="flex justify-between items-center relative z-10">
+                            <h3 class="text-xl md:text-2xl font-heading font-bold text-soya-dark"><i class="fa-solid fa-list-ul mr-2 text-soya-red"></i>Objetivos Específicos</h3>
+                            <i class="fa-solid fa-chevron-down text-xl text-gray-400" id="icon-obj-esp"></i>
+                        </div>
+                        <div id="obj-esp" class="mt-4 hidden text-xs md:text-sm text-gray-700 space-y-3 relative z-10 animation-fadeIn">
+                            <p class="flex items-start"><span class="font-bold text-soya-red mr-2">1.</span> Identificar las 5 principales zonas de producción nacional de grano de soya y trigo.</p>
+                            <p class="flex items-start"><span class="font-bold text-soya-red mr-2">2.</span> Analizar a las 5 principales empresas peruanas exportadoras de salsa de soya a Chile.</p>
+                            <p class="flex items-start"><span class="font-bold text-soya-red mr-2">3.</span> Identificar los 5 principales países exportadores a nivel mundial del producto.</p>
+                            <p class="flex items-start"><span class="font-bold text-soya-red mr-2">4.</span> Determinar el perfil del consumidor chileno y el tipo de segmentación (B2C/B2B).</p>
+                            <p class="flex items-start"><span class="font-bold text-soya-red mr-2">5.</span> Evaluar los requisitos de acceso al mercado chileno.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráficas Giratorias -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    
+                    <!-- Gráfica 1: Exportaciones de Perú al mundo -->
+                    <div class="flip-card" id="flip-chart1">
+                        <div class="flip-card-inner">
+                            <!-- Frente: FOB + Peso Neto -->
+                            <div class="flip-card-front cursor-pointer" onclick="document.getElementById('flip-chart1').classList.toggle('flipped')">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <h3 class="text-lg font-heading font-bold text-soya-dark leading-tight">Exportaciones al Mundo</h3>
+                                        <p class="text-xs text-gray-500 font-bold uppercase">Valor FOB (US$) + Peso Neto (Kg)</p>
+                                    </div>
+                                    <div class="bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition tooltip-container">
+                                        <i class="fa-solid fa-rotate text-soya-gold text-xl"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1 relative w-full h-full">
+                                    <canvas id="chartMarilin1Front"></canvas>
+                                </div>
+                            </div>
+                            <!-- Dorso: Precio Promedio -->
+                            <div class="flip-card-back cursor-pointer" onclick="document.getElementById('flip-chart1').classList.toggle('flipped')">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <h3 class="text-lg font-heading font-bold text-soya-dark leading-tight">Evolución de Precio Promedio</h3>
+                                        <p class="text-xs text-gray-500 font-bold uppercase">USD / Kilogramo (2021-2025)</p>
+                                    </div>
+                                    <div class="bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition">
+                                        <i class="fa-solid fa-rotate-left text-soya-gold text-xl"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1 relative w-full h-full">
+                                    <canvas id="chartMarilin1Back"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Gráfica 2: Top 3 mercados potenciales (2025) -->
+                    <div class="flip-card" id="flip-chart2">
+                        <div class="flip-card-inner">
+                            <!-- Frente: FOB + Peso Neto -->
+                            <div class="flip-card-front cursor-pointer" onclick="document.getElementById('flip-chart2').classList.toggle('flipped')">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <h3 class="text-lg font-heading font-bold text-soya-dark leading-tight">Top 3 Mercados Destino (2025)</h3>
+                                        <p class="text-xs text-gray-500 font-bold uppercase">Valor FOB (US$) + Peso Neto (Kg)</p>
+                                    </div>
+                                    <div class="bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition">
+                                        <i class="fa-solid fa-rotate text-soya-dark text-xl"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1 relative w-full h-full">
+                                    <canvas id="chartMarilin2Front"></canvas>
+                                </div>
+                            </div>
+                            <!-- Dorso: Precio Promedio Top 3 -->
+                            <div class="flip-card-back cursor-pointer" onclick="document.getElementById('flip-chart2').classList.toggle('flipped')">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <h3 class="text-lg font-heading font-bold text-soya-dark leading-tight">Precio Promedio Top 3 (2025)</h3>
+                                        <p class="text-xs text-gray-500 font-bold uppercase">Comparativa en USD / Kilogramo</p>
+                                    </div>
+                                    <div class="bg-gray-100 p-2 rounded-full hover:bg-gray-200 transition">
+                                        <i class="fa-solid fa-rotate-left text-soya-dark text-xl"></i>
+                                    </div>
+                                </div>
+                                <div class="flex-1 relative w-full h-full">
+                                    <canvas id="chartMarilin2Back"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <main>
-                <div class="text-center mb-8">
-                    <h2 class="text-2xl font-bold text-slate-700 fade-in bg-white/80 backdrop-blur-sm p-4 rounded-lg inline-block" style="animation-delay: 0.4s;">Aplicación de las 6 Reglas Generales (RGI)</h2>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
-                    
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-bufanda-modal1')">
-                        <div class="bg-blue-100 text-blue-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">1</div>
-                        <h3 class="font-bold text-lg">Regla 1</h3>
-                        <p class="text-sm text-gray-600">Textos de Partidas y Notas</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Marilin Medina</p>
+            <!-- PARTE 2: FRANCHESCA -->
+            <section id="franchesca" class="dashboard-section">
+                
+                <!-- Definición del Producto -->
+                <div class="bg-white rounded-xl shadow p-6 mb-6 flex flex-col md:flex-row gap-6 items-center">
+                    <div class="w-full md:w-1/3 text-center md:border-r border-gray-200 flex flex-col items-center justify-center py-4">
+                        <!-- Imagen actualizada para la Parte 2 -->
+                        <img src="https://raw.githubusercontent.com/RickNE7/SalsaSoyaChile20261/main/IntiSoya_gris(PET).png" alt="Producto IntiSoya PET transparente sin fondo" class="h-64 object-contain drop-shadow-xl">
+                        <h3 class="font-heading font-bold text-xl mt-4 text-soya-dark">IntiSoya - 210ml</h3>
+                        <p class="text-sm text-soya-red font-bold">P.A. 2103.10.00.00</p>
                     </div>
-                    
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-bufanda-modal2')">
-                        <div class="bg-green-100 text-green-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">2</div>
-                        <h3 class="font-bold text-lg">Regla 2</h3>
-                        <p class="text-sm text-gray-600">Incompletos y Mezclados</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Eric Mozombite</p>
-                    </div>
-
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-bufanda-modal3')">
-                        <div class="bg-yellow-100 text-yellow-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">3</div>
-                        <h3 class="font-bold text-lg">Regla 3</h3>
-                        <p class="text-sm text-gray-600">Especificidad</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Celeste Taya</p>
-                    </div>
-                    
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-bufanda-modal4')">
-                        <div class="bg-purple-100 text-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">4</div>
-                        <h3 class="font-bold text-lg">Regla 4</h3>
-                        <p class="text-sm text-gray-600">Clasificación por Analogía</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Milagros Tornero</p>
-                    </div>
-                    
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-bufanda-modal5')">
-                        <div class="bg-indigo-100 text-indigo-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">5</div>
-                        <h3 class="font-bold text-lg">Regla 5</h3>
-                        <p class="text-sm text-gray-600">Estuches y Envases</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Ashly Rosas</p>
-                    </div>
-
-                     <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-bufanda-modal6')">
-                        <div class="bg-red-100 text-red-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">6</div>
-                        <h3 class="font-bold text-lg">Regla 6</h3>
-                        <p class="text-sm text-gray-600">Clasificación en Subpartidas</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Gino Vela</p>
+                    <div class="w-full md:w-2/3 grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="p-4 bg-gray-50 rounded border border-gray-100 h-full flex flex-col">
+                            <h4 class="font-bold text-soya-gold mb-2"><i class="fa-solid fa-seedling mr-2"></i>Nivel Esencial</h4>
+                            <p class="text-sm text-gray-700">Condimento a base de soya y trigo que brinda un sabor umami y aroma incomparable a las comidas.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded border border-gray-100 h-full flex flex-col">
+                            <h4 class="font-bold text-soya-dark mb-2"><i class="fa-solid fa-bottle-droplet mr-2"></i>Nivel Real</h4>
+                            <p class="text-sm text-gray-700">Líquido oscuro en botella PET transparente de 210ml, etiqueta en castellano, tapa con dosificador.</p>
+                        </div>
+                        <div class="p-4 bg-gray-50 rounded border border-gray-100 h-full flex flex-col">
+                            <h4 class="font-bold text-soya-red mb-2"><i class="fa-solid fa-certificate mr-2"></i>Nivel Aumentado</h4>
+                            <p class="text-sm text-gray-700">Certificación HACCP, proyección BRCGS, rica fuente de isoflavonas y proteína vegetal.</p>
+                        </div>
                     </div>
                 </div>
-            </main>
-        </div>
-    </div>
-    
-    <div id="ea2-etiquetas-wrapper" class="view hidden opacity-0 absolute inset-0 overflow-y-auto">
-         <button onclick="switchView('ea2-landing-wrapper')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la selección">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-        </button>
 
-        <div class="container mx-auto p-4 md:p-8">
-            <header class="text-center mb-12 fade-in">
-                 <div class="inline-block bg-white/80 backdrop-blur-sm p-4 rounded-lg">
-                      <h1 class="text-3xl md:text-4xl font-bold text-slate-800">EA2: Clasificación de Insumo Importado</h1>
-                 </div>
-            </header>
+                <!-- Dashboard Interactivo FODA Cruzado -->
+                <div class="bg-gray-100 rounded-xl p-4 md:p-6 border border-gray-200">
+                    <h3 class="text-xl md:text-2xl font-heading font-bold text-soya-dark mb-6 text-center">Dashboard FODA Cruzado (Interactivo)</h3>
+                    
+                    <div class="foda-grid">
+                        <div class="foda-card foda-f bg-white" onclick="openFodaModal('Fortalezas')">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-lg md:text-xl text-emerald-600">Fortalezas (F)</h4>
+                                <i class="fa-solid fa-dumbbell text-emerald-200 text-2xl"></i>
+                            </div>
+                            <ul class="text-xs md:text-sm space-y-1 text-gray-600 list-disc pl-4">
+                                <li><strong>Logística Eficiente:</strong> Tiempo de tránsito de solo 10 días hacia Chile.</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="foda-card foda-o bg-white" onclick="openFodaModal('Oportunidades')">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-lg md:text-xl text-blue-600">Oportunidades (O)</h4>
+                                <i class="fa-solid fa-earth-americas text-blue-200 text-2xl"></i>
+                            </div>
+                            <ul class="text-xs md:text-sm space-y-1 text-gray-600 list-disc pl-4">
+                                <li><strong>Ventaja Arancelaria:</strong> Ingreso con Arancel 0 gracias al TLC Perú-Chile.</li>
+                                <li><strong>Mercado en Crecimiento:</strong> Aumento del 24.94% en exportaciones peruanas a este destino.</li>
+                            </ul>
+                        </div>
 
-            <section class="bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-md mb-12 fade-in" style="animation-delay: 0.2s;">
-                <h2 class="text-2xl font-bold text-slate-700 mb-4 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                    Producto: Etiquetas Tejidas (70% Poliéster / 30% Algodón)
-                </h2>
-                <p class="text-gray-800 leading-relaxed text-justify">
-                    Se simula la importación (Régimen 10) de un insumo crítico para "Alpaca del Sol": <strong>Etiquetas tejidas de alta definición (70% poliéster y 30% algodón)</strong>, con el logo de la marca, provenientes de China. El objetivo es clasificar correctamente este producto usando las 6 Reglas Generales de Interpretación (RGI).
-                </p>
-                <div class="mt-4 p-4 bg-blue-50 border-l-4 border-blue-500 rounded-r-lg">
-                    <p class="font-bold text-lg text-blue-800">Clasificación Final: <span class="font-mono">5807.10.00.00</span></p>
-                    <p class="text-sm text-blue-700">Etiquetas, escudos y artículos similares de materia textil, en pieza, en tiras o cortados, sin bordar: - Tejidos.</p>
-                     <div class="mt-4 pt-4 border-t border-blue-200">
-                        <p class="text-sm font-semibold text-gray-700">Consultar en Aduanet (SUNAT):</p>
-                        <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 mt-2">
-                            <a href="http://www.aduanet.gob.pe/itarancel/arancelS01Alias" target="_blank" class="inline-block bg-blue-600 text-white text-xs font-bold py-2 px-3 rounded-lg hover:bg-blue-700 transition-all text-center">
-                                Ir a SUNAT
-                            </a>
-                            <div class="flex items-center space-x-2">
-                                <span class="text-sm text-gray-600">Usar código:</span>
-                                <input type="text" readonly value="5807100000" id="partida-code-etiquetas" class="text-sm p-1 rounded-md bg-gray-100 border-gray-300 shadow-inner w-32 font-mono text-center">
-                                <button onclick="copyToClipboard('5807100000', this)" class="bg-gray-200 p-1 rounded-full hover:bg-gray-300" title="Copiar código">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 4h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2v-8a2 2 0 012-2z" /></svg>
-                                </button>
+                        <div class="foda-card foda-d bg-white" onclick="openFodaModal('Debilidades')">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-lg md:text-xl text-amber-500">Debilidades (D)</h4>
+                                <i class="fa-solid fa-link-slash text-amber-200 text-2xl"></i>
+                            </div>
+                            <ul class="text-xs md:text-sm space-y-1 text-gray-600 list-disc pl-4">
+                                <li><strong>Limitación de Producto:</strong> Falta de versiones bajas en sodio o "light" frente a la competencia.</li>
+                            </ul>
+                        </div>
+
+                        <div class="foda-card foda-a bg-white" onclick="openFodaModal('Amenazas')">
+                            <div class="flex justify-between items-center mb-2">
+                                <h4 class="font-bold text-lg md:text-xl text-red-500">Amenazas (A)</h4>
+                                <i class="fa-solid fa-bolt text-red-200 text-2xl"></i>
+                            </div>
+                            <ul class="text-xs md:text-sm space-y-1 text-gray-600 list-disc pl-4">
+                                <li><strong>Competencia Global:</strong> China y EE. UU. dominan el 74% de las importaciones chilenas.</li>
+                                <li><strong>Saturación Local:</strong> Existen 93 empresas peruanas exportando salsa de soya a Chile.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Panel Central Cruzado -->
+                    <div class="mt-6 p-4 bg-white rounded-xl shadow-inner border border-gray-200">
+                        <h4 class="text-center font-bold text-gray-700 mb-4 uppercase tracking-widest text-xs md:text-sm">Estrategias Cruzadas (Haz clic)</h4>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-4">
+                            <div class="cruzado-btn text-xs md:text-sm lg:text-base py-3" onclick="openFodaModal('FO')">Estrategia FO <br><span class="text-[10px] md:text-xs font-normal opacity-80">Explotar</span></div>
+                            <div class="cruzado-btn text-xs md:text-sm lg:text-base py-3" onclick="openFodaModal('DO')">Estrategia DO <br><span class="text-[10px] md:text-xs font-normal opacity-80">Buscar</span></div>
+                            <div class="cruzado-btn text-xs md:text-sm lg:text-base py-3" onclick="openFodaModal('FA')">Estrategia FA <br><span class="text-[10px] md:text-xs font-normal opacity-80">Confrontar</span></div>
+                            <div class="cruzado-btn text-xs md:text-sm lg:text-base py-3" onclick="openFodaModal('DA')">Estrategia DA <br><span class="text-[10px] md:text-xs font-normal opacity-80">Evitar</span></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PARTE 3: ISABELLA -->
+            <section id="isabella" class="dashboard-section">
+                <!-- Fila 1: Producción y Zonas -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <!-- Producción Nacional Histórica -->
+                    <div class="bg-white rounded-xl shadow p-4 md:p-6">
+                        <h3 class="text-lg font-heading font-bold text-soya-dark mb-4">Producción Nacional (2021-2025)</h3>
+                        <div class="h-64 relative">
+                            <canvas id="chartIsabella3"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Mapa de Producción Zonas -->
+                    <div class="bg-white rounded-xl shadow p-4 md:p-6">
+                        <h3 class="text-lg font-heading font-bold text-soya-dark mb-4">Zonas de Producción (Perú 2025)</h3>
+                        <div class="h-64 flex justify-center relative">
+                            <canvas id="chartIsabella1"></canvas>
+                            <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                                <span class="text-2xl font-bold text-soya-dark">1,279 Tn</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Fila 2: Proveedores y Tabla -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                    <!-- Evaluación de Proveedores -->
+                    <div class="bg-white rounded-xl shadow p-4 md:p-6 flex flex-col justify-between">
+                        <h3 class="text-lg font-heading font-bold text-soya-dark mb-4">Homologación de Proveedores (Soya)</h3>
+                        <div class="h-48 mb-4">
+                            <canvas id="chartIsabella2"></canvas>
+                        </div>
+                        <div class="p-3 bg-green-50 border-l-4 border-green-500 rounded">
+                            <p class="text-sm font-bold text-green-800">Seleccionado: CAMPO GRANDE PERÚ E.I.R.L.</p>
+                            <p class="text-xs text-green-700 mt-1">Gana por mejor puntaje en calidad, precio por mayor, y disponibilidad constante todo el año.</p>
+                        </div>
+                    </div>
+
+                    <!-- Tabla de Producción Estacional -->
+                    <div class="bg-white rounded-xl shadow overflow-hidden flex flex-col">
+                        <div class="p-4 border-b border-gray-200 bg-gray-50">
+                            <h3 class="font-heading font-bold text-soya-dark text-sm md:text-base">Producción mensual de soya del año 2026</h3>
+                            <p class="text-xs text-gray-500 mt-1">Expresado en toneladas</p>
+                        </div>
+                        <div class="overflow-x-auto flex-1 flex flex-col justify-center">
+                            <table class="w-full text-sm text-left whitespace-nowrap">
+                                <thead class="text-xs text-white uppercase bg-soya-dark">
+                                    <tr>
+                                        <th class="px-4 py-3">Ene</th><th class="px-4 py-3">Feb</th><th class="px-4 py-3">Mar</th>
+                                        <th class="px-4 py-3">Abr</th><th class="px-4 py-3">May</th><th class="px-4 py-3 text-soya-gold">Jun</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-white border-b">
+                                        <td class="px-4 py-3">40</td><td class="px-4 py-3">37</td><td class="px-4 py-3">34</td>
+                                        <td class="px-4 py-3">26</td><td class="px-4 py-3">17</td><td class="px-4 py-3 font-bold text-soya-red">217</td>
+                                    </tr>
+                                </tbody>
+                                <thead class="text-xs text-white uppercase bg-soya-dark">
+                                    <tr>
+                                        <th class="px-4 py-3 text-soya-gold">Jul</th><th class="px-4 py-3">Ago</th><th class="px-4 py-3">Sep</th>
+                                        <th class="px-4 py-3">Oct</th><th class="px-4 py-3 text-soya-gold">Nov</th><th class="px-4 py-3">Dic</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="bg-white">
+                                        <td class="px-4 py-3 font-bold text-soya-red">319</td><td class="px-4 py-3">75</td><td class="px-4 py-3">106</td>
+                                        <td class="px-4 py-3">94</td><td class="px-4 py-3 font-bold text-soya-red">295</td><td class="px-4 py-3">20</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PARTE 4: VÍCTOR -->
+            <section id="victor" class="dashboard-section">
+                <!-- SECCIÓN A: Estructura del Mercado Global -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-heading font-bold text-soya-dark mb-4 border-b-2 border-soya-gold pb-2 inline-block"><i class="fa-solid fa-earth-americas text-soya-gold mr-2"></i>Estructura del Mercado Global</h3>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- 1. Principales Productores -->
+                        <div class="bg-white rounded-xl shadow p-4 md:p-6 border-t-4 border-soya-gold">
+                            <h4 class="text-md font-bold text-soya-dark mb-2 text-center">Principales Productores (Mundial)</h4>
+                            <div class="h-64 relative">
+                                <canvas id="chartVictorProd"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- 2. Países Exportadores (Valores y Tn) -->
+                        <div class="bg-white rounded-xl shadow p-4 md:p-6 border-t-4 border-soya-dark">
+                            <h4 class="text-md font-bold text-soya-dark mb-1 text-center">Top Países Exportadores</h4>
+                            <p class="text-[10px] text-center text-gray-500 mb-2 uppercase">FOB (Miles USD) vs Peso Neto (Tn)</p>
+                            <div class="h-64 relative">
+                                <canvas id="chartVictorExp"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- 3. Países Importadores (Valores y Tn) -->
+                        <div class="bg-white rounded-xl shadow p-4 md:p-6 border-t-4 border-blue-600">
+                            <h4 class="text-md font-bold text-soya-dark mb-1 text-center">Top Países Importadores</h4>
+                            <p class="text-[10px] text-center text-gray-500 mb-2 uppercase">FOB (Miles USD) vs Peso Neto (Tn)</p>
+                            <div class="h-64 relative">
+                                <canvas id="chartVictorImp"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- 4. Proveedores al Mercado de Chile -->
+                        <div class="bg-white rounded-xl shadow p-4 md:p-6 border-t-4 border-red-600 lg:col-span-1 md:col-span-2">
+                            <h4 class="text-md font-bold text-soya-dark mb-1 text-center">Principales Proveedores a Chile</h4>
+                            <p class="text-[10px] text-center text-gray-500 mb-2 uppercase">FOB (Miles USD) vs Peso Neto (Tn)</p>
+                            <div class="h-64 relative">
+                                <canvas id="chartVictorProvChile"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- 5. Empresas Exportadoras del Perú a Chile -->
+                        <div class="bg-white rounded-xl shadow p-4 md:p-6 border-t-4 border-green-600 lg:col-span-2 md:col-span-2">
+                            <h4 class="text-md font-bold text-soya-dark mb-1 text-center">Top Empresas Exportadoras (Perú -> Chile)</h4>
+                            <p class="text-[10px] text-center text-gray-500 mb-2 uppercase">FOB (Miles USD) vs Peso Neto (Tn)</p>
+                            <div class="h-64 relative">
+                                <canvas id="chartVictorEmpPeru"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN B: Índice de Atracción y Competitividad -->
+                <div class="mb-8">
+                    <h3 class="text-2xl font-heading font-bold text-soya-dark mb-4 border-b-2 border-soya-gold pb-2 inline-block"><i class="fa-solid fa-scale-balanced text-soya-gold mr-2"></i>Índice de Atracción y Competitividad</h3>
+                    
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                        <!-- Criterios de Atracción -->
+                        <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+                            <div class="bg-soya-dark p-4">
+                                <h4 class="font-heading font-bold text-soya-gold text-lg text-center">Índice de Atracción (Criterios)</h4>
+                            </div>
+                            <div class="p-6">
+                                <ul class="space-y-3 text-sm text-gray-700">
+                                    <li class="flex justify-between border-b pb-2"><span><i class="fa-solid fa-shield-halved text-gray-400 mr-2"></i>Riesgo del País:</span> <strong>Bajo (A3)</strong></li>
+                                    <li class="flex justify-between border-b pb-2"><span><i class="fa-solid fa-ship text-gray-400 mr-2"></i>Días de Tránsito:</span> <strong>10 días (Callao - San Antonio)</strong></li>
+                                    <li class="flex justify-between border-b pb-2"><span><i class="fa-solid fa-users text-gray-400 mr-2"></i>Población:</span> <strong>18.4 Millones</strong></li>
+                                    <li class="flex justify-between border-b pb-2"><span><i class="fa-solid fa-utensils text-gray-400 mr-2"></i>Consumo Per Cápita:</span> <strong>7.48 Litros</strong></li>
+                                    <li class="flex justify-between border-b pb-2"><span><i class="fa-solid fa-sack-dollar text-gray-400 mr-2"></i>PBI Per Cápita:</span> <strong>USD 15,355</strong></li>
+                                </ul>
+                                <div class="mt-4 bg-green-100 text-green-800 p-3 rounded-lg text-center">
+                                    <span class="text-xs uppercase font-bold">Puntaje Total Ponderado</span><br>
+                                    <span class="text-3xl font-black">19.0 pts</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Criterios de Competitividad -->
+                        <div class="bg-gradient-to-br from-white to-gray-50 rounded-xl shadow-lg border border-gray-200 overflow-hidden">
+                            <div class="bg-soya-dark p-4">
+                                <h4 class="font-heading font-bold text-white text-lg text-center">Índice de Competitividad (Criterios)</h4>
+                            </div>
+                            <div class="p-6">
+                                <ul class="space-y-3 text-sm text-gray-700">
+                                    <li class="flex justify-between border-b pb-2"><span><i class="fa-solid fa-percent text-gray-400 mr-2"></i>Arancel:</span> <strong>0% (TLC)</strong></li>
+                                    <li class="flex justify-between border-b pb-2"><span><i class="fa-solid fa-handshake text-gray-400 mr-2"></i>Facilidad de Negocios:</span> <strong>Alta (Top Latam)</strong></li>
+                                    <li class="flex justify-between border-b pb-2"><span><i class="fa-solid fa-building text-gray-400 mr-2"></i>Nro. Empresas Exportadoras:</span> <strong>93 (Perú)</strong></li>
+                                    <li class="flex justify-between border-b pb-2"><span><i class="fa-solid fa-globe text-gray-400 mr-2"></i>Países Competidores:</span> <strong>Alto (EEUU, China)</strong></li>
+                                    <li class="flex justify-between border-b pb-2"><span><i class="fa-solid fa-bolt text-gray-400 mr-2"></i>Poder Negociación (Perú):</span> <strong>Medio-Bajo</strong></li>
+                                </ul>
+                                <div class="mt-4 bg-blue-100 text-blue-800 p-3 rounded-lg text-center">
+                                    <span class="text-xs uppercase font-bold">Puntaje Total Ponderado</span><br>
+                                    <span class="text-3xl font-black">40.2 pts</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Figura 28 (Scatter Plot Banderas) -->
+                    <div class="bg-white rounded-xl shadow p-4 md:p-6 border border-gray-100">
+                        <h3 class="text-lg font-heading font-bold text-soya-dark mb-2 text-center">Figura 28: Matriz de Selección (Atracción vs Competitividad)</h3>
+                        <p class="text-xs text-center text-gray-500 mb-4">El tamaño de la bandera es proporcional al <strong>Consumo Per Cápita</strong></p>
+                        <div class="h-80 md:h-[400px] chart-container relative w-full overflow-hidden">
+                            <canvas id="chartVictor2"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SECCIÓN C: Selección del Nicho de Mercado -->
+                <div>
+                    <h3 class="text-2xl font-heading font-bold text-soya-dark mb-4 border-b-2 border-soya-gold pb-2 inline-block"><i class="fa-solid fa-crosshairs text-soya-gold mr-2"></i>Selección del Nicho de Mercado</h3>
+                    
+                    <div class="bg-white rounded-xl shadow p-6 border-t-4 border-soya-red">
+                        <p class="text-sm text-gray-600 mb-6">El sustento para la selección definitiva del mercado chileno como nicho prioritario se fundamenta en los siguientes criterios comparativos:</p>
+                        
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="bg-gray-50 p-4 rounded-lg text-center border border-gray-200">
+                                <i class="fa-solid fa-truck-ramp-box text-3xl text-soya-dark mb-2"></i>
+                                <h4 class="text-xs font-bold text-gray-500 uppercase">Importaciones (2024)</h4>
+                                <span class="text-xl font-bold text-soya-red">~6,293 Tn</span>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg text-center border border-gray-200">
+                                <i class="fa-solid fa-users text-3xl text-soya-dark mb-2"></i>
+                                <h4 class="text-xs font-bold text-gray-500 uppercase">Población</h4>
+                                <span class="text-xl font-bold text-soya-red">18.4M</span>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg text-center border border-gray-200">
+                                <i class="fa-solid fa-money-bill-trend-up text-3xl text-soya-dark mb-2"></i>
+                                <h4 class="text-xs font-bold text-gray-500 uppercase">Ingreso Per Cápita</h4>
+                                <span class="text-xl font-bold text-soya-red">$15,355</span>
+                            </div>
+                            <div class="bg-gray-50 p-4 rounded-lg text-center border border-gray-200 shadow-[inset_0_0_10px_rgba(212,175,55,0.2)]">
+                                <i class="fa-solid fa-door-open text-3xl text-soya-gold mb-2"></i>
+                                <h4 class="text-xs font-bold text-gray-500 uppercase">Facilidad Acceso</h4>
+                                <span class="text-xl font-bold text-green-600">Alta (0% Arancel)</span>
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <main>
-                <div class="text-center mb-8">
-                    <h2 class="text-2xl font-bold text-slate-700 fade-in bg-white/80 backdrop-blur-sm p-4 rounded-lg inline-block" style="animation-delay: 0.4s;">Aplicación de las 6 Reglas Generales (RGI)</h2>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
+            <!-- PARTE 5: ERIC -->
+            <section id="eric" class="dashboard-section">
+                
+                <!-- Cuantificación Interactiva Priorizada -->
+                <div class="bg-soya-dark rounded-xl shadow p-6 text-white mb-6">
+                    <h3 class="text-xl font-heading font-bold text-soya-gold mb-2"><i class="fa-solid fa-filter mr-2"></i>Cuantificación de la Demanda</h3>
+                    <p class="text-xs text-gray-400 mb-6">Pase el cursor sobre cada etapa para visualizar el embudo de mercado en Chile.</p>
                     
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-etiquetas-modal1')">
-                        <div class="bg-blue-100 text-blue-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">1</div>
-                        <h3 class="font-bold text-lg">Regla 1</h3>
-                        <p class="text-sm text-gray-600">Textos de Partidas y Notas</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Marilin Medina Apolinario</p>
-                    </div>
-                    
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-etiquetas-modal2')">
-                        <div class="bg-green-100 text-green-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">2</div>
-                        <h3 class="font-bold text-lg">Regla 2</h3>
-                        <p class="text-sm text-gray-600">Incompletos y Mezclados</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Eric Mozombite Shishco</p>
-                    </div>
-
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-etiquetas-modal3')">
-                        <div class="bg-yellow-100 text-yellow-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">3</div>
-                        <h3 class="font-bold text-lg">Regla 3</h3>
-                        <p class="text-sm text-gray-600">Especificidad y Carácter Esencial</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Celeste Taya Martínez</p>
-                    </div>
-                    
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-etiquetas-modal4')">
-                        <div class="bg-purple-100 text-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">4</div>
-                        <h3 class="font-bold text-lg">Regla 4</h3>
-                        <p class="text-sm text-gray-600">Clasificación por Analogía</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Milagros Tornero Tejada</p>
-                    </div>
-                    
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-etiquetas-modal5')">
-                        <div class="bg-indigo-100 text-indigo-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">5</div>
-                        <h3 class="font-bold text-lg">Regla 5</h3>
-                        <p class="text-sm text-gray-600">Estuches y Envases</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Ashly Rosas Flores</p>
-                    </div>
-
-                     <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-etiquetas-modal6')">
-                        <div class="bg-red-100 text-red-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">6</div>
-                        <h3 class="font-bold text-lg">Regla 6</h3>
-                        <p class="text-sm text-gray-600">Clasificación en Subpartidas</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Gino Vela Ruiz</p>
-                    </div>
-                </div>
-            </main>
-        </div>
-    </div>
-
-    <div id="ea2-maquina-wrapper" class="view hidden opacity-0 absolute inset-0 overflow-y-auto">
-         <button onclick="switchView('ea2-landing-wrapper')" class="fixed bottom-6 right-6 z-40 bg-gray-800 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-gray-900 transition-colors" title="Volver a la selección">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-        </button>
-
-        <div class="container mx-auto p-4 md:p-8">
-            <header class="text-center mb-12 fade-in">
-                 <div class="inline-block bg-white/80 backdrop-blur-sm p-4 rounded-lg">
-                      <h1 class="text-3xl md:text-4xl font-bold text-slate-800">EA2: Clasificación de Activo Fijo Importado</h1>
-                 </div>
-            </header>
-
-            <section class="bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-md mb-12 fade-in" style="animation-delay: 0.2s;">
-                <h2 class="text-2xl font-bold text-slate-700 mb-4 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-3 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                    Producto: Máquina Tejedora Rectilínea (Industrial)
-                </h2>
-                <p class="text-gray-800 leading-relaxed text-justify">
-                    Se simula la importación (Régimen 10) de un activo fijo para "Alpaca del Sol": <strong>Una Máquina Tejedora Rectilínea</strong> industrial para la confección de las bufandas. El objetivo es clasificar correctamente esta maquinaria usando las 6 Reglas Generales de Interpretación (RGI).
-                </p>
-                <div class="mt-4 p-4 bg-red-50 border-l-4 border-red-500 rounded-r-lg">
-                    <p class="font-bold text-lg text-red-800">Clasificación Final: <span class="font-mono">8447.20.10.00</span></p>
-                    <p class="text-sm text-red-700">Máquinas de tricotar, de costura por cadeneta...: - Máquinas rectilíneas de tricotar; máquinas de costura por cadeneta: -- Para la industria textil.</p>
-                     <div class="mt-4 pt-4 border-t border-red-200">
-                        <p class="text-sm font-semibold text-gray-700">Consultar en Aduanet (SUNAT):</p>
-                        <div class="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-4 mt-2">
-                            <a href="http://www.aduanet.gob.pe/itarancel/arancelS01Alias" target="_blank" class="inline-block bg-red-600 text-white text-xs font-bold py-2 px-3 rounded-lg hover:bg-red-700 transition-all text-center">
-                                Ir a SUNAT
-                            </a>
-                            <div class="flex items-center space-x-2">
-                                <span class="text-sm text-gray-600">Usar código:</span>
-                                <input type="text" readonly value="8447201000" id="partida-code-maquina" class="text-sm p-1 rounded-md bg-gray-100 border-gray-300 shadow-inner w-32 font-mono text-center">
-                                <button onclick="copyToClipboard('8447201000', this)" class="bg-gray-200 p-1 rounded-full hover:bg-gray-300" title="Copiar código">
-                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-gray-600" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 4h8a2 2 0 012 2v8a2 2 0 01-2 2H8a2 2 0 01-2-2v-8a2 2 0 012-2z" /></svg>
-                                </button>
-                            </div>
+                    <div class="flex flex-col md:flex-row justify-between gap-4 text-center items-center">
+                        <div class="w-full md:flex-1 bg-gray-800 rounded-lg p-4 transform transition duration-300 hover:scale-105 hover:bg-gray-700 border border-gray-600 shadow-lg">
+                            <div class="text-xs text-gray-400 mb-1 uppercase tracking-wider">Población Chile</div>
+                            <div class="font-bold text-2xl">18.4M</div>
                         </div>
+                        <div class="hidden md:block text-gray-500"><i class="fa-solid fa-chevron-right text-xl"></i></div>
+                        <div class="block md:hidden text-gray-500"><i class="fa-solid fa-chevron-down text-xl"></i></div>
+                        
+                        <div class="w-full md:flex-1 bg-gray-800 rounded-lg p-4 transform transition duration-300 hover:scale-105 hover:bg-gray-700 border border-gray-600 shadow-lg">
+                            <div class="text-xs text-gray-400 mb-1 uppercase tracking-wider">Región Metro.</div>
+                            <div class="font-bold text-2xl">7.4M</div>
+                        </div>
+                        <div class="hidden md:block text-gray-500"><i class="fa-solid fa-chevron-right text-xl"></i></div>
+                        <div class="block md:hidden text-gray-500"><i class="fa-solid fa-chevron-down text-xl"></i></div>
+                        
+                        <div class="w-full md:flex-1 bg-gray-800 rounded-lg p-4 transform transition duration-300 hover:scale-105 hover:bg-gray-700 border border-gray-600 shadow-lg">
+                            <div class="text-xs text-gray-400 mb-1 uppercase tracking-wider">Público Obj.</div>
+                            <div class="font-bold text-2xl">1.5M</div>
+                        </div>
+                        <div class="hidden md:block text-soya-gold"><i class="fa-solid fa-chevron-right text-2xl drop-shadow-md"></i></div>
+                        <div class="block md:hidden text-soya-gold"><i class="fa-solid fa-chevron-down text-2xl drop-shadow-md"></i></div>
+                        
+                        <div class="w-full md:flex-1 bg-gradient-to-br from-soya-gold to-yellow-600 rounded-lg p-4 transform transition duration-300 hover:scale-110 shadow-[0_0_20px_rgba(212,175,55,0.5)] border border-yellow-400 text-soya-dark">
+                            <div class="text-xs font-bold mb-1 uppercase tracking-wider">Meta (2.5% Share)</div>
+                            <div class="font-black text-3xl">0.21 Tn</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mb-6">
+                    <!-- Perfil del Consumidor -->
+                    <div class="lg:col-span-5 bg-white rounded-xl shadow p-4 md:p-6 border-t-4 border-soya-red">
+                        <h3 class="text-xl font-heading font-bold text-soya-dark mb-4"><i class="fa-solid fa-user-tag mr-2 text-soya-red"></i>Perfil del Cliente</h3>
+                        <ul class="space-y-4 text-sm">
+                            <li class="flex items-start"><i class="fa-solid fa-location-dot mt-1 text-gray-400 w-6"></i> <div><strong>Nicho:</strong> Región Metropolitana de Santiago y Valparaíso.</div></li>
+                            <li class="flex items-start"><i class="fa-solid fa-id-card mt-1 text-gray-400 w-6"></i> <div><strong>Demografía:</strong> Jóvenes DINKs y familias C2/C3 (25 a 54 años).</div></li>
+                            <li class="flex items-start"><i class="fa-solid fa-utensils mt-1 text-gray-400 w-6"></i> <div><strong>Uso:</strong> Preparación en casa, fusión peruana, reemplazar sal, delivery.</div></li>
+                            <li class="flex items-start"><i class="fa-solid fa-shop mt-1 text-gray-400 w-6"></i> <div><strong>Plaza:</strong> Supermercados, Oxxo, Tostadurías.</div></li>
+                        </ul>
+                    </div>
+
+                    <!-- Canal de Distribución Banner -->
+                    <div class="lg:col-span-7 bg-white rounded-xl shadow p-6 border-l-4 border-soya-gold flex flex-col justify-between">
+                        <div>
+                            <h3 class="text-xl font-heading font-bold text-soya-dark mb-3"><i class="fa-solid fa-network-wired mr-2 text-soya-gold"></i>Canal de Distribución</h3>
+                            <ul class="space-y-2 text-sm text-gray-600 list-disc pl-4">
+                                <li><strong>Canal Largo:</strong> Operación B2B2C (Exportador -> Agente -> Mayorista -> Retail / HORECA -> Consumidor).</li>
+                                <li><strong>Estrategia Intensiva:</strong> Presencia máxima en supermercados y tiendas de conveniencia para garantizar capilaridad.</li>
+                                <li><strong>Adaptación PDM (B2B):</strong> Inclusión estratégica del sector industrial procesador de alimentos de Chile.</li>
+                            </ul>
+                        </div>
+                        <button onclick="openFlujo()" class="mt-4 w-full bg-soya-dark text-soya-gold px-4 py-3 rounded-lg font-bold hover:bg-soya-red hover:text-white transition shadow-lg flex items-center justify-center">
+                            <i class="fa-solid fa-diagram-project mr-2"></i> Ver Flujo Interactivo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 9 P's Matrix (Summary) -->
+                <h3 class="text-2xl font-heading font-bold text-soya-dark mb-4">Mix de Marketing Adicional</h3>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div class="bg-white p-4 rounded-xl shadow text-center border-b-4 border-blue-500 flex flex-col items-center justify-center">
+                        <i class="fa-solid fa-tag text-3xl text-blue-500 mb-2"></i>
+                        <h4 class="font-bold text-gray-800">Precio</h4>
+                        <p class="text-xs text-gray-500 mt-2">Competitivo: $3.00 - $4.50 USD. Evita segmento bajo asiático.</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow text-center border-b-4 border-purple-500 flex flex-col items-center justify-center">
+                        <i class="fa-solid fa-bullhorn text-3xl text-purple-500 mb-2"></i>
+                        <h4 class="font-bold text-gray-800">Promoción</h4>
+                        <p class="text-xs text-gray-500 mt-2">Feria AQUASUR y marketing digital en TikTok (Marca Perú).</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow text-center border-b-4 border-red-500 flex flex-col items-center justify-center">
+                        <i class="fa-solid fa-file-shield text-3xl text-red-500 mb-2"></i>
+                        <h4 class="font-bold text-gray-800">Permisos</h4>
+                        <p class="text-xs text-gray-500 mt-2">Arancel 0%, Reglamento Sanitario, y Ley de Octógonos obligatoria.</p>
                     </div>
                 </div>
             </section>
 
-            <main>
-                <div class="text-center mb-8">
-                    <h2 class="text-2xl font-bold text-slate-700 fade-in bg-white/80 backdrop-blur-sm p-4 rounded-lg inline-block" style="animation-delay: 0.4s;">Aplicación de las 6 Reglas Generales (RGI)</h2>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 text-center">
-                    
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-maquina-modal1')">
-                        <div class="bg-blue-100 text-blue-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">1</div>
-                        <h3 class="font-bold text-lg">Regla 1</h3>
-                        <p class="text-sm text-gray-600">Textos de Partidas y Notas</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Marilin Medina Apolinario</p>
-                    </div>
-                    
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-maquina-modal2')">
-                        <div class="bg-green-100 text-green-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">2</div>
-                        <h3 class="font-bold text-lg">Regla 2</h3>
-                        <p class="text-sm text-gray-600">Artículos Desmontados</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Eric Mozombite Shishco</p>
-                    </div>
+        </div>
+    </main>
 
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-maquina-modal3')">
-                        <div class="bg-yellow-100 text-yellow-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">3</div>
-                        <h3 class="font-bold text-lg">Regla 3</h3>
-                        <p class="text-sm text-gray-600">Especificidad</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Celeste Taya Martínez</p>
-                    </div>
-                    
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-maquina-modal4')">
-                        <div class="bg-purple-100 text-purple-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">4</div>
-                        <h3 class="font-bold text-lg">Regla 4</h3>
-                        <p class="text-sm text-gray-600">Clasificación por Analogía</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Milagros Tornero Tejada</p>
-                    </div>
-                    
-                    <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-maquina-modal5')">
-                        <div class="bg-indigo-100 text-indigo-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">5</div>
-                        <h3 class="font-bold text-lg">Regla 5</h3>
-                        <p class="text-sm text-gray-600">Envases y Embalajes</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Ashly Rosas Flores</p>
-                    </div>
-
-                     <div class="step-item bg-white/90 backdrop-blur-sm p-6 rounded-lg shadow-lg hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer" onclick="openModal('ea2-maquina-modal6')">
-                        <div class="bg-red-100 text-red-600 rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-4 font-bold text-3xl">6</div>
-                        <h3 class="font-bold text-lg">Regla 6</h3>
-                        <p class="text-sm text-gray-600">Clasificación en Subpartidas</p>
-                        <p class="text-xs text-gray-500 mt-2 font-semibold">Gino Vela Ruiz</p>
-                    </div>
-                </div>
-            </main>
-        </div>
-    </div>
-    <div id="pdf-view" class="view hidden opacity-0 fixed inset-0 z-50 bg-gray-800">
-        <iframe id="pdf-iframe" class="w-full h-full border-0"></iframe>
-        <button onclick="returnToInfografia()" class="fixed bottom-6 right-6 z-50 bg-blue-600 text-white w-14 h-14 rounded-full shadow-lg flex items-center justify-center hover:bg-blue-700 transition-colors" title="Volver a la Infografía">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-                <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-            </svg>
-        </button>
-    </div>
-    
-    <div id="modalFlow" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('modalFlow')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('modalFlow')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Estructura Lógica del Flujograma Documentario</h3>
-            <p class="text-gray-700 mb-6 text-justify">Estructura lógica del flujograma documentario para el caso de exportación de bufandas de alpaca a Canadá.</p>
-            <button onclick="showPdfAndCloseModal('modalFlow', 'https://tinyurl.com/EA1flujo4')" class="inline-block bg-indigo-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-700 transition-colors">Ver Flujograma</button>
-        </div>
-    </div>
-    <div id="ea1-modal0" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal0')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea1-modal0')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">1. Factura Proforma</h3>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es un documento preliminar que detalla la oferta comercial. Se emite durante la fase de negociación para que el comprador confirme los términos (producto, precio, Incoterm) antes de que se emita la Factura Comercial definitiva y se inicie el despacho.</p>
-            <button onclick="showPdfAndCloseModal('ea1-modal0', 'https://rickne7.github.io/AlpacaDelSol/00%20Proforma%20Invoice.pdf')" class="inline-block bg-gray-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-gray-700 transition-colors">Ver Documento (PDF)</button>
-        </div>
-    </div>
-    
-    <div id="ea1-modal-liq" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal-liq')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea1-modal-liq')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Documento de Abastecimiento: Liquidación de Compra</h3>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Este es un comprobante de pago especial, emitido <strong>meses antes</strong> del flujo de exportación. Permite a "Alpaca del Sol S.A.C." (como empresa con RUC) <strong>sustentar legalmente la compra de materia prima (fibra de alpaca) a productores locales</strong> y criadores que no tienen RUC. Es la base del modelo "Contra Stock" para formalizar el costo de la mercancía.</p>
-        </div>
-    </div>
-    <div id="ea1-modal1" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal1')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea1-modal1')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">2. Factura Comercial</h3>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es el documento que <strong>acredita legalmente la venta</strong>. Funciona como el contrato que detalla qué se vende, a quién, a qué precio y bajo qué condiciones. Es la base para la declaración de aduanas tanto en origen como en destino.</p>
-            <button onclick="showPdfAndCloseModal('ea1-modal1', 'https://rickne7.github.io/AlpacaDelSol/01%20Factura%20Comercial%20(Marilin).pdf')" class="inline-block bg-blue-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-blue-700 transition-colors">Ver Documento (PDF)</button>
-        </div>
-    </div>
-    <div id="ea1-modal2" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal2')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea1-modal2')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">3. Packing List</h3>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es el <strong>inventario físico del embarque</strong>. Detalla cómo está organizada la carga: el número de cajas, el contenido de cada una, y sus pesos y dimensiones. Es crucial para la inspección física de la aduana y la correcta manipulación logística.</p>
-            <button onclick="showPdfAndCloseModal('ea1-modal2', 'https://rickne7.github.io/AlpacaDelSol/02%20Packing%20List%20(Gino).pdf')" class="inline-block bg-green-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-green-700 transition-colors">Ver Documento (PDF)</button>
-        </div>
-    </div>
-    <div id="ea1-modal3" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal3')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea1-modal3')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">4. Warehouse Receipt</h3>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es la <strong>constancia de recepción de la carga</strong> emitida por el depósito temporal (TALMA). Certifica que el almacén ha recibido la mercancía y, a partir de ese momento, es responsable de su custodia hasta entregarla a la aerolínea.</p>
-            <button onclick="showPdfAndCloseModal('ea1-modal3', 'https://rickne7.github.io/AlpacaDelSol/03%20Warehouse%20(Milagros).pdf')" class="inline-block bg-red-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-red-700 transition-colors">Ver Documento (PDF)</button>
-        </div>
-    </div>
-    <div id="ea1-modal4" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal4')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea1-modal4')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">5. Declaración Aduanera</h3>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es la <strong>solicitud formal ante la SUNAT</strong> para acoger la mercancía al régimen de Exportación Definitiva. Este documento formaliza la salida legal de los productos del territorio peruano y es indispensable para el control del Estado.</p>
-            <button onclick="showPdfAndCloseModal('ea1-modal4', 'https://rickne7.github.io/AlpacaDelSol/04%20DAM%20A%20(Celeste).pdf')" class="inline-block bg-yellow-500 text-white font-semibold py-2 px-5 rounded-lg hover:bg-yellow-600 transition-colors">Ver Documento (PDF)</button>
-        </div>
-    </div>
-    <div id="ea1-modal5" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal5')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea1-modal5')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">6. Guía Aérea Hija (HAWB)</h3>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es el contrato de transporte entre el <strong>Agente de Carga y el Exportador</strong>. Detalla el envío específico y es la prueba que Alpaca del Sol S.A.C. tiene para demostrar que ha embarcado su carga.</p>
-            <button onclick="showPdfAndCloseModal('ea1-modal5', 'https://rickne7.github.io/AlpacaDelSol/05%20Gu%C3%ADa%20Hija%20HAWB%20(Eric).pdf')" class="inline-block bg-purple-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-purple-700 transition-colors">Ver Documento (PDF)</button>
-        </div>
-    </div>
-    <div id="ea1-modal6" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea1-modal6')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea1-modal6')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">7. Guía Aérea Master (MAWB)</h3>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Justificación:</strong> Es el contrato de transporte entre la <strong>Aerolínea y el Agente de Carga</strong>. Ampara la totalidad de la carga consolidada. Para la aerolínea, todo el bloque es un solo envío a nombre del Agente de Carga.</p>
-            <button onclick="showPdfAndCloseModal('ea1-modal6', 'https://rickne7.github.io/AlpacaDelSol/06%20Gu%C3%ADa%20Madre%20MAWB%20(Ashly).pdf')" class="inline-block bg-indigo-600 text-white font-semibold py-2 px-5 rounded-lg hover:bg-indigo-700 transition-colors">Ver Documento (PDF)</button>
-        </div>
-    </div>
-
-    <div id="ea2-bufanda-modal1" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-bufanda-modal1')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-bufanda-modal1')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 1: Textos de Partidas y Notas Legales</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Marilin Medina</p>
-            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
-                "Los títulos de las Secciones, de los Capítulos o de los Subcapítulos solo tienen un valor indicativo, ya que la clasificación está determinada legalmente por los textos de las partidas y de las Notas de Sección o de Capítulo..."
-            </blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> La clasificación se basa en el texto de la <strong>Partida 62.14</strong>, que describe explícitamente: "Chales, pañuelos de cuello, <strong>bufandas</strong>, mantillas, velos y artículos similares". Nuestro producto, "Bufanda de Baby Alpaca", coincide directamente con este texto legal.</p>
-        </div>
-    </div>
-    <div id="ea2-bufanda-modal2" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-bufanda-modal2')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-bufanda-modal2')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 2: Artículos Incompletos y Mezclados</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Eric Mozombite</p>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (2a y 2b):</strong> Estas reglas no son de aplicación determinante en este caso. La bufanda se presenta como un artículo <strong>completo y terminado</strong> (no aplica 2a) y está hecha de una <strong>sola materia textil</strong> (100% Pelo Fino de Alpaca), por lo que no es una mezcla (no aplica 2b).</p>
-        </div>
-    </div>
-    <div id="ea2-bufanda-modal3" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-bufanda-modal3')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-bufanda-modal3')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 3: Especificidad</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Celeste Taya</p>
-            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">"a) La partida con descripción más específica tendrá prioridad sobre las partidas de alcance más genérico..."</blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (3a):</strong> Esta regla se aplica para confirmar la Partida 62.14. Aunque una bufanda es un "complemento de vestir" (Partida 62.17, más genérica), la <strong>Partida 62.14</strong> es <strong>más específica</strong> porque nombra textualmente "bufandas". Las Reglas 3b y 3c no son necesarias.</p>
-        </div>
-    </div>
-    <div id="ea2-bufanda-modal4" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-bufanda-modal4')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-bufanda-modal4')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 4: Clasificación por Analogía</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Milagros Tornero</p>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> Esta regla se considera pero se descarta. No es necesaria ya que la Regla 1 (y la 3a) resolvieron la clasificación de manera clara y directa. No hay ambigüedad que requiera buscar productos "análogos" o similares.</p>
-        </div>
-    </div>
-    <div id="ea2-bufanda-modal5" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-bufanda-modal5')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-bufanda-modal5')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 5: Estuches y Envases</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Ashly Rosas</p>
-            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">"b) ...los envases que contengan mercancías se clasificarán con ellas cuando sean de los tipos normalmente empleados..."</blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (5b):</strong> Las bufandas se exportan en cajas de cartón. Siendo este el embalaje normal y no apto para uso repetido (no es un estuche de lujo), la Regla 5b indica que las cajas de cartón se clasifican <strong>junto</strong> con las bufandas en la Partida 62.14.</p>
-        </div>
-    </div>
-    <div id="ea2-bufanda-modal6" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-bufanda-modal6')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-bufanda-modal6')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 6: Clasificación en Subpartidas</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Gino Vela</p>
-            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">"...la clasificación... en las subpartidas... está determinada legalmente por los textos de estas subpartidas..."</blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> Una vez fijada la Partida <strong>62.14</strong> (por Regla 1), la Regla 6 nos obliga a descender jerárquicamente:<br>
-                1. La bufanda es 100% Pelo Fino de Alpaca. Descendemos hasta la subpartida nacional que la describe: <strong>6214.90.10.00</strong>.</p>
-        </div>
-    </div>
-
-
-    <div id="ea2-etiquetas-modal1" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-etiquetas-modal1')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-etiquetas-modal1')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 1: Textos de Partidas y Notas Legales</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Marilin Medina Apolinario</p>
-            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
-                "Los títulos de las Secciones, de los Capítulos o de los Subcapítulos solo tienen un valor indicativo, ya que la clasificación está determinada legalmente por los textos de las partidas y de las Notas de Sección o de Capítulo..."
-            </blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> La clasificación de nuestras etiquetas no se basa en el título genérico del Capítulo 58 ("Tejidos especiales..."), sino en el texto legal específico de la <strong>Partida 58.07</strong>, que describe explícitamente: <strong>"Etiquetas, escudos y artículos similares de materia textil..."</strong>. El producto importado ("etiquetas tejidas") coincide directamente con este texto.</p>
-        </div>
-    </div>
-    <div id="ea2-etiquetas-modal2" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-etiquetas-modal2')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-etiquetas-modal2')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 2: Incompletos y Mezclados</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Eric Mozombite Shishco</p>
-            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
-                "a) Cualquier referencia a un artículo... alcanza al artículo incluso incompleto o sin terminar, siempre que éste presente las características esenciales del artículo completo..."<br>
-                "b) Cualquier referencia a una materia... alcanza a dicha materia incluso mezclada o asociada con otras materias..."
-            </blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (2a):</strong> Esta regla aplica, ya que el propio texto de la Partida 58.07 la invoca al especificar "...en pieza, en tiras o cortados...". Si importáramos las etiquetas en un gran rollo (en pieza) que aún requiere ser cortado, se clasificarían igualmente en la 58.07.</p>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (2b):</strong> Esta regla se activa. Dado que el producto es una <strong>mezcla (70% poliéster y 30% algodón)</strong>, esta regla indica que la partida <strong>58.07</strong> sigue siendo relevante, y nos remite a la Regla 3 para la clasificación por carácter esencial.</p>
-        </div>
-    </div>
-    <div id="ea2-etiquetas-modal3" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-etiquetas-modal3')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-etiquetas-modal3')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 3: Especificidad y Carácter Esencial</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Celeste Taya Martínez</p>
-            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
-                "a) La partida con descripción más específica tendrá prioridad sobre las partidas de alcance más genérico..."<br>
-                "b) ...los productos mezclados... se clasificarán según la materia... que les confiera su carácter esencial..."
-            </blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (3a - Especificidad):</strong> La <strong>Partida 58.07</strong> (que describe "Etiquetas") es <strong>altamente específica</strong> y prevalece sobre las partidas genéricas de las materias (Cap. 55 para Poliéster o Cap. 52 para Algodón).</p>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (3b - Carácter Esencial):</strong> Se aplica el criterio de predominancia por peso (Nota 2a de la Sección XI). Dado que el <strong>Poliéster (70%)</strong> predomina en peso sobre el Algodón (30%), el carácter esencial del producto textil es el de "fibra sintética".</p>
-        </div>
-    </div>
-    <div id="ea2-etiquetas-modal4" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-etiquetas-modal4')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-etiquetas-modal4')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 4: Clasificación por Analogía</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Milagros Tornero Tejada</p>
-            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
-                "Las mercancías que no puedan clasificarse aplicando las Reglas anteriores se clasificarán en la partida que comprenda aquellas con las que tengan mayor analogía."
-            </blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> Esta regla no es necesaria para clasificar las etiquetas. El producto no es una novedad tecnológica ni un artículo que carece de descripción; su clasificación fue resuelta clara y directamente por las Reglas 1 y 3a. Por lo tanto, la Regla 4 se considera en el proceso, pero se descarta.</p>
-        </div>
-    </div>
-    <div id="ea2-etiquetas-modal5" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-etiquetas-modal5')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-etiquetas-modal5')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 5: Estuches y Envases</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Ashly Rosas Flores</p>
-            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
-                "b) ...los envases que contengan mercancías se clasificarán con ellas cuando sean de los tipos normally empleados para esa clase de mercancías."
-            </blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (5b):</strong> Nuestras 50,000 etiquetas se importarán dentro de cajas de cartón corrugado. Estas cajas son el embalaje normal y habitual, no están diseñadas para uso repetido. Por lo tanto, las cajas de cartón no se clasifican por separado (en la partida del cartón), sino que se clasifican <strong>junto</strong> con las etiquetas en la partida <strong>5807.10.00.00</strong>.</p>
-        </div>
-    </div>
-    <div id="ea2-etiquetas-modal6" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-etiquetas-modal6')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-etiquetas-modal6')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 6: Clasificación en Subpartidas</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Gino Vela Ruiz</p>
-            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
-                "la clasificación de mercancías en las subpartidas de una misma partida está determinada legalmente por los textos de estas subpartidas..."
-            </blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> Una vez que las Reglas 1 y 3 fijaron la Partida <strong>58.07</strong> y el carácter esencial (Poliéster), la Regla 6 nos obliga a descender jerárquicamente:<br>
-                1. Comparamos `5807.10` (- Tejidos) vs. `5807.90` (- Los demás). Elegimos <strong>5807.10</strong>.<br>
-                2. El Arancel de Aduanas vigente (2022) ya no presenta más desdoblamientos dentro de esta subpartida.<br>
-                3. Por lo tanto, la clasificación se completa con ceros, resultando en la subpartida nacional <strong>5807.10.00.00</strong>.</p>
-        </div>
-    </div>
-    
-    <div id="ea2-maquina-modal1" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-maquina-modal1')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-maquina-modal1')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 1: Textos de Partidas y Notas Legales</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Marilin Medina Apolinario</p>
-            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
-                "Los títulos... solo tienen un valor indicativo, ya que la clasificación está determinada legalmente por los textos de las partidas y de las Notas de Sección o de Capítulo..."
-            </blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> La clasificación se basa en el texto de la <strong>Partida 84.47</strong>, que describe explícitamente: "<strong>Máquinas de tricotar</strong>, de costura por cadeneta...". Nuestra "Máquina Tejedora Rectilínea" se ajusta perfectamente a este texto legal. Las Notas de la Sección XVI y del Capítulo 84 no la excluyen.</p>
-        </div>
-    </div>
-    <div id="ea2-maquina-modal2" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-maquina-modal2')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-maquina-modal2')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 2: Artículos Desmontados</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Eric Mozombite Shishco</p>
-            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
-                "a) Cualquier referencia a un artículo... alcanza al artículo... cuando se presente desmontado o sin montar."
-            </blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (2a):</strong> Esta regla es de aplicación común para maquinaria. Si nuestra máquina tejedora se importa <strong>desarmada o desmontada</strong> en varias partes para facilitar su transporte (una práctica logística estándar), la Regla 2a instruye que debe clasificarse como el artículo completo, es decir, en la Partida 84.47.<br><br><strong>Aplicación (2b):</strong> La Regla 2b (mezclas) no aplica a este producto.</p>
-        </div>
-    </div>
-    <div id="ea2-maquina-modal3" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-maquina-modal3')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-maquina-modal3')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 3: Especificidad</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Celeste Taya Martínez</p>
-            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
-                "a) La partida con descripción más específica tendrá prioridad sobre las partidas de alcance más genérico..."
-            </blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (3a):</strong> Esta regla confirma la Partida 84.47. Aunque la máquina podría ser considerada de forma genérica en la Partida 84.79 ("Máquinas... con una función propia, no expresadas..."), la <strong>Partida 84.47 es mucho más específica</strong> al nombrar textualmente "Máquinas de tricotar". Por lo tanto, la Regla 3a da prioridad a la 84.47.</p>
-        </div>
-    </div>
-    <div id="ea2-maquina-modal4" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-maquina-modal4')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-maquina-modal4')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 4: Clasificación por Analogía</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Milagros Tornero Tejada</p>
-            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
-                "Las mercancías que no puedan clasificarse aplicando las Reglas anteriores se clasificarán en la partida que comprenda aquellas con las que tengan mayor analogía."
-            </blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> Esta regla se considera pero No es necesaria. La máquina está claramente identificada por el texto de la Partida 84.47 gracias a la Regla 1, por lo que no es necesario buscar productos análogos.</p>
-        </div>
-    </div>
-    <div id="ea2-maquina-modal5" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-maquina-modal5')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-maquina-modal5')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 5: Envases y Embalajes</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Ashly Rosas Flores</p>
-            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
-                "b) ...los envases que contengan mercancías se clasificarán con ellas cuando sean de los tipos normalmente empleados..."
-            </blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación (5b):</strong> La máquina tejedora se importa con sus embalajes de transporte habituales (cajas de madera tratada, bases de pallet, protectores de plástico, etc.) que no están diseñados para uso repetido. La Regla 5b indica que todos estos embalajes normales se clasifican <strong>junto</strong> con la máquina en la Partida 84.47.</p>
-        </div>
-    </div>
-    <div id="ea2-maquina-modal6" class="modal fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden opacity-0 z-50" onclick="closeModal('ea2-maquina-modal6')">
-        <div class="modal-content bg-white w-full max-w-2xl rounded-lg shadow-2xl p-8 relative transform scale-95" onclick="event.stopPropagation()">
-            <button onclick="closeModal('ea2-maquina-modal6')" class="absolute top-4 right-4 text-gray-500 hover:text-gray-800 text-3xl font-bold">&times;</button>
-            <h3 class="text-2xl font-bold mb-4 text-slate-800">Regla 6: Clasificación en Subpartidas</h3>
-            <p class="text-gray-500 text-sm mb-4">Responsable: Gino Vela Ruiz</p>
-            <blockquote class="border-l-4 border-gray-300 pl-4 italic text-gray-600 mb-4">
-                "...la clasificación... en las subpartidas... está determinada legalmente por los textos de estas subpartidas..."
-            </blockquote>
-            <p class="text-gray-700 mb-6 text-justify"><strong>Aplicación al Producto:</strong> Una vez fijada la Partida <strong>84.47</strong> (por Regla 1), la Regla 6 nos obliga a descender jerárquicamente:<br>
-                1. Nivel 1 (SA 6 dígitos): Comparamos las subpartidas y elegimos <strong>8447.20</strong> ("- Máquinas rectilíneas de tricotar...").<br>
-                2. Nivel 2 (NANDINA 8 dígitos): Dentro de la 8447.20, elegimos <strong>8447.20.10</strong> ("-- Para la industria textil").<br>
-                3. Nivel 3 (Nacional 10 dígitos): Se completa con ceros, resultando en <strong>8447.20.10.00</strong>.</p>
-        </div>
-    </div>
+    <!-- Script de Interactividad y Gráficos -->
     <script>
-        
-        window.currentView = 'cover-page';
-        window.lastMainPage = 'cover-page'; 
-
-        window.openModal = function(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.remove('hidden');
-                setTimeout(() => {
-                    modal.classList.remove('opacity-0');
-                    const modalContent = modal.querySelector('.modal-content');
-                    if (modalContent) {
-                        modalContent.classList.remove('scale-95');
-                    }
-                }, 10);
-            }
-        }
-
-        window.closeModal = function(modalId) {
-            const modal = document.getElementById(modalId);
-            if (modal) {
-                modal.classList.add('opacity-0');
-                const modalContent = modal.querySelector('.modal-content');
-                if (modalContent) {
-                    modalContent.classList.add('scale-95');
-                }
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                }, 300);
-            }
-        }
-
-        window.switchView = function(targetViewId) {
-            const current = document.getElementById(window.currentView);
-            const target = document.getElementById(targetViewId);
-
-            if (current) {
-                current.classList.add('opacity-0');
-                setTimeout(() => {
-                    current.classList.add('hidden');
-                }, 500);
-            }
+        // Funcionalidad del Menú Lateral (Toggle universal Desktop/Mobile)
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
             
-            if (target) {
-                target.classList.remove('hidden');
-                target.scrollTop = 0; 
-                setTimeout(() => {
-                    target.classList.remove('opacity-0');
+            if (window.innerWidth < 1024) { 
+                sidebar.classList.toggle('-translate-x-full');
+                overlay.classList.toggle('hidden');
+            } else {
+                if (sidebar.classList.contains('-ml-64')) {
+                    sidebar.classList.remove('-ml-64');
+                } else {
+                    sidebar.classList.add('-ml-64');
+                }
+            }
+        }
+
+        // Overlay Flujo Distribución (Parte 5)
+        function openFlujo() {
+            document.getElementById('flujo-overlay').classList.remove('hidden');
+            document.getElementById('flujo-overlay').classList.add('flex');
+        }
+        function closeFlujo() {
+            document.getElementById('flujo-overlay').classList.add('hidden');
+            document.getElementById('flujo-overlay').classList.remove('flex');
+        }
+
+        // Evitar bugs visuales al redimensionar la pantalla
+        window.addEventListener('resize', () => {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+            if (window.innerWidth >= 1024) {
+                overlay.classList.add('hidden');
+                sidebar.classList.remove('-translate-x-full');
+            } else {
+                sidebar.classList.remove('-ml-64');
+                sidebar.classList.add('-translate-x-full');
+            }
+        });
+
+        // Variables de estado
+        let chartsInitialized = {
+            marilin: false,
+            isabella: false,
+            victor: false
+        };
+        
+        // Función para Acordeón de Objetivos
+        window.toggleObj = function(id) {
+            const el = document.getElementById(id);
+            const icon = document.getElementById('icon-' + id);
+            if(el.classList.contains('hidden')) {
+                el.classList.remove('hidden');
+                icon.classList.remove('fa-chevron-down');
+                icon.classList.add('fa-chevron-up');
+            } else {
+                el.classList.add('hidden');
+                icon.classList.remove('fa-chevron-up');
+                icon.classList.add('fa-chevron-down');
+            }
+        };
+
+        const titles = {
+            'portada': 'Resumen Ejecutivo',
+            'marilin': 'Parte 1: Análisis Comercial',
+            'franchesca': 'Parte 2: FODA y Producto',
+            'isabella': 'Parte 3: Oferta y Proveedores',
+            'victor': 'Parte 4: Mercado Global y Destino',
+            'eric': 'Parte 5: Segmentación y Marketing'
+        };
+
+        function switchTab(tabId) {
+            document.querySelectorAll('.nav-item').forEach(el => {
+                el.classList.remove('nav-active');
+            });
+            document.getElementById('nav-' + tabId).classList.add('nav-active');
+            document.getElementById('header-title').innerText = titles[tabId];
+
+            document.querySelectorAll('.dashboard-section').forEach(el => {
+                el.classList.remove('active');
+            });
+            
+            document.getElementById(tabId).classList.add('active');
+
+            if (window.innerWidth < 1024) {
+                const sidebar = document.getElementById('sidebar');
+                const overlay = document.getElementById('sidebar-overlay');
+                if (!sidebar.classList.contains('-translate-x-full')) {
+                    sidebar.classList.add('-translate-x-full');
+                    overlay.classList.add('hidden');
+                }
+            }
+
+            if(tabId === 'marilin' && !chartsInitialized.marilin) {
+                setTimeout(initMarilinCharts, 100);
+                chartsInitialized.marilin = true;
+            }
+            if(tabId === 'isabella' && !chartsInitialized.isabella) {
+                setTimeout(initIsabellaCharts, 100);
+                chartsInitialized.isabella = true;
+            }
+            if(tabId === 'victor' && !chartsInitialized.victor) {
+                setTimeout(initVictorCharts, 100);
+                chartsInitialized.victor = true;
+            }
+        }
+
+        // --- DATOS FODA CRUZADO ---
+        const fodaData = {
+            'Fortalezas': '<ul class="space-y-2"><li><strong>Logística Eficiente:</strong> Tiempo de tránsito de solo 10 días hacia Chile (Searates.com).</li></ul>',
+            'Oportunidades': '<ul class="space-y-2"><li><strong>Ventaja Arancelaria:</strong> Ingreso con Arancel 0 gracias al TLC Perú-Chile.</li><li><strong>Mercado en Crecimiento:</strong> Aumento del 24.94% en exportaciones peruanas a este destino (Exportemos.pe).</li></ul>',
+            'Debilidades': '<ul class="space-y-2"><li><strong>Limitación de Producto:</strong> Falta de versiones bajas en sodio o "light" frente a la competencia.</li></ul>',
+            'Amenazas': '<ul class="space-y-2"><li><strong>Competencia Global:</strong> China y EE. UU. dominan el 74% de las importaciones chilenas (TRADEMAP).</li><li><strong>Saturación Local:</strong> Existen 93 empresas peruanas exportando salsa de soya a Chile (ADT).</li></ul>',
+            'FO': '<h4 class="font-bold text-green-700">1. Estrategias de Crecimiento (FO)</h4><ul class="mt-3 list-disc pl-4 space-y-2 text-gray-600"><li>Aprovechar la experiencia exportadora para cubrir la demanda creciente en Chile.</li><li>Canalizar la capacidad de producción para asegurar el suministro constante.</li><li>Identificar nichos específicos mediante agendamiento comercial directo.</li></ul>',
+            'DO': '<h4 class="font-bold text-blue-700">2. Estrategias de Adaptación (DO)</h4><ul class="mt-3 list-disc pl-4 space-y-2 text-gray-600"><li>Testear el mercado en eventos de promoción para mitigar la falta de variedad inicial.</li><li>Capitalizar los bajos requisitos regulatorios (MACMAP) y la estabilidad de Chile (CESCE).</li><li>Validar la propuesta de valor antes de realizar inversiones mayores en diversificación.</li></ul>',
+            'FA': '<h4 class="font-bold text-orange-700">3. Estrategias de Diferenciación (FA)</h4><ul class="mt-3 list-disc pl-4 space-y-2 text-gray-600"><li>Competir por confianza y calidad, no por precio, frente a China y EE. UU. (TRADEMAP).</li><li>Obtener certificaciones voluntarias para destacar ante los 93 competidores peruanos (ADT).</li><li>Reforzar la publicidad digital para posicionar la marca en un mercado saturado.</li></ul>',
+            'DA': '<h4 class="font-bold text-red-700">4. Estrategias de Mitigación (DA)</h4><ul class="mt-3 list-disc pl-4 space-y-2 text-gray-600"><li>Renovar el diseño de envase y comunicación visual para ganar visibilidad internacional.</li><li>Reducir vulnerabilidad ante sustitutos mediante una imagen de marca profesional.</li><li>Utilizar certificaciones como escudo defensivo frente a marcas ya posicionadas.</li></ul>'
+        };
+
+        function openFodaModal(type) {
+            document.getElementById('modal-title').innerHTML = type;
+            document.getElementById('modal-content').innerHTML = fodaData[type];
+            document.getElementById('foda-modal').classList.remove('hidden');
+            document.getElementById('foda-modal').classList.add('flex');
+        }
+
+        function closeFodaModal() {
+            document.getElementById('foda-modal').classList.add('hidden');
+            document.getElementById('foda-modal').classList.remove('flex');
+        }
+
+        // --- GRÁFICOS CHART.JS ---
+        
+        const cDark = '#1F1209';
+        const cGold = '#D4AF37';
+        const cRed = '#8B1E1B';
+
+        function initMarilinCharts() {
+            // GRAFICA 1 FRENTE
+            new Chart(document.getElementById('chartMarilin1Front'), {
+                type: 'bar',
+                data: {
+                    labels: ['2021', '2022', '2023', '2024', '2025'],
+                    datasets: [
+                        { label: 'Valor FOB (US$)', data: [2441475, 2551804, 2825823, 3340492, 3913290], backgroundColor: cGold, yAxisID: 'y' },
+                        { label: 'Peso Neto (Kg)', data: [2121242, 2320159, 2593223, 3004890, 3427882], type: 'line', borderColor: cDark, borderWidth: 3, pointBackgroundColor: cDark, yAxisID: 'y1' }
+                    ]
+                },
+                options: { 
+                    responsive: true, maintainAspectRatio: false, interaction: { mode: 'index', intersect: false },
+                    scales: {
+                        y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'FOB (US$)' } },
+                        y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: 'Peso Neto (Kg)' }, grid: { drawOnChartArea: false } }
+                    }
+                }
+            });
+
+            // GRAFICA 1 DORSO
+            new Chart(document.getElementById('chartMarilin1Back'), {
+                type: 'line',
+                data: {
+                    labels: ['2021', '2022', '2023', '2024', '2025'],
+                    datasets: [{ label: 'Precio Promedio (US$/Kg)', data: [1.15, 1.10, 1.09, 1.11, 1.14], borderColor: cRed, backgroundColor: 'rgba(139, 30, 27, 0.2)', borderWidth: 4, fill: true, tension: 0.4, pointBackgroundColor: cRed, pointRadius: 6 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min: 1.05, max: 1.20 } } }
+            });
+
+            // GRAFICA 2 FRENTE
+            new Chart(document.getElementById('chartMarilin2Front'), {
+                type: 'bar',
+                data: {
+                    labels: ['Chile', 'Bolivia', 'España'],
+                    datasets: [
+                        { label: 'Valor FOB (US$)', data: [1875264, 962923, 470713], backgroundColor: cDark, borderRadius: 4 },
+                        { label: 'Peso Neto (Kg)', data: [1718311, 885944, 381329], backgroundColor: '#9ca3af', borderRadius: 4 }
+                    ]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // GRAFICA 2 DORSO
+            new Chart(document.getElementById('chartMarilin2Back'), {
+                type: 'bar',
+                data: {
+                    labels: ['Chile', 'Bolivia', 'España'],
+                    datasets: [{ label: 'Precio Promedio (US$/Kg)', data: [1.09, 1.09, 1.23], backgroundColor: [cRed, cGold, cDark], borderRadius: 6, barPercentage: 0.6 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { min: 0, title: { display: true, text: 'USD / Kilogramo' } } } }
+            });
+        }
+
+        function initIsabellaCharts() {
+            // Chart 3: Producción Nacional 2021-2025 (Nuevo)
+            new Chart(document.getElementById('chartIsabella3'), {
+                type: 'line',
+                data: {
+                    labels: ['2021', '2022', '2023', '2024', '2025'],
+                    datasets: [{
+                        label: 'Toneladas de Soya',
+                        data: [1684, 1686, 2722, 2230, 1279],
+                        borderColor: cGold,
+                        backgroundColor: 'rgba(212, 175, 55, 0.2)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3,
+                        pointBackgroundColor: cGold,
+                        pointRadius: 4
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false, 
+                    plugins: { legend: { display: false } },
+                    scales: { y: { beginAtZero: true, title: { display: true, text: 'Toneladas' } } }
+                }
+            });
+
+            new Chart(document.getElementById('chartIsabella1'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['Piura', 'Ucayali', 'Amazonas', 'Otros'],
+                    datasets: [{ data: [760, 255, 191, 72], backgroundColor: [cGold, '#b45309', '#047857', cDark], borderWidth: 0 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { legend: { position: 'right', labels: { boxWidth: 15 } } } }
+            });
+
+            new Chart(document.getElementById('chartIsabella2'), {
+                type: 'bar',
+                indexAxis: 'y',
+                data: {
+                    labels: ['Campo Grande', 'Corporación Lider', 'Reino del Valle'],
+                    datasets: [{ label: 'Puntaje Ponderado', data: [2.85, 1.70, 1.70], backgroundColor: ['#10B981', '#E2E8F0', '#E2E8F0'], borderRadius: 4 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { x: { max: 3, ticks: { stepSize: 1 } } } }
+            });
+        }
+
+        function initVictorCharts() {
+            
+            // Opciones estándar para gráficos de doble eje en la Parte 4
+            const dualAxisOptions = {
+                responsive: true, 
+                maintainAspectRatio: false, 
+                interaction: { mode: 'index', intersect: false },
+                plugins: { legend: { display: false } }, // Ocultamos leyendas por estética, ya está en subtítulos
+                scales: {
+                    y: { type: 'linear', display: true, position: 'left', title: { display: true, text: 'Miles USD' } },
+                    y1: { type: 'linear', display: true, position: 'right', title: { display: true, text: 'Toneladas' }, grid: { drawOnChartArea: false } }
+                }
+            };
+
+            // 1. Principales Productores (Circular/Doughnut)
+            new Chart(document.getElementById('chartVictorProd'), {
+                type: 'doughnut',
+                data: {
+                    labels: ['China', 'Japón', 'EE.UU.', 'Otros'],
+                    datasets: [{ data: [45, 25, 15, 15], backgroundColor: [cRed, cDark, '#3B82F6', cGold], borderWidth: 0 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { position: 'bottom', labels: { boxWidth: 12 } } } }
+            });
+
+            // 2. Exportadores Mundiales (Barra dual)
+            new Chart(document.getElementById('chartVictorExp'), {
+                type: 'bar',
+                data: {
+                    labels: ['China', 'Japón', 'EE.UU.', 'P.Bajos'],
+                    datasets: [
+                        { label: 'Valor FOB (Miles USD)', data: [200500, 150200, 100400, 80100], backgroundColor: cDark, yAxisID: 'y', borderRadius: 4 },
+                        { label: 'Volumen (Tn)', data: [150000, 100000, 70000, 50000], backgroundColor: '#9ca3af', yAxisID: 'y1', borderRadius: 4 }
+                    ]
+                },
+                options: dualAxisOptions
+            });
+
+            // 3. Importadores Mundiales (Barra dual)
+            new Chart(document.getElementById('chartVictorImp'), {
+                type: 'bar',
+                data: {
+                    labels: ['EE.UU.', 'Francia', 'Reino Unido', 'Alemania'],
+                    datasets: [
+                        { label: 'Valor FOB (Miles USD)', data: [142359, 63188, 57301, 50120], backgroundColor: '#3B82F6', yAxisID: 'y', borderRadius: 4 },
+                        { label: 'Volumen (Tn)', data: [110000, 45000, 40000, 35000], backgroundColor: '#93C5FD', yAxisID: 'y1', borderRadius: 4 }
+                    ]
+                },
+                options: dualAxisOptions
+            });
+
+            // 4. Proveedores al Mercado de Chile (Barra dual)
+            new Chart(document.getElementById('chartVictorProvChile'), {
+                type: 'bar',
+                data: {
+                    labels: ['EE.UU.', 'China', 'Perú', 'Brasil'],
+                    datasets: [
+                        { label: 'Valor FOB (Miles USD)', data: [2994, 1692, 899, 312], backgroundColor: cRed, yAxisID: 'y', borderRadius: 4 },
+                        { label: 'Volumen (Tn)', data: [2500, 2000, 800, 300], backgroundColor: '#FCA5A5', yAxisID: 'y1', borderRadius: 4 }
+                    ]
+                },
+                options: dualAxisOptions
+            });
+
+            // 5. Empresas Exportadoras del Perú a Chile (Barra dual)
+            new Chart(document.getElementById('chartVictorEmpPeru'), {
+                type: 'bar',
+                data: {
+                    labels: ['Ajinomoto', 'Alicorp', 'A&B', 'Otros'],
+                    datasets: [
+                        { label: 'Valor FOB (Miles USD)', data: [500, 250, 100, 49], backgroundColor: '#10B981', yAxisID: 'y', borderRadius: 4 },
+                        { label: 'Volumen (Tn)', data: [450, 200, 90, 60], backgroundColor: '#6EE7B7', yAxisID: 'y1', borderRadius: 4 }
+                    ]
+                },
+                options: dualAxisOptions
+            });
+
+            // Banderas para Chart Scatter (Figura 28)
+            const flagUrls = {
+                'cl': 'https://raw.githubusercontent.com/RickNE7/SalsaSoyaChile20261/main/circleflag_Chile.png',
+                'es': 'https://raw.githubusercontent.com/RickNE7/SalsaSoyaChile20261/main/circleflag_Espa%C3%B1a.png',
+                'bo': 'https://raw.githubusercontent.com/RickNE7/SalsaSoyaChile20261/main/circleflag_Bolivia.png'
+            };
+            
+            const flagImages = {};
+            Object.keys(flagUrls).forEach(code => {
+                const img = new Image();
+                img.src = flagUrls[code];
+                img.onload = () => { if(window.victorChart2) window.victorChart2.update(); };
+                flagImages[code] = img;
+            });
+
+            const flagPlugin = {
+                id: 'flagPlugin',
+                afterDatasetsDraw(chart) {
+                    const ctx = chart.ctx;
+                    const isMobile = window.innerWidth < 768; 
                     
-                    window.currentView = targetViewId;
-                    if (targetViewId !== 'pdf-view') {
-                        window.lastMainPage = targetViewId;
-                    }
-
-                    const items = document.querySelectorAll(`#${targetViewId} .step-item, #${targetViewId} .process-step, #${targetViewId} .selection-card, #${targetViewId} .fade-in`);
-                    items.forEach((item, index) => {
-                        item.style.animation = 'none';
-                        item.offsetHeight; 
-                        item.style.animation = `fadeIn 0.5s ease-out ${index * 0.05 + 0.5}s forwards`;
+                    chart.data.datasets.forEach((dataset, i) => {
+                        const meta = chart.getDatasetMeta(i);
+                        if (!meta.hidden) {
+                            meta.data.forEach((element, index) => {
+                                const dataPoint = dataset.data[index];
+                                const { x, y } = element.tooltipPosition();
+                                
+                                const multiplier = isMobile ? 1.2 : 4; 
+                                const radius = dataPoint.r * multiplier; 
+                                const img = dataset.flagImg;
+                                
+                                if (img && img.complete) {
+                                    ctx.save();
+                                    ctx.beginPath();
+                                    ctx.arc(x, y, radius, 0, Math.PI * 2);
+                                    ctx.closePath();
+                                    ctx.clip();
+                                    
+                                    ctx.drawImage(img, x - radius, y - radius, radius * 2, radius * 2);
+                                    ctx.restore();
+                                    
+                                    ctx.beginPath();
+                                    ctx.arc(x, y, radius, 0, Math.PI * 2);
+                                    ctx.lineWidth = 1;
+                                    ctx.strokeStyle = dataset.borderColor || '#333';
+                                    ctx.stroke();
+                                }
+                            });
+                        }
                     });
-                }, 10);
-            }
-        }
-
-        window.showPdfAndCloseModal = function(modalId, pdfUrl) {
-            closeModal(modalId);
-            setTimeout(() => {
-                const pdfIframe = document.getElementById('pdf-iframe');
-                if (pdfIframe) {
-                    pdfIframe.src = pdfUrl;
-                    switchView('pdf-view');
                 }
-            }, 350); 
-        }
-        
-        window.returnToInfografia = function() {
-            const pdfIframe = document.getElementById('pdf-iframe');
-            if (pdfIframe) pdfIframe.src = 'about:blank'; 
-            switchView(window.lastMainPage); 
-        }
-        
-        
-        window.copyToClipboard = function(text, copyButton) {
-            
-            copyFallback(text, copyButton);
-        }
-        
-        function copyFallback(text, copyButton) {
-             const el = document.createElement('textarea');
-            el.value = text;
-            el.setAttribute('readonly', '');
-            el.style.position = 'absolute';
-            el.style.left = '-9999px';
-            document.body.appendChild(el);
-            
-            const selected =
-                document.getSelection().rangeCount > 0
-                    ? document.getSelection().getRangeAt(0)
-                    : false;
+            };
 
-            el.select();
-            
-            let copied = false;
-            try {
-                document.execCommand('copy');
-                copied = true;
-            } catch (err) {
-                console.error('Error al copiar con execCommand:', err);
-            }
-            
-            document.body.removeChild(el);
-
-            if (selected) {
-                document.getSelection().removeAllRanges();
-                document.getSelection().addRange(selected);
-            }
-
-            if (copied) {
-                showCopyFeedback(copyButton);
-            }
+            // Chart Scatter (Figura 28)
+            window.victorChart2 = new Chart(document.getElementById('chartVictor2'), {
+                type: 'scatter',
+                plugins: [flagPlugin],
+                data: {
+                    datasets: [
+                        { label: 'Chile', data: [{x: 19, y: 40.2, r: 7.48}], borderColor: '#10B981', flagImg: flagImages['cl'], pointRadius: 0 },
+                        { label: 'España', data: [{x: 31, y: 8.0, r: 14.24}], borderColor: '#F59E0B', flagImg: flagImages['es'], pointRadius: 0 },
+                        { label: 'Bolivia', data: [{x: -10, y: 58.7, r: 11.3}], borderColor: '#EF4444', flagImg: flagImages['bo'], pointRadius: 0 }
+                    ]
+                },
+                options: { 
+                    responsive: true, maintainAspectRatio: false,
+                    layout: { padding: { top: 40, right: 60, bottom: 20, left: 20 } },
+                    scales: {
+                        x: { title: { display: true, text: 'Atracción del Mercado (Puntos)', font: {weight: 'bold'} }, min: -20, max: 40, grid: { color: '#E2E8F0' } },
+                        y: { title: { display: true, text: 'Competitividad (Puntos)', font: {weight: 'bold'} }, min: 0, max: 70, grid: { color: '#E2E8F0' } }
+                    },
+                    plugins: {
+                        tooltip: {
+                            backgroundColor: 'rgba(31, 18, 9, 0.9)', titleFont: { size: 14, family: 'Montserrat' }, bodyFont: { size: 13, family: 'Open Sans' }, padding: 12,
+                            callbacks: { label: function(ctx) { return [ ` Atracción: ${ctx.raw.x} pts`, ` Competitividad: ${ctx.raw.y} pts`, ` Consumo: ${ctx.raw.r} Litros p.c.` ]; } }
+                        }
+                    }
+                }
+            });
         }
-        
-        function showCopyFeedback(copyButton) {
-            if (copyButton) {
-                const originalContent = copyButton.innerHTML;
-                copyButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" /></svg>';
-                setTimeout(() => {
-                    copyButton.innerHTML = originalContent;
-                }, 1500);
-            }
-        }
-        
     </script>
-
 </body>
 </html>
